@@ -86,6 +86,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .done-card-note{font-size:.78rem;color:var(--charcoal);opacity:.62;line-height:1.45;font-style:italic}
 .done-empty{text-align:center;padding:44px 20px}.done-empty .emoji{font-size:2.5rem;margin-bottom:10px}
 .done-empty p{font-size:.88rem;opacity:.5;line-height:1.6}
+/* UPDATES / NOTES */
+.updates-section{margin-top:14px;padding-top:12px;border-top:1px solid #f0f0f0}
+.updates-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.38;margin-bottom:10px}
+.update-item{background:var(--sage-light);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.update-item.staff-note{background:#faeaee}
+.update-author{font-size:.72rem;font-weight:700;color:var(--sage);margin-bottom:2px}
+.update-item.staff-note .update-author{color:var(--pink)}
+.update-time{font-size:.65rem;opacity:.45;margin-left:6px;font-weight:400}
+.update-text{font-size:.84rem;color:var(--charcoal);line-height:1.45}
+.add-update-box{margin-top:10px}
+.add-update-box textarea{width:100%;border:2px solid var(--sage-mid);border-radius:9px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--charcoal);background:var(--white);outline:none;resize:none;min-height:64px;line-height:1.4}
+.add-update-box textarea:focus{border-color:var(--sage)}
+.update-inputs{display:flex;gap:8px;margin-top:6px}
+.update-name-input{flex:1;border:2px solid var(--sage-mid);border-radius:9px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--charcoal);background:var(--white);outline:none}
+.update-name-input:focus{border-color:var(--sage)}
+.btn-update{background:var(--sage);color:var(--white);border:none;border-radius:9px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-update:active{opacity:.8}
+/* note preview on in-progress card */
+.task-note-preview{font-size:.74rem;color:var(--charcoal);opacity:.6;margin-top:5px;font-style:italic;line-height:1.3}
 /* OPPS */
 .opps-hero{background:linear-gradient(135deg,#e07b39 0%,#c96020 100%);border-radius:var(--radius);padding:20px 20px 18px;margin-bottom:18px;color:var(--white)}
 .opps-hero h2{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:4px}
@@ -455,8 +474,9 @@ function renderInProgress(){
   if(!inprog.length){list.innerHTML='<div class="empty-msg" style="padding:40px 20px">No tasks in progress yet.<br>Tasks appear here once a volunteer claims them. 🙌</div>';return}
   inprog.forEach(t=>{
     const cfg=sc(t.section);
+    const latestUpdate=t.updates&&t.updates.length?t.updates[t.updates.length-1]:null;
     const card=document.createElement('div');card.className='task-card inprogress';card.onclick=()=>openDetail(t.id);
-    card.innerHTML=`<div class="task-dot" style="background:#e07b39"></div><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta"><span class="task-tag" style="background:#fff3cd;color:#e07b39">⏳ In progress</span>${t.takenBy?`<span class="task-tag tt-person">🙋 ${esc(t.takenBy)}</span>`:''}<span class="task-tag" style="background:var(--sage-light);color:var(--sage);font-size:.65rem">✅ Tap to mark done</span></div><div style="font-size:.72rem;opacity:.45;margin-top:4px">${cfg.emoji} ${esc(cfg.label)}</div></div><div class="task-arrow">›</div>`;
+    card.innerHTML=`<div class="task-dot" style="background:#e07b39"></div><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta"><span class="task-tag" style="background:#fff3cd;color:#e07b39">⏳ In progress</span>${t.takenBy?`<span class="task-tag tt-person">🙋 ${esc(t.takenBy)}</span>`:''}<span class="task-tag" style="background:var(--sage-light);color:var(--sage);font-size:.65rem">✅ Tap to mark done</span></div><div style="font-size:.72rem;opacity:.45;margin-top:4px">${cfg.emoji} ${esc(cfg.label)}</div>${latestUpdate?`<div class="task-note-preview">💬 "${esc(latestUpdate.text.substring(0,60))}${latestUpdate.text.length>60?'…':''}"</div>`:''}</div><div class="task-arrow">›</div>`;
     list.appendChild(card);
   });
 }
@@ -516,6 +536,18 @@ function openDetail(id){
   document.getElementById('dTitle').textContent=t.title;
   document.getElementById('dStripe').style.background=t.taken?'#e07b39':cfg.color;
   const dr=(icon,key,val)=>val?`<div class="d-row"><div class="d-icon">${icon}</div><div class="d-key">${key}</div><div class="d-val">${esc(val)}</div></div>`:'';
+  const updatesHtml=t.taken?`
+    <div class="updates-section">
+      <div class="updates-title">💬 Updates &amp; Notes</div>
+      <div id="updatesThread">${renderUpdates(t)}</div>
+      <div class="add-update-box">
+        <textarea id="updateText" placeholder="Leave an update, ask a question, or say thank you… 💛" rows="2"></textarea>
+        <div class="update-inputs">
+          <input class="update-name-input" id="updateName" placeholder="Your name" autocomplete="given-name">
+          <button class="btn-update" id="postUpdateBtn">Post 💬</button>
+        </div>
+      </div>
+    </div>`:'';
   document.getElementById('dBody').innerHTML=`
     <div class="d-row"><div class="d-icon">${cfg.emoji}</div><div class="d-key">Section</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>
     ${t.taken?`<div class="taken-by-box">⏳ <strong>${esc(t.takenBy||'Someone')}</strong> is currently doing this task.</div>`:''}
@@ -525,8 +557,13 @@ function openDetail(id){
     <div class="d-section-title">About this task</div>
     <p style="font-size:.88rem;line-height:1.6;margin-bottom:10px">${esc(t.desc)}</p>
     ${dr('📝','Notes',t.notes)}
-    ${t.contact||t.email?`<div class="d-section-title">Contact</div>${dr('👤','Name',t.contact)}${t.email?`<div class="d-row"><div class="d-icon">✉️</div><div class="d-key">Email</div><div class="d-val"><a href="mailto:${esc(t.email)}?subject=${encodeURIComponent('Volunteer: '+t.title)}" style="color:var(--sage)">${esc(t.email)}</a></div></div>`:''}`:``}`;
+    ${t.contact||t.email?`<div class="d-section-title">Contact</div>${dr('👤','Name',t.contact)}${t.email?`<div class="d-row"><div class="d-icon">✉️</div><div class="d-key">Email</div><div class="d-val"><a href="mailto:${esc(t.email)}?subject=${encodeURIComponent('Volunteer: '+t.title)}" style="color:var(--sage)">${esc(t.email)}</a></div></div>`:''}`:``}
+    ${updatesHtml}`;
   const foot=document.getElementById('dFooter');foot.innerHTML='';
+  if(t.taken){
+    const postBtn=document.getElementById('postUpdateBtn');
+    if(postBtn) postBtn.onclick=()=>addUpdate(t.id);
+  }
   if(!t.taken){
     const btn=document.createElement('button');btn.className='btn-primary';btn.textContent="🙋 I'd like to do this task!";
     btn.onclick=()=>{closeDetail();openClaim(id)};foot.appendChild(btn);
@@ -553,7 +590,7 @@ async function confirmClaim(){
   const t=tasks.find(x=>String(x.id)===String(claimingId));
   if(!t){closeClaim();return}
   // Move to In Progress ONLY — not Done
-  t.taken=true;t.takenBy=name;
+  t.taken=true;t.takenBy=name;t.updates=t.updates||[];
   closeClaim();render();
   showToast(`⏳ Great — ${name} is on it!`);
   showView('inprogress');
@@ -572,6 +609,33 @@ async function markDone(id){
   try{await apiPost({action:'addDone',row:doneRow})}
   catch(e){/* sync quietly */}
 }
+
+function renderUpdates(t){
+  if(!t.updates||!t.updates.length) return '<div style="font-size:.8rem;opacity:.4;padding:4px 0 8px">No updates yet — be the first to leave one! 💛</div>';
+  return t.updates.map(u=>`
+    <div class="update-item${u.isStaff?' staff-note':''}">
+      <div class="update-author">${esc(u.name)}<span class="update-time">${esc(u.time)}</span></div>
+      <div class="update-text">${esc(u.text)}</div>
+    </div>`).join('');
+}
+
+function addUpdate(taskId){
+  const text=document.getElementById('updateText').value.trim();
+  const name=document.getElementById('updateName').value.trim();
+  if(!text||!name){showToast('Please add your name and a message 💛');return}
+  const t=tasks.find(x=>String(x.id)===String(taskId));if(!t)return;
+  if(!t.updates)t.updates=[];
+  const now=new Date();
+  const timeStr=now.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+' at '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  t.updates.push({name,text,time:timeStr,isStaff:false});
+  // Refresh the thread in place
+  document.getElementById('updatesThread').innerHTML=renderUpdates(t);
+  document.getElementById('updateText').value='';
+  render(); // refresh card preview
+  showToast('💬 Update posted!');
+  try{apiPost({action:'addUpdate',id:taskId,update:{name,text,time:timeStr}})}catch(e){}
+}
+
 
 function openOppDetail(id){
   const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
