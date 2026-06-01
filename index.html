@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0066)file:///Users/christine/Downloads/safe-soulmates-volunteers_3.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safe Soulmates — Volunteer Task Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="./index_files/css2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
 :root{
   --sage:#73976C;--sage-light:#e8f0e6;--sage-mid:#c5d9c1;
@@ -18,7 +16,7 @@
   --c-quick:#b0a800;--c-events:#BC4367;--c-digital:#5D79B0;--c-media:#8863A8;
   --c-community:#73976C;--c-lived:#d27b4a;--c-training:#6dbfcf;
   --c-admin:#5A5A5A;--c-fundraise:#b05d9b;--c-access:#4caf8a;
-  --c-done:#4caf8a;--c-opps:#e07b39;
+  --c-done:#4caf8a;--c-opps:#e07b39;--c-inprogress:#e07b39;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -52,19 +50,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .task-card:last-child{margin-bottom:0}
 .task-card:hover{box-shadow:0 2px 14px rgba(90,90,90,.11);transform:translateY(-1px)}
 .task-card:active{transform:scale(.98)}
-.task-card.taken{opacity:.5}
+.task-card.inprogress{border-left:3px solid var(--c-inprogress);background:#fff8f3}
 .task-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px}
 .task-main{flex:1;min-width:0}
 .task-title{font-size:.95rem;font-weight:600;color:var(--charcoal);line-height:1.3;margin-bottom:3px}
-.task-card.taken .task-title{opacity:.7}
 .task-meta{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
 .task-tag{font-size:.68rem;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap}
 .tt-urgent{background:#ffe0e0;color:#c0392b}.tt-soon{background:#fff3cd;color:#856404}
 .tt-ongoing{background:var(--sage-light);color:var(--sage)}.tt-time{background:var(--blue-light);color:var(--blue)}
-.tt-remote{background:#e8f5e9;color:#2e7d32}.tt-taken{background:#fff3cd;color:#856404}
+.tt-remote{background:#e8f5e9;color:#2e7d32}.tt-inprogress{background:#fff3cd;color:#e07b39}
 .tt-skill{background:var(--purple-light);color:var(--purple)}.tt-person{background:var(--pink-light);color:var(--pink)}
 .task-arrow{color:#ccc;font-size:1rem;flex-shrink:0;margin-top:3px}
 .empty-msg{text-align:center;padding:22px 16px;font-size:.84rem;color:var(--charcoal);opacity:.42}
+/* IN PROGRESS VIEW */
+.inprogress-hero{background:linear-gradient(135deg,#e07b39 0%,#c96020 100%);border-radius:var(--radius);padding:20px 20px 18px;margin-bottom:18px;color:var(--white)}
+.inprogress-hero h2{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:4px}
+.inprogress-hero p{font-size:.82rem;opacity:.88;line-height:1.5}
 /* DONE */
 .done-hero{background:linear-gradient(135deg,#3a9d74 0%,var(--c-done) 60%,#52c490 100%);border-radius:var(--radius);padding:28px 22px 24px;margin-bottom:20px;text-align:center;color:var(--white);position:relative;overflow:hidden}
 .done-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 50%,rgba(255,255,255,.06) 0,transparent 60%),radial-gradient(circle at 80% 20%,rgba(255,255,255,.04) 0,transparent 50%)}
@@ -115,6 +116,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .nav-icon{font-size:1.35rem;line-height:1}.nav-label{font-size:.6rem;font-weight:600;color:var(--charcoal);opacity:.55}
 .nav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--pink);color:var(--white);font-size:.58rem;font-weight:700;border-radius:10px;padding:1px 5px;min-width:17px;text-align:center;line-height:1.5}
 .nav-badge.green{background:var(--c-done)}
+.nav-badge.amber{background:var(--c-inprogress)}
 .add-fab{background:var(--sage);width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--white);box-shadow:0 3px 12px rgba(115,151,108,.42);transition:transform .12s;margin-bottom:2px}
 .nav-btn.add-btn:active .add-fab{transform:scale(.91)}
 /* MODAL */
@@ -169,8 +171,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .toast{position:fixed;bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 10px);left:50%;transform:translateX(-50%) translateY(16px);background:var(--charcoal);color:var(--white);padding:11px 22px;border-radius:24px;font-size:.88rem;font-weight:600;z-index:500;opacity:0;transition:opacity .28s,transform .28s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #loadingBar{display:none;background:var(--sage);color:var(--white);text-align:center;font-size:.8rem;font-weight:600;padding:8px 16px;position:sticky;top:0;z-index:99;letter-spacing:.02em}
-.loading-spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -184,25 +184,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
     <span class="info-pill">💛 Every bit helps</span>
   </div>
 </header>
-<div id="loadingBar" style="display: none;">Loading tasks…</div>
+<div id="loadingBar">Loading tasks…</div>
 <main class="main">
   <!-- TASKS -->
   <div class="view active" id="viewAll">
     <div class="sec-nav" id="secNav">
-      <button class="sec-tab active" onclick="filterSec(&#39;all&#39;,this)">All tasks</button>
-      <button class="sec-tab" onclick="filterSec(&#39;quick&#39;,this)">⚡ Quick wins</button>
-      <button class="sec-tab" onclick="filterSec(&#39;events&#39;,this)">🎉 Events</button>
-      <button class="sec-tab" onclick="filterSec(&#39;digital&#39;,this)">💻 Digital</button>
-      <button class="sec-tab" onclick="filterSec(&#39;media&#39;,this)">📸 Media</button>
-      <button class="sec-tab" onclick="filterSec(&#39;community&#39;,this)">❤️ Community</button>
-      <button class="sec-tab" onclick="filterSec(&#39;lived&#39;,this)">🧠 Lived Exp.</button>
-      <button class="sec-tab" onclick="filterSec(&#39;training&#39;,this)">🎓 Training</button>
-      <button class="sec-tab" onclick="filterSec(&#39;admin&#39;,this)">📋 Admin</button>
-      <button class="sec-tab" onclick="filterSec(&#39;fundraise&#39;,this)">💰 Fundraising</button>
-      <button class="sec-tab" onclick="filterSec(&#39;access&#39;,this)">🌈 Accessibility</button>
-      <button class="sec-tab" onclick="filterSec(&#39;inprogress&#39;,this)">⏳ In Progress</button>
+      <button class="sec-tab active" onclick="filterSec('all',this)">All tasks</button>
+      <button class="sec-tab" onclick="filterSec('quick',this)">⚡ Quick wins</button>
+      <button class="sec-tab" onclick="filterSec('events',this)">🎉 Events</button>
+      <button class="sec-tab" onclick="filterSec('digital',this)">💻 Digital</button>
+      <button class="sec-tab" onclick="filterSec('media',this)">📸 Media</button>
+      <button class="sec-tab" onclick="filterSec('community',this)">❤️ Community</button>
+      <button class="sec-tab" onclick="filterSec('lived',this)">🧠 Lived Exp.</button>
+      <button class="sec-tab" onclick="filterSec('training',this)">🎓 Training</button>
+      <button class="sec-tab" onclick="filterSec('admin',this)">📋 Admin</button>
+      <button class="sec-tab" onclick="filterSec('fundraise',this)">💰 Fundraising</button>
+      <button class="sec-tab" onclick="filterSec('access',this)">🌈 Accessibility</button>
     </div>
-    <div id="sectionsContainer"><div class="section-block" id="sec-quick"><div class="section-header" style="background:#b0a800" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">⚡</span><h2>Quick Win Tasks</h2><span class="sec-count">4</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-quick"><div class="task-card" style=""><div class="task-dot" style="background:#b0a800"></div><div class="task-main"><div class="task-title">Share this month's event post on social media</div><div class="task-meta"><span class="task-tag tt-urgent">🔴 Urgent</span><span class="task-tag tt-time">⏱ 5 mins</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Social media</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#b0a800"></div><div class="task-main"><div class="task-title">Welcome a new Soulmate to our WhatsApp group</div><div class="task-meta"><span class="task-tag tt-ongoing">🔵 Ongoing</span><span class="task-tag tt-time">⏱ 5 mins</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Friendly</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#b0a800"></div><div class="task-main"><div class="task-title">Count and sort feedback forms after an event</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 20 mins</span><span class="task-tag tt-skill">🔧 Organised</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#b0a800"></div><div class="task-main"><div class="task-title">Print and label name badges for the next social</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 15 mins</span><span class="task-tag tt-remote">↔ Either</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;quick&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-events"><div class="section-header" style="background:#BC4367" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">🎉</span><h2>Events &amp; Socials</h2><span class="sec-count">3</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-events"><div class="task-card" style=""><div class="task-dot" style="background:#BC4367"></div><div class="task-main"><div class="task-title">Event host for the November monthly social</div><div class="task-meta"><span class="task-tag tt-urgent">🔴 Urgent</span><span class="task-tag tt-time">⏱ 3 to 4 hours</span><span class="task-tag tt-skill">🔧 Confident</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#BC4367"></div><div class="task-main"><div class="task-title">Set up board games and activities before the social</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 1 hour</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#BC4367"></div><div class="task-main"><div class="task-title">Quiet space support at the Christmas event</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ Half day</span><span class="task-tag tt-skill">🔧 Calm</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;events&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-digital"><div class="section-header" style="background:#5D79B0" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">💻</span><h2>Online &amp; Digital Support</h2><span class="sec-count">3</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-digital"><div class="task-card" style=""><div class="task-dot" style="background:#5D79B0"></div><div class="task-main"><div class="task-title">Schedule three Facebook posts for next week</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 30 mins</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Facebook</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#5D79B0"></div><div class="task-main"><div class="task-title">Upload October events to our online calendar</div><div class="task-meta"><span class="task-tag tt-urgent">🔴 Urgent</span><span class="task-tag tt-time">⏱ 1 hour</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Basic computer skills</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#5D79B0"></div><div class="task-main"><div class="task-title">Organise the Soulmates Google Drive folder</div><div class="task-meta"><span class="task-tag tt-ongoing">🔵 Ongoing</span><span class="task-tag tt-time">⏱ 2 hours</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Organised</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;digital&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-media"><div class="section-header" style="background:#8863A8" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">📸</span><h2>Media &amp; Content</h2><span class="sec-count">3</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-media"><div class="task-card" style=""><div class="task-dot" style="background:#8863A8"></div><div class="task-main"><div class="task-title">Take photos at the October social (with consent)</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 2 to 3 hours</span><span class="task-tag tt-skill">🔧 Photography — phone camera is fine</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#8863A8"></div><div class="task-main"><div class="task-title">Write a short newsletter article about a recent event</div><div class="task-meta"><span class="task-tag tt-ongoing">🔵 Ongoing</span><span class="task-tag tt-time">⏱ 1 to 2 hours</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Writing</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#8863A8"></div><div class="task-main"><div class="task-title">Design a poster for the Christmas social on Canva</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 2 hours</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Canva — we have a template</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;media&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-community"><div class="section-header" style="background:#73976C" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">❤️</span><h2>Community &amp; Member Support</h2><span class="sec-count">2</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-community"><div class="task-card" style=""><div class="task-dot" style="background:#73976C"></div><div class="task-main"><div class="task-title">Welcome buddy for a new Soulmate joining their first event</div><div class="task-meta"><span class="task-tag tt-ongoing">🔵 Ongoing</span><span class="task-tag tt-time">⏱ 2 to 3 hours</span><span class="task-tag tt-skill">🔧 Warm</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#73976C"></div><div class="task-main"><div class="task-title">Send check-in messages to members who missed last event</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 30 mins</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Warm</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;community&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-lived"><div class="section-header" style="background:#d27b4a" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">🧠</span><h2>Lived Experience &amp; Feedback</h2><span class="sec-count">2</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-lived"><div class="task-card" style=""><div class="task-dot" style="background:#d27b4a"></div><div class="task-main"><div class="task-title">Review our Reasonable Adjustments checklist</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 1 to 2 hours</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Lived experience of neurodivergence or disability</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#d27b4a"></div><div class="task-main"><div class="task-title">Accessibility testing of our new events webpage</div><div class="task-meta"><span class="task-tag tt-urgent">🔴 Urgent</span><span class="task-tag tt-time">⏱ 1 hour</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Lived experience of accessibility barriers</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;lived&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-training"><div class="section-header" style="background:#6dbfcf" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">🎓</span><h2>Training &amp; Inclusion</h2><span class="sec-count">1</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-training"><div class="task-card" style=""><div class="task-dot" style="background:#6dbfcf"></div><div class="task-main"><div class="task-title">Help set up the training room before OMMT delivery</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 1 hour</span><span class="task-tag tt-skill">🔧 Practical</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;training&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-admin"><div class="section-header" style="background:#5A5A5A" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">📋</span><h2>Admin &amp; Organisation</h2><span class="sec-count">2</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-admin"><div class="task-card" style=""><div class="task-dot" style="background:#5A5A5A"></div><div class="task-main"><div class="task-title">Data entry — add new volunteer details to our spreadsheet</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 1 to 2 hours</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Spreadsheets</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#5A5A5A"></div><div class="task-main"><div class="task-title">Print and pack 50 resource folders for November training</div><div class="task-meta"><span class="task-tag tt-urgent">🔴 Urgent</span><span class="task-tag tt-time">⏱ 2 hours</span><span class="task-tag tt-remote">↔ Either</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;admin&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-fundraise"><div class="section-header" style="background:#b05d9b" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">💰</span><h2>Fundraising &amp; Partnerships</h2><span class="sec-count">2</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-fundraise"><div class="task-card" style=""><div class="task-dot" style="background:#b05d9b"></div><div class="task-main"><div class="task-title">Research local businesses for raffle prize donations</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 2 hours</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Research</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#b05d9b"></div><div class="task-main"><div class="task-title">Help run a community stall at the Cambridge Market</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ Half day</span><span class="task-tag tt-skill">🔧 Friendly</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;fundraise&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-access"><div class="section-header" style="background:#4caf8a" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">🌈</span><h2>Accessibility &amp; Inclusion Checks</h2><span class="sec-count">2</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-access"><div class="task-card" style=""><div class="task-dot" style="background:#4caf8a"></div><div class="task-main"><div class="task-title">Easy Read check — review our new member welcome letter</div><div class="task-meta"><span class="task-tag tt-urgent">🔴 Urgent</span><span class="task-tag tt-time">⏱ 1 hour</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Plain language</span></div></div><div class="task-arrow">›</div></div><div class="task-card" style=""><div class="task-dot" style="background:#4caf8a"></div><div class="task-main"><div class="task-title">Inclusive language review of the volunteer handbook</div><div class="task-meta"><span class="task-tag tt-soon">🟡 Soon</span><span class="task-tag tt-time">⏱ 1 to 2 hours</span><span class="task-tag tt-remote">💻 Remote ok</span><span class="task-tag tt-skill">🔧 Knowledge of inclusive and gender-neutral language</span></div></div><div class="task-arrow">›</div></div></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal(&#39;task&#39;,&#39;access&#39;)">＋ Add a task here</button></div></div><div class="section-block" id="sec-inprogress"><div class="section-header" style="background:#e07b39" onclick="toggleSec(this.closest(&#39;.section-block&#39;))"><span class="sec-emoji">⏳</span><h2>In Progress</h2><span class="sec-count">0</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-inprogress"><div class="empty-msg">Nothing in progress yet — tasks appear here once someone claims them 🙌</div></div></div></div></div>
+    <div id="sectionsContainer"></div>
+  </div>
+  <!-- IN PROGRESS -->
+  <div class="view" id="viewInProgress">
+    <div class="inprogress-hero">
+      <h2>⏳ In Progress</h2>
+      <p>These tasks have been claimed by volunteers. Tap a task to mark it as done when finished.</p>
+    </div>
+    <div id="inProgressList"></div>
   </div>
   <!-- SEARCH -->
   <div class="view" id="viewSearch">
@@ -220,34 +227,34 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
         <div class="done-stat"><span class="done-stat-num" id="doneVolCount">4</span><span class="done-stat-lbl">amazing people</span></div>
       </div>
     </div>
-    <div class="done-cards-grid" id="doneGrid"><div class="done-card" style="border-left-color: rgb(90, 90, 90);"><div class="done-card-section" style="color:#5A5A5A">📋 Admin &amp; Organisation</div><div class="done-card-title">✅ Redesigned the volunteer welcome pack</div><div class="done-card-vol">🙌 Jordan</div><div class="done-card-note">Completely refreshed — so much clearer and friendlier now. Every new volunteer will benefit from this work. 💛</div></div><div class="done-card" style="border-left-color: rgb(188, 67, 103);"><div class="done-card-section" style="color:#BC4367">🎉 Events &amp; Socials</div><div class="done-card-title">✅ Hosted the September monthly social</div><div class="done-card-vol">🙌 A volunteer</div><div class="done-card-note">Brilliant job keeping everything running smoothly and making everyone feel welcome from the moment they walked in.</div></div><div class="done-card" style="border-left-color: rgb(76, 175, 138);"><div class="done-card-section" style="color:#4caf8a">🌈 Accessibility &amp; Inclusion Checks</div><div class="done-card-title">✅ Created Easy Read version of the events page</div><div class="done-card-vol">🙌 A Soulmate volunteer</div><div class="done-card-note">This is exactly the kind of lived-experience work that makes Safe Soulmates different. Thank you so much.</div></div><div class="done-card" style="border-left-color: rgb(93, 121, 176);"><div class="done-card-section" style="color:#5D79B0">💻 Online &amp; Digital Support</div><div class="done-card-title">✅ Sorted and labelled 3 months of the Google Drive</div><div class="done-card-vol">🙌 A volunteer</div><div class="done-card-note">The Drive is so much easier to use now — a real gift to everyone on the team. 🙌</div></div><div class="done-card" style="border-left-color: rgb(176, 93, 155);"><div class="done-card-section" style="color:#b05d9b">💰 Fundraising &amp; Partnerships</div><div class="done-card-title">✅ Baked cakes for the summer fundraising stall</div><div class="done-card-vol">🙌 Two wonderful volunteers</div><div class="done-card-note">They raised over £80 and had a wonderful time doing it. We are so incredibly grateful.</div></div></div>
-    <div class="done-empty" id="doneEmpty" style="display: none;"><div class="emoji">🌱</div><p>Completed tasks will appear here as volunteers tick them off.<br>They are on their way!</p></div>
+    <div class="done-cards-grid" id="doneGrid"></div>
+    <div class="done-empty" id="doneEmpty" style="display:none"><div class="emoji">🌱</div><p>Completed tasks will appear here as volunteers tick them off.<br>They are on their way!</p></div>
   </div>
   <!-- OPPS -->
   <div class="view" id="viewOpps">
     <div class="opps-hero">
       <h2>🌟 Opportunities</h2>
-      <p>Training, events, learning, and experiences that could be brilliant for you — as a volunteer, Soulmate, or staff member. Things worth knowing about.</p>
+      <p>Training, events, learning, and experiences that could be brilliant for you — as a volunteer, Soulmate, or staff member.</p>
     </div>
     <div class="opps-filter" id="oppsFilter">
-      <button class="opp-type-tab active" onclick="filterOpps(&#39;all&#39;,this)">All</button>
-      <button class="opp-type-tab" onclick="filterOpps(&#39;training&#39;,this)">🎓 Training</button>
-      <button class="opp-type-tab" onclick="filterOpps(&#39;event&#39;,this)">🎉 Events</button>
-      <button class="opp-type-tab" onclick="filterOpps(&#39;volunteering&#39;,this)">🙌 Volunteering</button>
-      <button class="opp-type-tab" onclick="filterOpps(&#39;work&#39;,this)">💼 Work &amp; Skills</button>
-      <button class="opp-type-tab" onclick="filterOpps(&#39;social&#39;,this)">☕ Social</button>
-      <button class="opp-type-tab" onclick="filterOpps(&#39;other&#39;,this)">🔍 Other</button>
+      <button class="opp-type-tab active" onclick="filterOpps('all',this)">All</button>
+      <button class="opp-type-tab" onclick="filterOpps('training',this)">🎓 Training</button>
+      <button class="opp-type-tab" onclick="filterOpps('event',this)">🎉 Events</button>
+      <button class="opp-type-tab" onclick="filterOpps('volunteering',this)">🙌 Volunteering</button>
+      <button class="opp-type-tab" onclick="filterOpps('work',this)">💼 Work &amp; Skills</button>
+      <button class="opp-type-tab" onclick="filterOpps('social',this)">☕ Social</button>
+      <button class="opp-type-tab" onclick="filterOpps('other',this)">🔍 Other</button>
     </div>
-    <div id="oppsGrid"><div class="opp-card"><div class="opp-icon-wrap" style="background:#5D79B020">🎓</div><div class="opp-main"><div class="opp-type-badge" style="color:#5D79B0">Training</div><div class="opp-title">AI for Everyone</div><div class="opp-provider">DeepLearning.AI / Coursera</div><div class="opp-tags"><span class="task-tag ot-free">🆓 Free</span><span class="task-tag ot-online">💻 Online</span></div></div><div class="opp-arrow">›</div></div><div class="opp-card"><div class="opp-icon-wrap" style="background:#5D79B020">🎓</div><div class="opp-main"><div class="opp-type-badge" style="color:#5D79B0">Training</div><div class="opp-title">Introduction to Safeguarding Adults</div><div class="opp-provider">SCIE</div><div class="opp-tags"><span class="task-tag ot-free">🆓 Free</span><span class="task-tag ot-online">💻 Online</span></div></div><div class="opp-arrow">›</div></div><div class="opp-card"><div class="opp-icon-wrap" style="background:#5D79B020">🎓</div><div class="opp-main"><div class="opp-type-badge" style="color:#5D79B0">Training</div><div class="opp-title">Understanding Autism</div><div class="opp-provider">FutureLearn / Autism Education Trust</div><div class="opp-tags"><span class="task-tag ot-free">🆓 Free</span><span class="task-tag ot-online">💻 Online</span></div></div><div class="opp-arrow">›</div></div><div class="opp-card"><div class="opp-icon-wrap" style="background:#5D79B020">🎓</div><div class="opp-main"><div class="opp-type-badge" style="color:#5D79B0">Training</div><div class="opp-title">BSL Level 1 — British Sign Language</div><div class="opp-provider">Cambridge Regional College</div><div class="opp-tags"><span class="task-tag ot-funded">Funded</span><span class="task-tag ot-online">↔ Both</span><span class="task-tag ot-cambridge">📍 Cambridge</span></div></div><div class="opp-arrow">›</div></div><div class="opp-card"><div class="opp-icon-wrap" style="background:#5D79B020">🎓</div><div class="opp-main"><div class="opp-type-badge" style="color:#5D79B0">Training</div><div class="opp-title">Mental Health First Aid</div><div class="opp-provider">MHFA England</div><div class="opp-tags"><span class="task-tag ot-paid">Paid</span><span class="task-tag ot-online">↔ Both</span><span class="task-tag ot-cambridge">📍 Cambridge</span></div></div><div class="opp-arrow">›</div></div><div class="opp-card"><div class="opp-icon-wrap" style="background:#73976C20">🙌</div><div class="opp-main"><div class="opp-type-badge" style="color:#73976C">Volunteering</div><div class="opp-title">Befriending volunteer — Age UK Cambridgeshire</div><div class="opp-provider">Age UK Cambridgeshire</div><div class="opp-tags"><span class="task-tag ot-free">🆓 Free</span><span class="task-tag ot-inperson">📍 In person</span><span class="task-tag ot-cambridge">📍 Cambridge</span></div></div><div class="opp-arrow">›</div></div><div class="opp-card"><div class="opp-icon-wrap" style="background:#BC436720">🎉</div><div class="opp-main"><div class="opp-type-badge" style="color:#BC4367">Event</div><div class="opp-title">Cambridge Volunteer Fair</div><div class="opp-provider">Volunteer Centre Cambridgeshire</div><div class="opp-tags"><span class="task-tag ot-free">🆓 Free</span><span class="task-tag ot-inperson">📍 In person</span><span class="task-tag ot-cambridge">📍 Cambridge</span></div></div><div class="opp-arrow">›</div></div><div class="opp-card"><div class="opp-icon-wrap" style="background:#5A5A5A20">💼</div><div class="opp-main"><div class="opp-type-badge" style="color:#5A5A5A">Work &amp; Skills</div><div class="opp-title">Google Digital Garage — Digital Marketing</div><div class="opp-provider">Google Digital Garage</div><div class="opp-tags"><span class="task-tag ot-free">🆓 Free</span><span class="task-tag ot-online">💻 Online</span></div></div><div class="opp-arrow">›</div></div><div class="opp-card"><div class="opp-icon-wrap" style="background:#d27b4a20">☕</div><div class="opp-main"><div class="opp-type-badge" style="color:#d27b4a">Social / Community</div><div class="opp-title">Cambridge Gaming Cafe — Evening Social</div><div class="opp-provider">Cambridge Gaming Cafe</div><div class="opp-tags"><span class="task-tag ot-paid">Paid</span><span class="task-tag ot-inperson">📍 In person</span><span class="task-tag ot-cambridge">📍 Cambridge</span></div></div><div class="opp-arrow">›</div></div><div class="opp-card"><div class="opp-icon-wrap" style="background:#5D79B020">🎓</div><div class="opp-main"><div class="opp-type-badge" style="color:#5D79B0">Training</div><div class="opp-title">Care Certificate — 15 Standards</div><div class="opp-provider">Skills for Care</div><div class="opp-tags"><span class="task-tag ot-free">🆓 Free</span><span class="task-tag ot-online">↔ Both</span></div></div><div class="opp-arrow">›</div></div></div>
-    <button class="section-add-btn" onclick="openAddModal(&#39;opp&#39;)" style="margin:10px 0 4px;width:100%">＋ Add an opportunity</button>
+    <div id="oppsGrid"></div>
+    <button class="section-add-btn" onclick="openAddModal('opp')" style="margin:10px 0 4px;width:100%">＋ Add an opportunity</button>
   </div>
 </main>
 <nav class="bottom-nav">
-  <button class="nav-btn active" id="navAll" onclick="showView(&#39;all&#39;)"><span class="nav-icon">📋</span><span class="nav-label">Tasks</span><span class="nav-badge" id="badgeAll">24</span></button>
-  <button class="nav-btn" id="navSearch" onclick="showView(&#39;search&#39;)"><span class="nav-icon">🔍</span><span class="nav-label">Search</span></button>
-  <button class="nav-btn add-btn" id="navAdd" onclick="openAddModal(&#39;task&#39;)"><div class="add-fab">＋</div><span class="nav-label">Add</span></button>
-  <button class="nav-btn" id="navDone" onclick="showView(&#39;done&#39;)"><span class="nav-icon">🌟</span><span class="nav-label">Done</span><span class="nav-badge green" id="badgeDone">5</span></button>
-  <button class="nav-btn" id="navOpps" onclick="showView(&#39;opps&#39;)"><span class="nav-icon">🌱</span><span class="nav-label">Opps</span></button>
+  <button class="nav-btn active" id="navAll" onclick="showView('all')"><span class="nav-icon">📋</span><span class="nav-label">Tasks</span><span class="nav-badge" id="badgeAll">0</span></button>
+  <button class="nav-btn" id="navInProgress" onclick="showView('inprogress')"><span class="nav-icon">⏳</span><span class="nav-label">In Progress</span><span class="nav-badge amber" id="badgeInProgress" style="display:none">0</span></button>
+  <button class="nav-btn add-btn" id="navAdd" onclick="openAddModal('task')"><div class="add-fab">＋</div><span class="nav-label">Add</span></button>
+  <button class="nav-btn" id="navDone" onclick="showView('done')"><span class="nav-icon">🌟</span><span class="nav-label">Done</span><span class="nav-badge green" id="badgeDone">5</span></button>
+  <button class="nav-btn" id="navOpps" onclick="showView('opps')"><span class="nav-icon">🌱</span><span class="nav-label">Opps</span></button>
 </nav>
 <!-- DETAIL MODAL -->
 <div class="modal-overlay" id="detailOverlay">
@@ -271,7 +278,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
         <input class="claim-input" type="text" id="claimName" placeholder="Your name or nickname" autocomplete="given-name">
         <div class="claim-err" id="claimErr">Please add your name so we can thank you!</div>
       </div>
-      <p style="font-size:.78rem;opacity:.5;margin-top:10px;line-height:1.5">Your name will show on the task so the team knows who to contact, and on the Done board when you finish. 🌟</p>
+      <p style="font-size:.78rem;opacity:.5;margin-top:10px;line-height:1.5">Your name will show on the task and on the In Progress board so the team knows who to contact. 🌟</p>
     </div>
     <div class="modal-footer">
       <button class="btn-primary" onclick="confirmClaim()">✅ Yes, I will do this task!</button>
@@ -318,7 +325,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
     </div>
   </div>
 </div>
-<div class="toast" id="toast">⚠️ Could not load data — check your connection</div>
+<div class="toast" id="toast"></div>
 <script>
 const SECS={
   quick:{label:'Quick Win Tasks',emoji:'⚡',color:'#b0a800'},
@@ -340,101 +347,64 @@ const OPT={
   social:{label:'Social / Community',emoji:'☕',color:'#d27b4a'},
   other:{label:'Other',emoji:'🔍',color:'#888'},
 };
-// ── GOOGLE SHEETS CONNECTION ──
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyI1DxT3kTnMgEXj2LWApWZDPqEWqi8LFH8_sHKuSL83TUWHfKvRbYRvoJOwec72_w/exec';
 
-async function apiGet(action) {
-  const res = await fetch(`${SCRIPT_URL}?action=${action}`);
-  return res.json();
-}
-async function apiPost(body) {
-  const res = await fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify(body)
-  });
-  return res.json();
-}
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbyI1DxT3kTnMgEXj2LWApWZDPqEWqi8LFH8_sHKuSL83TUWHfKvRbYRvoJOwec72_w/exec';
+async function apiGet(action){const res=await fetch(`${SCRIPT_URL}?action=${action}`);return res.json()}
+async function apiPost(body){const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(body)});return res.json()}
 
-function showLoading(msg) {
-  const el = document.getElementById('loadingBar');
-  if (el) { el.textContent = msg || 'Loading…'; el.style.display = 'block'; }
-}
-function hideLoading() {
-  const el = document.getElementById('loadingBar');
-  if (el) el.style.display = 'none';
-}
-
-async function loadAll() {
-  showLoading('Loading tasks…');
-  try {
-    const [taskData, doneData, oppData] = await Promise.all([
-      apiGet('getTasks'),
-      apiGet('getDone'),
-      apiGet('getOpps')
-    ]);
-    // Normalise booleans from Sheets (stored as string 'true'/'false')
-    tasks = (taskData || []).map(t => ({
-      ...t,
-      id: t.id || String(Math.random()),
-      taken: t.taken === true || t.taken === 'true' || t.taken === 'TRUE'
-    }));
-    doneTasks = doneData || [];
-    opps = oppData || [];
-    render();
-  } catch(e) {
-    showToast('⚠️ Could not load data — check your connection');
-    render(); // fall back to empty state
-  }
-  hideLoading();
-}
-
-// ── FALLBACK SAMPLE DATA (shown if Sheet is empty) ──
-let tasks=[
-  {id:1,section:'quick',title:'Share this month\'s event post on social media',priority:'Urgent',time:'5 mins',date:'This week',remote:'yes',skills:'Social media',desc:'Share our latest event post on your Facebook, Instagram or Twitter. Helps us reach more people in Cambridge. We\'ll send you the post to share.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:2,section:'quick',title:'Welcome a new Soulmate to our WhatsApp group',priority:'Ongoing',time:'5 mins',date:'As needed',remote:'yes',skills:'Friendly, welcoming',desc:'When a new Soulmate joins our WhatsApp group, send them a warm welcome message and let them know what the group is for. We\'ll let you know when someone new joins.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:3,section:'quick',title:'Count and sort feedback forms after an event',priority:'Soon',time:'20 mins',date:'After events',remote:'no',skills:'Organised',desc:'After each social event, help us count and sort the paper feedback forms so we can read them and improve future events.',contact:'',email:'',notes:'',taken:false,takenBy:''},
-  {id:4,section:'quick',title:'Print and label name badges for the next social',priority:'Soon',time:'15 mins',date:'Before next social',remote:'either',skills:'',desc:'Print the name badge sheet (we\'ll email it to you), cut them out, and pop them in the badge holders. About 20 to 30 badges.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:5,section:'events',title:'Event host for the November monthly social',priority:'Urgent',time:'3 to 4 hours',date:'November — date TBC',remote:'no',skills:'Confident, friendly, calm under pressure',desc:'Be the friendly face who welcomes people at the door, keeps things running, introduces activities, and checks everyone is okay. Full briefing provided beforehand.',contact:'Safe',email:'info@safesoulmates.org',notes:'Great for confident volunteers who enjoy supporting people.',taken:false,takenBy:''},
-  {id:6,section:'events',title:'Set up board games and activities before the social',priority:'Soon',time:'1 hour',date:'Before each social',remote:'no',skills:'',desc:'Arrive 45 minutes early and set up the board games, activity tables, sensory items, and welcome display. We\'ll give you a setup checklist.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:7,section:'events',title:'Quiet space support at the Christmas event',priority:'Soon',time:'Half day',date:'December — date TBC',remote:'no',skills:'Calm, understanding of sensory needs',desc:'Sit in or near the quiet room during the Christmas event. Offer a friendly smile if someone needs a break. No pressure to do anything — just be present and welcoming.',contact:'Safe',email:'info@safesoulmates.org',notes:'Perfect for volunteers who prefer a quieter role.',taken:false,takenBy:''},
-  {id:8,section:'digital',title:'Schedule three Facebook posts for next week',priority:'Soon',time:'30 mins',date:'Rolling',remote:'yes',skills:'Facebook, Canva helpful but not required',desc:'We have content ready — we just need someone to schedule it using our Facebook Page. We\'ll give you access and a simple guide.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:9,section:'digital',title:'Upload October events to our online calendar',priority:'Urgent',time:'1 hour',date:'Late September',remote:'yes',skills:'Basic computer skills',desc:'Add our October events to the website calendar and Google calendar. We\'ll give you all the event details and a step-by-step guide.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:10,section:'digital',title:'Organise the Soulmates Google Drive folder',priority:'Ongoing',time:'2 hours',date:'Flexible',remote:'yes',skills:'Organised, Google Drive',desc:'Our shared Drive has grown a lot! Help us sort files into the right folders, rename anything confusing, and flag any duplicates.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:11,section:'media',title:'Take photos at the October social (with consent)',priority:'Soon',time:'2 to 3 hours',date:'October social',remote:'no',skills:'Photography — phone camera is fine',desc:'Take warm, natural photos of the event to use on social media and in our newsletter. We\'ll give you a consent guide and photo checklist.',contact:'Safe',email:'info@safesoulmates.org',notes:'Please read our photo consent guidance before the event.',taken:false,takenBy:''},
-  {id:12,section:'media',title:'Write a short newsletter article about a recent event',priority:'Ongoing',time:'1 to 2 hours',date:'Monthly',remote:'yes',skills:'Writing, friendly tone',desc:'Write 150 to 200 words about something that happened at a recent Safe Soulmates event. Easy Read style preferred — short sentences, friendly.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:13,section:'media',title:'Design a poster for the Christmas social on Canva',priority:'Soon',time:'2 hours',date:'November',remote:'yes',skills:'Canva — we have a template',desc:'Use our Canva template to create a festive poster for the Christmas social. We\'ll give you all the details, our brand colours, and access to our Canva account.',contact:'',email:'info@safesoulmates.org',notes:'Brand colours: Sage Green, Purple, Lime Yellow, Berry Pink.',taken:false,takenBy:''},
-  {id:14,section:'community',title:'Welcome buddy for a new Soulmate joining their first event',priority:'Ongoing',time:'2 to 3 hours',date:'As needed',remote:'no',skills:'Warm, patient, understanding',desc:'Be a friendly buddy for someone coming to their very first event. Meet them at the door, stay nearby during the event, and make sure they feel included. No training needed — just kindness.',contact:'Safe',email:'info@safesoulmates.org',notes:'This role makes a huge difference to new members.',taken:false,takenBy:''},
-  {id:15,section:'community',title:'Send check-in messages to members who missed last event',priority:'Soon',time:'30 mins',date:'After each event',remote:'yes',skills:'Warm, good written communication',desc:'After each event, send a short friendly message to any Soulmates who were expected but did not make it — just to let them know they were missed. We\'ll give you a template to adapt.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:16,section:'lived',title:'Review our Reasonable Adjustments checklist',priority:'Soon',time:'1 to 2 hours',date:'Flexible',remote:'yes',skills:'Lived experience of neurodivergence or disability',desc:'Read through our Reasonable Adjustments checklist and tell us: does it feel right? Is anything missing? Is the language right? Your feedback will directly shape the final version.',contact:'Safe',email:'info@safesoulmates.org',notes:'Your lived experience makes this better than any expert review.',taken:false,takenBy:''},
-  {id:17,section:'lived',title:'Accessibility testing of our new events webpage',priority:'Urgent',time:'1 hour',date:'October',remote:'yes',skills:'Lived experience of accessibility barriers',desc:'Go through our new events page as a user. Can you find events easily? Is anything confusing, inaccessible, or overwhelming? Tell us what works and what does not.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:18,section:'training',title:'Help set up the training room before OMMT delivery',priority:'Soon',time:'1 hour',date:'Various — check with Safe',remote:'no',skills:'Practical, organised',desc:'Arrive an hour before training to help arrange tables, print resources, set up the laptop and display, put out name labels and pens.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:19,section:'admin',title:'Data entry — add new volunteer details to our spreadsheet',priority:'Soon',time:'1 to 2 hours',date:'Flexible',remote:'yes',skills:'Spreadsheets, attention to detail',desc:'We have a pile of paper volunteer forms that need entering into our secure spreadsheet. Accuracy matters — take your time. All data handled in line with GDPR.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:20,section:'admin',title:'Print and pack 50 resource folders for November training',priority:'Urgent',time:'2 hours',date:'Late October',remote:'either',skills:'',desc:'Print the training resources (we\'ll send you the files), fold and staple them, and put them into 50 folders. Can be done at home if you have a printer.',contact:'Safe',email:'info@safesoulmates.org',notes:'About 8 pages per pack.',taken:false,takenBy:''},
-  {id:21,section:'fundraise',title:'Research local businesses for raffle prize donations',priority:'Soon',time:'2 hours',date:'Before November',remote:'yes',skills:'Research, confident written communication',desc:'Find 10 to 15 local Cambridge businesses who might donate a prize for our Christmas raffle. We\'ll give you a template email to send.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:22,section:'fundraise',title:'Help run a community stall at the Cambridge Market',priority:'Soon',time:'Half day',date:'Date TBC',remote:'no',skills:'Friendly, confident talking to public',desc:'Stand at our table, chat to passersby about Safe Soulmates, hand out leaflets, and help collect donations. Training and briefing provided.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:23,section:'access',title:'Easy Read check — review our new member welcome letter',priority:'Urgent',time:'1 hour',date:'This week',remote:'yes',skills:'Plain language, lived experience of reading differences',desc:'Read our new welcome letter and tell us: Is it clear? Are the sentences too long? Is any word confusing? Does it feel friendly? Your feedback will shape the final version sent to all new Soulmates.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:24,section:'access',title:'Inclusive language review of the volunteer handbook',priority:'Soon',time:'1 to 2 hours',date:'Flexible',remote:'yes',skills:'Knowledge of inclusive and gender-neutral language',desc:'Go through our volunteer handbook and flag any language that does not feel gender-neutral, LGBTQIA+ inclusive, or neurodivergent-friendly. Suggest alternatives where you can.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+// ── DEFAULT TASKS (always shown — sheet data merges on top) ──
+const DEFAULT_TASKS=[
+  {id:'dt1',section:'quick',title:"Share this month's event post on social media",priority:'Urgent',time:'5 mins',date:'This week',remote:'yes',skills:'Social media',desc:"Share our latest event post on your Facebook, Instagram or Twitter. Helps us reach more people in Cambridge. We'll send you the post to share.",contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt2',section:'quick',title:"Welcome a new Soulmate to our WhatsApp group",priority:'Ongoing',time:'5 mins',date:'As needed',remote:'yes',skills:'Friendly, welcoming',desc:"When a new Soulmate joins our WhatsApp group, send them a warm welcome message and let them know what the group is for.",contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt3',section:'quick',title:'Count and sort feedback forms after an event',priority:'Soon',time:'20 mins',date:'After events',remote:'no',skills:'Organised',desc:'After each social event, help us count and sort the paper feedback forms so we can read them and improve future events.',contact:'',email:'',notes:'',taken:false,takenBy:''},
+  {id:'dt4',section:'quick',title:'Print and label name badges for the next social',priority:'Soon',time:'15 mins',date:'Before next social',remote:'either',skills:'',desc:"Print the name badge sheet (we'll email it to you), cut them out, and pop them in the badge holders. About 20 to 30 badges.",contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt5',section:'events',title:'Event host for the November monthly social',priority:'Urgent',time:'3 to 4 hours',date:'November — date TBC',remote:'no',skills:'Confident, friendly, calm under pressure',desc:'Be the friendly face who welcomes people at the door, keeps things running, introduces activities, and checks everyone is okay. Full briefing provided beforehand.',contact:'Safe',email:'info@safesoulmates.org',notes:'Great for confident volunteers who enjoy supporting people.',taken:false,takenBy:''},
+  {id:'dt6',section:'events',title:'Set up board games and activities before the social',priority:'Soon',time:'1 hour',date:'Before each social',remote:'no',skills:'',desc:"Arrive 45 minutes early and set up the board games, activity tables, sensory items, and welcome display. We'll give you a setup checklist.",contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt7',section:'events',title:'Quiet space support at the Christmas event',priority:'Soon',time:'Half day',date:'December — date TBC',remote:'no',skills:'Calm, understanding of sensory needs',desc:'Sit in or near the quiet room during the Christmas event. Offer a friendly smile if someone needs a break. No pressure to do anything — just be present and welcoming.',contact:'Safe',email:'info@safesoulmates.org',notes:'Perfect for volunteers who prefer a quieter role.',taken:false,takenBy:''},
+  {id:'dt8',section:'digital',title:'Schedule three Facebook posts for next week',priority:'Soon',time:'30 mins',date:'Rolling',remote:'yes',skills:'Facebook, Canva helpful but not required',desc:"We have content ready — we just need someone to schedule it using our Facebook Page. We'll give you access and a simple guide.",contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt9',section:'digital',title:'Upload October events to our online calendar',priority:'Urgent',time:'1 hour',date:'Late September',remote:'yes',skills:'Basic computer skills',desc:"Add our October events to the website calendar and Google calendar. We'll give you all the event details and a step-by-step guide.",contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt10',section:'digital',title:'Organise the Soulmates Google Drive folder',priority:'Ongoing',time:'2 hours',date:'Flexible',remote:'yes',skills:'Organised, Google Drive',desc:'Our shared Drive has grown a lot! Help us sort files into the right folders, rename anything confusing, and flag any duplicates.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt11',section:'media',title:'Take photos at the October social (with consent)',priority:'Soon',time:'2 to 3 hours',date:'October social',remote:'no',skills:'Photography — phone camera is fine',desc:"Take warm, natural photos of the event to use on social media and in our newsletter. We'll give you a consent guide and photo checklist.",contact:'Safe',email:'info@safesoulmates.org',notes:'Please read our photo consent guidance before the event.',taken:false,takenBy:''},
+  {id:'dt12',section:'media',title:'Write a short newsletter article about a recent event',priority:'Ongoing',time:'1 to 2 hours',date:'Monthly',remote:'yes',skills:'Writing, friendly tone',desc:'Write 150 to 200 words about something that happened at a recent Safe Soulmates event. Easy Read style preferred — short sentences, friendly.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt13',section:'media',title:'Design a poster for the Christmas social on Canva',priority:'Soon',time:'2 hours',date:'November',remote:'yes',skills:'Canva — we have a template',desc:"Use our Canva template to create a festive poster for the Christmas social. We'll give you all the details, our brand colours, and access to our Canva account.",contact:'',email:'info@safesoulmates.org',notes:'Brand colours: Sage Green, Purple, Lime Yellow, Berry Pink.',taken:false,takenBy:''},
+  {id:'dt14',section:'community',title:'Welcome buddy for a new Soulmate joining their first event',priority:'Ongoing',time:'2 to 3 hours',date:'As needed',remote:'no',skills:'Warm, patient, understanding',desc:"Be a friendly buddy for someone coming to their very first event. Meet them at the door, stay nearby during the event, and make sure they feel included. No training needed — just kindness.",contact:'Safe',email:'info@safesoulmates.org',notes:'This role makes a huge difference to new members.',taken:false,takenBy:''},
+  {id:'dt15',section:'community',title:'Send check-in messages to members who missed last event',priority:'Soon',time:'30 mins',date:'After each event',remote:'yes',skills:'Warm, good written communication',desc:"After each event, send a short friendly message to any Soulmates who were expected but did not make it — just to let them know they were missed. We'll give you a template to adapt.",contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt16',section:'lived',title:'Review our Reasonable Adjustments checklist',priority:'Soon',time:'1 to 2 hours',date:'Flexible',remote:'yes',skills:'Lived experience of neurodivergence or disability',desc:'Read through our Reasonable Adjustments checklist and tell us: does it feel right? Is anything missing? Is the language right? Your feedback will directly shape the final version.',contact:'Safe',email:'info@safesoulmates.org',notes:'Your lived experience makes this better than any expert review.',taken:false,takenBy:''},
+  {id:'dt17',section:'lived',title:'Accessibility testing of our new events webpage',priority:'Urgent',time:'1 hour',date:'October',remote:'yes',skills:'Lived experience of accessibility barriers',desc:'Go through our new events page as a user. Can you find events easily? Is anything confusing, inaccessible, or overwhelming? Tell us what works and what does not.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt18',section:'training',title:'Help set up the training room before OMMT delivery',priority:'Soon',time:'1 hour',date:'Various — check with Safe',remote:'no',skills:'Practical, organised',desc:'Arrive an hour before training to help arrange tables, print resources, set up the laptop and display, put out name labels and pens.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt19',section:'admin',title:'Data entry — add new volunteer details to our spreadsheet',priority:'Soon',time:'1 to 2 hours',date:'Flexible',remote:'yes',skills:'Spreadsheets, attention to detail',desc:'We have a pile of paper volunteer forms that need entering into our secure spreadsheet. Accuracy matters — take your time. All data handled in line with GDPR.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt20',section:'admin',title:'Print and pack 50 resource folders for November training',priority:'Urgent',time:'2 hours',date:'Late October',remote:'either',skills:'',desc:"Print the training resources (we'll send you the files), fold and staple them, and put them into 50 folders. Can be done at home if you have a printer.",contact:'Safe',email:'info@safesoulmates.org',notes:'About 8 pages per pack.',taken:false,takenBy:''},
+  {id:'dt21',section:'fundraise',title:'Research local businesses for raffle prize donations',priority:'Soon',time:'2 hours',date:'Before November',remote:'yes',skills:'Research, confident written communication',desc:"Find 10 to 15 local Cambridge businesses who might donate a prize for our Christmas raffle. We'll give you a template email to send.",contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt22',section:'fundraise',title:'Help run a community stall at the Cambridge Market',priority:'Soon',time:'Half day',date:'Date TBC',remote:'no',skills:'Friendly, confident talking to public',desc:'Stand at our table, chat to passersby about Safe Soulmates, hand out leaflets, and help collect donations. Training and briefing provided.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt23',section:'access',title:'Easy Read check — review our new member welcome letter',priority:'Urgent',time:'1 hour',date:'This week',remote:'yes',skills:'Plain language, lived experience of reading differences',desc:'Read our new welcome letter and tell us: Is it clear? Are the sentences too long? Is any word confusing? Does it feel friendly? Your feedback will shape the final version sent to all new Soulmates.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
+  {id:'dt24',section:'access',title:'Inclusive language review of the volunteer handbook',priority:'Soon',time:'1 to 2 hours',date:'Flexible',remote:'yes',skills:'Knowledge of inclusive and gender-neutral language',desc:'Go through our volunteer handbook and flag any language that does not feel gender-neutral, LGBTQIA+ inclusive, or neurodivergent-friendly. Suggest alternatives where you can.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
 ];
-let doneTasks=[
-  {id:901,title:'Redesigned the volunteer welcome pack',section:'admin',takenBy:'Jordan',note:'Completely refreshed — so much clearer and friendlier now. Every new volunteer will benefit from this work. 💛'},
-  {id:902,title:'Hosted the September monthly social',section:'events',takenBy:'A volunteer',note:'Brilliant job keeping everything running smoothly and making everyone feel welcome from the moment they walked in.'},
-  {id:903,title:'Created Easy Read version of the events page',section:'access',takenBy:'A Soulmate volunteer',note:'This is exactly the kind of lived-experience work that makes Safe Soulmates different. Thank you so much.'},
-  {id:904,title:'Sorted and labelled 3 months of the Google Drive',section:'digital',takenBy:'A volunteer',note:'The Drive is so much easier to use now — a real gift to everyone on the team. 🙌'},
-  {id:905,title:'Baked cakes for the summer fundraising stall',section:'fundraise',takenBy:'Two wonderful volunteers',note:'They raised over £80 and had a wonderful time doing it. We are so incredibly grateful.'},
+
+const DEFAULT_DONE=[
+  {id:'dd1',title:'Redesigned the volunteer welcome pack',section:'admin',takenBy:'Jordan',note:'Completely refreshed — so much clearer and friendlier now. Every new volunteer will benefit from this work. 💛'},
+  {id:'dd2',title:'Hosted the September monthly social',section:'events',takenBy:'A volunteer',note:'Brilliant job keeping everything running smoothly and making everyone feel welcome from the moment they walked in.'},
+  {id:'dd3',title:'Created Easy Read version of the events page',section:'access',takenBy:'A Soulmate volunteer',note:'This is exactly the kind of lived-experience work that makes Safe Soulmates different. Thank you so much.'},
+  {id:'dd4',title:'Sorted and labelled 3 months of the Google Drive',section:'digital',takenBy:'A volunteer',note:'The Drive is so much easier to use now — a real gift to everyone on the team. 🙌'},
+  {id:'dd5',title:'Baked cakes for the summer fundraising stall',section:'fundraise',takenBy:'Two wonderful volunteers',note:'They raised over £80 and had a wonderful time doing it. We are so incredibly grateful.'},
 ];
-let opps=[
-  {id:1001,type:'training',title:'AI for Everyone',provider:'DeepLearning.AI / Coursera',cost:'Free',format:'Online',date:'Rolling — start any time',location:'Online',desc:'A plain-English introduction to AI — what it is, how it is used, and how it affects work and daily life. No technical knowledge needed. Great for everyone.',why:'Recommended by Safe — a brilliant starting point.',link:'https://www.coursera.org/learn/ai-for-everyone',access:'Subtitles available. Self-paced.'},
-  {id:1002,type:'training',title:'Introduction to Safeguarding Adults',provider:'SCIE',cost:'Free',format:'Online',date:'Always available',location:'Online',desc:'Covers safeguarding principles, how to recognise signs of abuse or neglect, and what to do. Short quizzes, real scenarios, and a completion certificate.',why:'Suitable for all volunteers and staff working with vulnerable adults.',link:'https://www.scie.org.uk/safeguarding/adults/introduction/',access:'Screen reader compatible. Text-based.'},
-  {id:1003,type:'training',title:'Understanding Autism',provider:'FutureLearn / Autism Education Trust',cost:'Free',format:'Online',date:'Multiple cohorts per year',location:'Online',desc:'Explores what autism is, how it affects people differently, and how to create more inclusive environments. Includes real lived-experience perspectives.',why:'Brilliant for anyone new to Safe Soulmates or wanting to understand the community better.',link:'https://www.futurelearn.com/courses/autism',access:'Subtitles available. Self-paced.'},
-  {id:1004,type:'training',title:'BSL Level 1 — British Sign Language',provider:'Cambridge Regional College',cost:'Funded',format:'Both',date:'Autumn and Spring terms',location:'Cambridge / Online',desc:'Introduces BSL from scratch — greetings, everyday conversation, the fingerspelling alphabet, and Deaf culture. A nationally recognised qualification.',why:'Inspired by Ellen — one of our Soulmates who taught BSL to others at Cambridge Arts Theatre.',link:'https://www.camre.ac.uk/',access:'Delivered in BSL and English together.'},
-  {id:1005,type:'training',title:'Mental Health First Aid',provider:'MHFA England',cost:'Paid',format:'Both',date:'Regular dates across England',location:'Cambridge / Online',desc:'Trains people to be a point of contact for anyone experiencing a mental health issue or crisis. Covers depression, anxiety, psychosis, and more. Certificate valid 3 years.',why:'Highly recommended for anyone in a listening or support role at Safe Soulmates.',link:'https://mhfaengland.org/',access:'Contact provider in advance to discuss access needs.'},
-  {id:1006,type:'volunteering',title:'Befriending volunteer — Age UK Cambridgeshire',provider:'Age UK Cambridgeshire',cost:'Free',format:'In person',date:'Rolling applications',location:'Cambridge',desc:'Spend an hour or two a week with an older person who is isolated. Just chat, go for a walk, have a cup of tea. Training and support provided. Really rewarding.',why:'Develops connection skills. Aligns beautifully with Safe Soulmates values.',link:'https://www.ageuk.org.uk/cambridgeshireandpeterborough/',access:''},
-  {id:1007,type:'event',title:'Cambridge Volunteer Fair',provider:'Volunteer Centre Cambridgeshire',cost:'Free',format:'In person',date:'Spring — check website for date',location:'Cambridge city centre',desc:'Meet local charities and organisations looking for volunteers. A great way to explore what is out there and find opportunities that match your skills and interests.',why:'Good for Soulmates exploring volunteering for the first time.',link:'https://www.volunteeringcambs.org.uk/',access:'Check website for accessibility information.'},
-  {id:1008,type:'work',title:'Google Digital Garage — Digital Marketing',provider:'Google Digital Garage',cost:'Free',format:'Online',date:'Available any time',location:'Online',desc:'Covers social media, analytics, content marketing, mobile, and video. 26 short bite-sized modules. Google-accredited certificate included — great for CVs.',why:'Brilliant for Soulmates exploring work in comms, marketing, or charity.',link:'https://learndigital.withgoogle.com/digitalgarage/course/digital-marketing',access:'Fully online. Subtitles. Self-paced.'},
-  {id:1009,type:'social',title:'Cambridge Gaming Cafe — Evening Social',provider:'Cambridge Gaming Cafe',cost:'Paid',format:'In person',date:'Monthly evenings — check with Safe',location:'Cambridge',desc:'An evening at the Gaming Cafe — board games, card games, relaxed social time in a welcoming space. Open to Soulmates and volunteers.',why:'A relaxed way to connect. Great for people who find large social events overwhelming.',link:'',access:'Quiet corners available.'},
-  {id:1010,type:'training',title:'Care Certificate — 15 Standards',provider:'Skills for Care',cost:'Free',format:'Both',date:'Rolling — self-paced',location:'Online / workplace',desc:'The nationally recognised foundation of care work — covers duty of care, equality, safeguarding, communication, and person-centred support.',why:'Essential for anyone new to a social care role. Useful refresher for experienced staff.',link:'https://www.skillsforcare.org.uk/care-certificate',access:'Accessible formats available on request.'},
+
+const DEFAULT_OPPS=[
+  {id:'do1',type:'training',title:'AI for Everyone',provider:'DeepLearning.AI / Coursera',cost:'Free',format:'Online',date:'Rolling',location:'Online',desc:'A plain-English introduction to AI — what it is, how it is used, and how it affects work and daily life. No technical knowledge needed.',why:'Recommended by Safe.',link:'https://www.coursera.org/learn/ai-for-everyone',access:'Subtitles available. Self-paced.'},
+  {id:'do2',type:'training',title:'Introduction to Safeguarding Adults',provider:'SCIE',cost:'Free',format:'Online',date:'Always available',location:'Online',desc:'Covers safeguarding principles, how to recognise signs of abuse or neglect, and what to do.',why:'Suitable for all volunteers and staff working with vulnerable adults.',link:'https://www.scie.org.uk/safeguarding/adults/introduction/',access:'Screen reader compatible.'},
+  {id:'do3',type:'training',title:'Understanding Autism',provider:'FutureLearn / Autism Education Trust',cost:'Free',format:'Online',date:'Multiple cohorts per year',location:'Online',desc:'Explores what autism is, how it affects people differently, and how to create more inclusive environments.',why:'Brilliant for anyone new to Safe Soulmates.',link:'https://www.futurelearn.com/courses/autism',access:'Subtitles available. Self-paced.'},
+  {id:'do4',type:'training',title:'BSL Level 1 — British Sign Language',provider:'Cambridge Regional College',cost:'Funded',format:'Both',date:'Autumn and Spring terms',location:'Cambridge / Online',desc:'Introduces BSL from scratch — greetings, everyday conversation, the fingerspelling alphabet, and Deaf culture.',why:'Inspired by Ellen — one of our Soulmates who taught BSL to others at Cambridge Arts Theatre.',link:'https://www.camre.ac.uk/',access:'Delivered in BSL and English together.'},
+  {id:'do5',type:'training',title:'Mental Health First Aid',provider:'MHFA England',cost:'Paid',format:'Both',date:'Regular dates across England',location:'Cambridge / Online',desc:'Trains people to be a point of contact for anyone experiencing a mental health issue or crisis.',why:'Highly recommended for anyone in a listening or support role at Safe Soulmates.',link:'https://mhfaengland.org/',access:'Contact provider in advance to discuss access needs.'},
+  {id:'do6',type:'volunteering',title:'Befriending volunteer — Age UK Cambridgeshire',provider:'Age UK Cambridgeshire',cost:'Free',format:'In person',date:'Rolling applications',location:'Cambridge',desc:'Spend an hour or two a week with an older person who is isolated. Just chat, go for a walk, have a cup of tea.',why:'Aligns beautifully with Safe Soulmates values.',link:'https://www.ageuk.org.uk/cambridgeshireandpeterborough/',access:''},
+  {id:'do7',type:'event',title:'Cambridge Volunteer Fair',provider:'Volunteer Centre Cambridgeshire',cost:'Free',format:'In person',date:'Spring — check website',location:'Cambridge city centre',desc:'Meet local charities and organisations looking for volunteers.',why:'Good for Soulmates exploring volunteering for the first time.',link:'https://www.volunteeringcambs.org.uk/',access:'Check website for accessibility information.'},
+  {id:'do8',type:'work',title:'Google Digital Garage — Digital Marketing',provider:'Google Digital Garage',cost:'Free',format:'Online',date:'Available any time',location:'Online',desc:'Covers social media, analytics, content marketing, mobile, and video. 26 short bite-sized modules.',why:'Brilliant for Soulmates exploring work in comms, marketing, or charity.',link:'https://learndigital.withgoogle.com/digitalgarage/course/digital-marketing',access:'Fully online. Subtitles. Self-paced.'},
+  {id:'do9',type:'social',title:'Cambridge Gaming Cafe — Evening Social',provider:'Cambridge Gaming Cafe',cost:'Paid',format:'In person',date:'Monthly evenings — check with Safe',location:'Cambridge',desc:'An evening at the Gaming Cafe — board games, card games, relaxed social time in a welcoming space.',why:'A relaxed way to connect. Great for people who find large social events overwhelming.',link:'',access:'Quiet corners available.'},
+  {id:'do10',type:'training',title:'Care Certificate — 15 Standards',provider:'Skills for Care',cost:'Free',format:'Both',date:'Rolling — self-paced',location:'Online / workplace',desc:'The nationally recognised foundation of care work — covers duty of care, equality, safeguarding, communication, and person-centred support.',why:'Essential for anyone new to a social care role.',link:'https://www.skillsforcare.org.uk/care-certificate',access:'Accessible formats available on request.'},
 ];
-let nextId=300,currentSec='all',currentOppType='all',addMode='task',claimingId=null;
+
+let tasks=[...DEFAULT_TASKS];
+let doneTasks=[...DEFAULT_DONE];
+let opps=[...DEFAULT_OPPS];
+let nextId=500,currentSec='all',currentOppType='all',addMode='task',claimingId=null;
 
 function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
 function sc(k){return SECS[k]||{label:'Other',emoji:'📌',color:'#888'}}
@@ -442,12 +412,30 @@ function ot(k){return OPT[k]||{label:'Other',emoji:'🔍',color:'#888'}}
 function ptag(p){if(p==='Urgent')return'<span class="task-tag tt-urgent">🔴 Urgent</span>';if(p==='Soon')return'<span class="task-tag tt-soon">🟡 Soon</span>';if(p==='Ongoing')return'<span class="task-tag tt-ongoing">🔵 Ongoing</span>';return''}
 function rtag(r){if(r==='yes')return'<span class="task-tag tt-remote">💻 Remote ok</span>';if(r==='either')return'<span class="task-tag tt-remote">↔ Either</span>';return''}
 
-function render(){renderSections();renderDone();renderOpps();updateBadges()}
+async function loadAll(){
+  document.getElementById('loadingBar').style.display='block';
+  try{
+    const[taskData,doneData,oppData]=await Promise.all([apiGet('getTasks'),apiGet('getDone'),apiGet('getOpps')]);
+    // Merge sheet tasks with defaults — sheet tasks override by id
+    if(taskData&&taskData.length){
+      const sheetIds=new Set(taskData.map(t=>String(t.id)));
+      // Keep defaults that aren't in the sheet yet, add all sheet tasks
+      const defaults=DEFAULT_TASKS.filter(t=>!sheetIds.has(String(t.id)));
+      tasks=[...taskData.map(t=>({...t,taken:t.taken===true||t.taken==='true'||t.taken==='TRUE'})),...defaults];
+    }
+    if(doneData&&doneData.length) doneTasks=[...doneData,...DEFAULT_DONE.filter(d=>!doneData.find(x=>x.id===d.id))];
+    if(oppData&&oppData.length) opps=[...oppData,...DEFAULT_OPPS.filter(o=>!oppData.find(x=>x.id===o.id))];
+  }catch(e){
+    // Sheet unavailable — use defaults silently
+  }
+  document.getElementById('loadingBar').style.display='none';
+  render();
+}
+
+function render(){renderSections();renderInProgress();renderDone();renderOpps();updateBadges()}
 
 function renderSections(){
   const C=document.getElementById('sectionsContainer');C.innerHTML='';
-
-  // ── OPEN TASKS by section ──
   Object.keys(SECS).forEach(key=>{
     if(currentSec!=='all'&&currentSec!==key)return;
     const cfg=sc(key);
@@ -459,25 +447,24 @@ function renderSections(){
     if(!open.length){list.innerHTML='<div class="empty-msg">No open tasks here — add one! 🙌</div>';return}
     open.forEach(t=>list.appendChild(buildCard(t)));
   });
+}
 
-  // ── IN PROGRESS section ──
-  if(currentSec==='all'||currentSec==='inprogress'){
-    const inprog=tasks.filter(t=>t.taken);
-    const ipBlock=document.createElement('div');ipBlock.className='section-block';ipBlock.id='sec-inprogress';
-    ipBlock.innerHTML=`<div class="section-header" style="background:#e07b39" onclick="toggleSec(this.closest('.section-block'))"><span class="sec-emoji">⏳</span><h2>In Progress</h2><span class="sec-count">${inprog.length}</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-inprogress"></div></div>`;
-    C.appendChild(ipBlock);
-    const ipList=document.getElementById('list-inprogress');
-    if(!inprog.length){ipList.innerHTML='<div class="empty-msg">Nothing in progress yet — tasks appear here once someone claims them 🙌</div>';return}
-    inprog.forEach(t=>ipList.appendChild(buildCard(t)));
-  }
+function renderInProgress(){
+  const list=document.getElementById('inProgressList');list.innerHTML='';
+  const inprog=tasks.filter(t=>t.taken);
+  if(!inprog.length){list.innerHTML='<div class="empty-msg" style="padding:40px 20px">No tasks in progress yet.<br>Tasks appear here once a volunteer claims them. 🙌</div>';return}
+  inprog.forEach(t=>{
+    const cfg=sc(t.section);
+    const card=document.createElement('div');card.className='task-card inprogress';card.onclick=()=>openDetail(t.id);
+    card.innerHTML=`<div class="task-dot" style="background:#e07b39"></div><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta"><span class="task-tag" style="background:#fff3cd;color:#e07b39">⏳ In progress</span>${t.takenBy?`<span class="task-tag tt-person">🙋 ${esc(t.takenBy)}</span>`:''}<span class="task-tag" style="background:var(--sage-light);color:var(--sage);font-size:.65rem">✅ Tap to mark done</span></div><div style="font-size:.72rem;opacity:.45;margin-top:4px">${cfg.emoji} ${esc(cfg.label)}</div></div><div class="task-arrow">›</div>`;
+    list.appendChild(card);
+  });
 }
 
 function buildCard(t){
   const cfg=sc(t.section);const div=document.createElement('div');
   div.className='task-card';div.onclick=()=>openDetail(t.id);
-  const inprogStyle=t.taken?'border-left:3px solid #e07b39;background:#fff8f3;':'';
-  div.style.cssText=inprogStyle;
-  div.innerHTML=`<div class="task-dot" style="background:${t.taken?'#e07b39':cfg.color}"></div><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta">${t.taken?'':`${ptag(t.priority)}${t.time?`<span class="task-tag tt-time">⏱ ${esc(t.time)}</span>`:''}${rtag(t.remote)}${t.skills?`<span class="task-tag tt-skill">🔧 ${esc(t.skills.split(',')[0].trim())}</span>`:''}`}${t.taken?`<span class="task-tag tt-taken">⏳ In progress</span>${t.takenBy?`<span class="task-tag tt-person">🙋 ${esc(t.takenBy)}</span>`:''}<span class="task-tag" style="background:#e8f0e6;color:#73976C">✅ Tap to mark done</span>`:''}</div></div><div class="task-arrow">›</div>`;
+  div.innerHTML=`<div class="task-dot" style="background:${cfg.color}"></div><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta">${ptag(t.priority)}${t.time?`<span class="task-tag tt-time">⏱ ${esc(t.time)}</span>`:''}${rtag(t.remote)}${t.skills?`<span class="task-tag tt-skill">🔧 ${esc(t.skills.split(',')[0].trim())}</span>`:''}</div></div><div class="task-arrow">›</div>`;
   return div;
 }
 
@@ -513,22 +500,41 @@ function renderOpps(){
   });
 }
 function filterOpps(type,btn){currentOppType=type;document.querySelectorAll('.opp-type-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderOpps()}
-function updateBadges(){document.getElementById('badgeAll').textContent=tasks.filter(t=>!t.taken).length;document.getElementById('badgeDone').textContent=doneTasks.length}
+
+function updateBadges(){
+  const open=tasks.filter(t=>!t.taken).length;
+  const inprog=tasks.filter(t=>t.taken).length;
+  document.getElementById('badgeAll').textContent=open;
+  const ipBadge=document.getElementById('badgeInProgress');
+  if(inprog>0){ipBadge.textContent=inprog;ipBadge.style.display='block'}else{ipBadge.style.display='none'}
+  document.getElementById('badgeDone').textContent=doneTasks.length;
+}
 
 function openDetail(id){
-  const t=tasks.find(x=>x.id===id);if(!t)return;
+  const t=tasks.find(x=>String(x.id)===String(id));if(!t)return;
   const cfg=sc(t.section);
   document.getElementById('dTitle').textContent=t.title;
-  document.getElementById('dStripe').style.background=cfg.color;
+  document.getElementById('dStripe').style.background=t.taken?'#e07b39':cfg.color;
   const dr=(icon,key,val)=>val?`<div class="d-row"><div class="d-icon">${icon}</div><div class="d-key">${key}</div><div class="d-val">${esc(val)}</div></div>`:'';
-  document.getElementById('dBody').innerHTML=`<div class="d-row"><div class="d-icon">${cfg.emoji}</div><div class="d-key">Section</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>${dr('🚦','Priority',t.priority)}${dr('⏱️','Time needed',t.time)}${dr('📅','When',t.date)}${dr('📍','Where',t.remote==='yes'?'Remote / online':t.remote==='no'?'In person':'Either works')}${dr('🔧','Helpful skills',t.skills)}<div class="d-section-title">About this task</div><p style="font-size:.88rem;line-height:1.6;margin-bottom:10px">${esc(t.desc)}</p>${dr('📝','Notes',t.notes)}${t.contact||t.email?`<div class="d-section-title">Contact</div>${dr('👤','Name',t.contact)}${t.email?`<div class="d-row"><div class="d-icon">✉️</div><div class="d-key">Email</div><div class="d-val"><a href="mailto:${esc(t.email)}?subject=${encodeURIComponent('Volunteer: '+t.title)}&body=${encodeURIComponent('Hi '+t.contact+',\n\nI\'d like to help with: "'+t.title+'"\n\nPlease let me know what to do next.\n\nThanks!')}" style="color:var(--sage)">${esc(t.email)}</a></div></div>`:''}`:``}${t.taken?`<div class="taken-by-box">✋ <strong>${esc(t.takenBy||'Someone')}</strong> is already doing this task. If you would also like to help, please get in touch with the team.</div>`:''}`;
+  document.getElementById('dBody').innerHTML=`
+    <div class="d-row"><div class="d-icon">${cfg.emoji}</div><div class="d-key">Section</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>
+    ${t.taken?`<div class="taken-by-box">⏳ <strong>${esc(t.takenBy||'Someone')}</strong> is currently doing this task.</div>`:''}
+    ${dr('🚦','Priority',t.priority)}${dr('⏱️','Time needed',t.time)}${dr('📅','When',t.date)}
+    ${dr('📍','Where',t.remote==='yes'?'Remote / online':t.remote==='no'?'In person':'Either works')}
+    ${dr('🔧','Helpful skills',t.skills)}
+    <div class="d-section-title">About this task</div>
+    <p style="font-size:.88rem;line-height:1.6;margin-bottom:10px">${esc(t.desc)}</p>
+    ${dr('📝','Notes',t.notes)}
+    ${t.contact||t.email?`<div class="d-section-title">Contact</div>${dr('👤','Name',t.contact)}${t.email?`<div class="d-row"><div class="d-icon">✉️</div><div class="d-key">Email</div><div class="d-val"><a href="mailto:${esc(t.email)}?subject=${encodeURIComponent('Volunteer: '+t.title)}" style="color:var(--sage)">${esc(t.email)}</a></div></div>`:''}`:``}`;
   const foot=document.getElementById('dFooter');foot.innerHTML='';
-  if(!t.taken){const btn=document.createElement('button');btn.className='btn-primary';btn.textContent='🙋 I\'d like to do this task!';btn.onclick=()=>{closeDetail();openClaim(id)};foot.appendChild(btn)}
+  if(!t.taken){
+    const btn=document.createElement('button');btn.className='btn-primary';btn.textContent="🙋 I'd like to do this task!";
+    btn.onclick=()=>{closeDetail();openClaim(id)};foot.appendChild(btn);
+  }
   if(t.taken){
     const btn=document.createElement('button');btn.className='btn-primary';btn.style.background='var(--c-done)';
-    btn.textContent='✅ Mark as done — it\'s finished!';btn.onclick=()=>markDone(id);foot.appendChild(btn);
+    btn.textContent="✅ Mark as done — it's finished!";btn.onclick=()=>markDone(id);foot.appendChild(btn);
   }
-  if(!t.taken&&t.email){const a=document.createElement('a');a.className='btn-secondary';a.href=`mailto:${esc(t.email)}?subject=${encodeURIComponent('Volunteer interest: '+t.title)}&body=${encodeURIComponent('Hi '+t.contact+',\n\nI\'d like to help with:\n\n"'+t.title+'"\n\nPlease let me know what to do next.\n\nThanks!')}`;a.textContent='✉️ Email to find out more';foot.appendChild(a)}
   const cl=document.createElement('button');cl.className='btn-secondary';cl.textContent='Close';cl.onclick=closeDetail;foot.appendChild(cl);
   document.getElementById('detailOverlay').classList.add('open');document.body.style.overflow='hidden';
 }
@@ -540,17 +546,35 @@ function openClaim(id){
   setTimeout(()=>document.getElementById('claimName').focus(),300);
 }
 function closeClaim(){document.getElementById('claimOverlay').classList.remove('open');document.body.style.overflow='';claimingId=null}
-function confirmClaim(){
+
+async function confirmClaim(){
   const name=document.getElementById('claimName').value.trim();
   if(!name){document.getElementById('claimErr').classList.add('show');return}
-  const t=tasks.find(x=>x.id===claimingId);if(!t){closeClaim();return}
+  const t=tasks.find(x=>String(x.id)===String(claimingId));
+  if(!t){closeClaim();return}
+  // Move to In Progress ONLY — not Done
   t.taken=true;t.takenBy=name;
-  doneTasks.unshift({id:nextId++,title:t.title,section:t.section,takenBy:name,note:'Picked up — thank you so much for helping Safe Soulmates bring people together and reduce isolation. You are making a real difference. 💛🌟'});
-  closeClaim();render();showToast(`🌟 Amazing — thank you ${name}!`);
+  closeClaim();render();
+  showToast(`⏳ Great — ${name} is on it!`);
+  showView('inprogress');
+  try{await apiPost({action:'claimTask',id:t.id,takenBy:name})}
+  catch(e){/* sync quietly */}
+}
+
+async function markDone(id){
+  const t=tasks.find(x=>String(x.id)===String(id));if(!t)return;
+  tasks=tasks.filter(x=>String(x.id)!==String(id));
+  const doneRow={id:'done_'+Date.now(),title:t.title,section:t.section,takenBy:t.takenBy||'A volunteer',note:'Task completed — thank you so much for helping Safe Soulmates bring people together and reduce isolation. You are making a real difference. 💛🌟'};
+  doneTasks.unshift(doneRow);
+  closeDetail();render();
+  showToast('🌟 Brilliant — task marked as done!');
+  showView('done');
+  try{await apiPost({action:'addDone',row:doneRow})}
+  catch(e){/* sync quietly */}
 }
 
 function openOppDetail(id){
-  const o=opps.find(x=>x.id===id);if(!o)return;
+  const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
   const cfg=ot(o.type);
   document.getElementById('dTitle').textContent=o.title;document.getElementById('dStripe').style.background=cfg.color;
   const dr=(icon,key,val)=>val?`<div class="d-row"><div class="d-icon">${icon}</div><div class="d-key">${key}</div><div class="d-val">${esc(val)}</div></div>`:'';
@@ -576,34 +600,39 @@ function closeAdd(){document.getElementById('addOverlay').classList.remove('open
 document.querySelectorAll('#f-priority .pill-toggle,#f-remote .pill-toggle').forEach(btn=>{btn.addEventListener('click',()=>{btn.closest('.pill-group').querySelectorAll('.pill-toggle').forEach(b=>b.classList.remove('on'));btn.classList.add('on')})});
 function getOne(gId){const el=document.querySelector(`#${gId} .pill-toggle.on`);return el?el.dataset.val:''}
 function showErr(id,show){document.getElementById(id).classList.toggle('show',show)}
-
 function submitForm(){if(addMode==='opp')submitOpp();else submitTask()}
-function submitTask(){
+
+async function submitTask(){
   const title=document.getElementById('f-title').value.trim(),section=document.getElementById('f-section').value,desc=document.getElementById('f-desc').value.trim();
   let ok=true;
   if(!title){showErr('e-title',true);ok=false}else showErr('e-title',false);
   if(!section){showErr('e-section',true);ok=false}else showErr('e-section',false);
   if(!desc){showErr('e-desc',true);ok=false}else showErr('e-desc',false);
   if(!ok)return;
-  tasks.unshift({id:nextId++,section,title,priority:getOne('f-priority')||'Ongoing',time:document.getElementById('f-time').value.trim(),date:document.getElementById('f-date').value.trim(),remote:getOne('f-remote')||'either',skills:document.getElementById('f-skills').value.trim(),desc,contact:document.getElementById('f-contact-name').value.trim(),email:document.getElementById('f-contact-email').value.trim(),notes:document.getElementById('f-notes').value.trim(),taken:false,takenBy:''});
+  const row={id:'task_'+Date.now(),section,title,priority:getOne('f-priority')||'Ongoing',time:document.getElementById('f-time').value.trim(),date:document.getElementById('f-date').value.trim(),remote:getOne('f-remote')||'either',skills:document.getElementById('f-skills').value.trim(),desc,contact:document.getElementById('f-contact-name').value.trim(),email:document.getElementById('f-contact-email').value.trim(),notes:document.getElementById('f-notes').value.trim(),taken:false,takenBy:''};
+  tasks.unshift(row);
   ['f-title','f-time','f-date','f-skills','f-desc','f-contact-name','f-contact-email','f-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
   document.getElementById('f-section').value='';
-  document.querySelector('#f-priority [data-val="Ongoing"]').classList.add('on');document.querySelector('#f-remote [data-val="either"]').classList.add('on');
   closeAdd();render();showView('all');
-  const el=document.getElementById('sec-'+section);if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),200);
-  showToast('✅ Task added — thank you!');
+  showToast('✅ Task added!');
+  try{await apiPost({action:'addTask',row});showToast('✅ Task added and saved for everyone!')}
+  catch(e){}
 }
-function submitOpp(){
+
+async function submitOpp(){
   const title=document.getElementById('fo-title').value.trim(),type=document.getElementById('fo-type').value,desc=document.getElementById('fo-desc').value.trim();
   let ok=true;
   if(!title){showErr('eo-title',true);ok=false}else showErr('eo-title',false);
   if(!type){showErr('eo-type',true);ok=false}else showErr('eo-type',false);
   if(!desc){showErr('eo-desc',true);ok=false}else showErr('eo-desc',false);
   if(!ok)return;
-  opps.unshift({id:nextId++,type,title,provider:document.getElementById('fo-provider').value.trim(),cost:document.getElementById('fo-cost').value,format:document.getElementById('fo-format').value,date:document.getElementById('fo-date').value.trim(),location:document.getElementById('fo-location').value.trim(),desc,why:document.getElementById('fo-why').value.trim(),link:document.getElementById('fo-link').value.trim(),access:document.getElementById('fo-access').value.trim()});
+  const row={id:'opp_'+Date.now(),type,title,provider:document.getElementById('fo-provider').value.trim(),cost:document.getElementById('fo-cost').value,format:document.getElementById('fo-format').value,date:document.getElementById('fo-date').value.trim(),location:document.getElementById('fo-location').value.trim(),desc,why:document.getElementById('fo-why').value.trim(),link:document.getElementById('fo-link').value.trim(),access:document.getElementById('fo-access').value.trim()};
+  opps.unshift(row);
   ['fo-title','fo-provider','fo-date','fo-location','fo-desc','fo-why','fo-link','fo-access'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
   ['fo-type','fo-cost','fo-format'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
-  closeAdd();render();showView('opps');showToast('✅ Opportunity added — thank you!');
+  closeAdd();render();showView('opps');
+  showToast('✅ Opportunity added!');
+  try{await apiPost({action:'addOpp',row})}catch(e){}
 }
 
 document.getElementById('searchInput').addEventListener('input',function(){
@@ -616,97 +645,23 @@ document.getElementById('searchInput').addEventListener('input',function(){
 });
 
 function showView(v){
-  ['all','search','done','opps'].forEach(n=>document.getElementById('view'+n.charAt(0).toUpperCase()+n.slice(1)).classList.toggle('active',n===v));
-  ['navAll','navSearch','navDone','navOpps'].forEach(id=>document.getElementById(id).classList.remove('active'));
-  const map={all:'navAll',search:'navSearch',done:'navDone',opps:'navOpps'};if(map[v])document.getElementById(map[v]).classList.add('active');
+  const views={all:'viewAll',inprogress:'viewInProgress',search:'viewSearch',done:'viewDone',opps:'viewOpps'};
+  Object.values(views).forEach(id=>document.getElementById(id).classList.remove('active'));
+  if(views[v])document.getElementById(views[v]).classList.add('active');
+  ['navAll','navInProgress','navDone','navOpps'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  const map={all:'navAll',inprogress:'navInProgress',done:'navDone',opps:'navOpps'};
+  if(map[v])document.getElementById(map[v]).classList.add('active');
   if(v==='search')setTimeout(()=>document.getElementById('searchInput').focus(),150);
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
 ['detailOverlay','claimOverlay','addOverlay'].forEach(id=>{
   document.getElementById(id).addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');document.body.style.overflow='';if(id==='claimOverlay')claimingId=null}});
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();closeClaim();closeAdd()}});
-
 let _tt;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3500)}
 
-// ── OVERRIDE confirmClaim — moves to In Progress only ──
-async function confirmClaim(){
-  const name=document.getElementById('claimName').value.trim();
-  if(!name){document.getElementById('claimErr').classList.add('show');return}
-  const t=tasks.find(x=>x.id===claimingId||String(x.id)===String(claimingId));
-  if(!t){closeClaim();return}
-  // Optimistic update — In Progress only, not Done yet
-  t.taken=true;t.takenBy=name;
-  closeClaim();render();showToast(`⏳ Great — ${name} is on it!`);
-  // Write to Sheets
-  try {
-    await apiPost({action:'claimTask',id:t.id,takenBy:name});
-  } catch(e){ showToast('⚠️ Saved locally but could not sync — check connection'); }
-}
-
-// ── MARK AS DONE — moves from In Progress to Done board ──
-async function markDone(id){
-  const t=tasks.find(x=>x.id===id||String(x.id)===String(id));
-  if(!t)return;
-  // Remove from tasks array
-  tasks=tasks.filter(x=>x.id!==id&&String(x.id)!==String(id));
-  // Add to done
-  const doneRow={id:'done_'+Date.now(),title:t.title,section:t.section,takenBy:t.takenBy||'A volunteer',note:'Task completed — thank you so much for helping Safe Soulmates bring people together and reduce isolation. You are making a real difference. 💛🌟'};
-  doneTasks.unshift(doneRow);
-  closeDetail();render();
-  showToast(`🌟 Brilliant — task marked as done!`);
-  // Write to Sheets
-  try {
-    await apiPost({action:'addDone',row:doneRow});
-  } catch(e){ showToast('⚠️ Saved locally but could not sync — check connection'); }
-}
-
-// ── OVERRIDE submitTask to write to Sheets ──
-async function submitTask(){
-  const title=document.getElementById('f-title').value.trim(),section=document.getElementById('f-section').value,desc=document.getElementById('f-desc').value.trim();
-  let ok=true;
-  if(!title){showErr('e-title',true);ok=false}else showErr('e-title',false);
-  if(!section){showErr('e-section',true);ok=false}else showErr('e-section',false);
-  if(!desc){showErr('e-desc',true);ok=false}else showErr('e-desc',false);
-  if(!ok)return;
-  const row={id:'task_'+Date.now(),section,title,priority:getOne('f-priority')||'Ongoing',time:document.getElementById('f-time').value.trim(),date:document.getElementById('f-date').value.trim(),remote:getOne('f-remote')||'either',skills:document.getElementById('f-skills').value.trim(),desc,contact:document.getElementById('f-contact-name').value.trim(),email:document.getElementById('f-contact-email').value.trim(),notes:document.getElementById('f-notes').value.trim(),taken:false,takenBy:''};
-  tasks.unshift(row);
-  ['f-title','f-time','f-date','f-skills','f-desc','f-contact-name','f-contact-email','f-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
-  document.getElementById('f-section').value='';
-  document.querySelector('#f-priority [data-val="Ongoing"]').classList.add('on');
-  document.querySelector('#f-remote [data-val="either"]').classList.add('on');
-  closeAdd();render();showView('all');
-  const el=document.getElementById('sec-'+section);if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),200);
-  showToast('✅ Task added — saving…');
-  try {
-    await apiPost({action:'addTask',row});
-    showToast('✅ Task added and saved for everyone!');
-  } catch(e){ showToast('⚠️ Added locally but could not sync — check connection'); }
-}
-
-// ── OVERRIDE submitOpp to write to Sheets ──
-async function submitOpp(){
-  const title=document.getElementById('fo-title').value.trim(),type=document.getElementById('fo-type').value,desc=document.getElementById('fo-desc').value.trim();
-  let ok=true;
-  if(!title){showErr('eo-title',true);ok=false}else showErr('eo-title',false);
-  if(!type){showErr('eo-type',true);ok=false}else showErr('eo-type',false);
-  if(!desc){showErr('eo-desc',true);ok=false}else showErr('eo-desc',false);
-  if(!ok)return;
-  const row={id:'opp_'+Date.now(),type,title,provider:document.getElementById('fo-provider').value.trim(),cost:document.getElementById('fo-cost').value,format:document.getElementById('fo-format').value,date:document.getElementById('fo-date').value.trim(),location:document.getElementById('fo-location').value.trim(),desc,why:document.getElementById('fo-why').value.trim(),link:document.getElementById('fo-link').value.trim(),access:document.getElementById('fo-access').value.trim()};
-  opps.unshift(row);
-  ['fo-title','fo-provider','fo-date','fo-location','fo-desc','fo-why','fo-link','fo-access'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
-  ['fo-type','fo-cost','fo-format'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
-  closeAdd();render();showView('opps');showToast('✅ Opportunity added — saving…');
-  try {
-    await apiPost({action:'addOpp',row});
-    showToast('✅ Opportunity added and saved for everyone!');
-  } catch(e){ showToast('⚠️ Added locally but could not sync — check connection'); }
-}
-
-// Start by loading from Sheets
 loadAll();
 </script>
-
-
 </body></html>
