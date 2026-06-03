@@ -568,6 +568,9 @@ function openDetail(id){
   if(!t.taken){
     const btn=document.createElement('button');btn.className='btn-primary';btn.textContent="🙋 I'd like to do this task!";
     btn.onclick=()=>{closeDetail();openClaim(id)};foot.appendChild(btn);
+    const doneBtn=document.createElement('button');doneBtn.style.cssText='display:block;width:100%;min-height:50px;background:#4caf8a;color:#fff;border:none;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px;margin-top:4px';
+    doneBtn.textContent="✅ Mark as complete — already done!";
+    doneBtn.onclick=()=>markDoneNoVolunteer(id);foot.appendChild(doneBtn);
   }
   if(t.taken){
     const btn=document.createElement('button');btn.className='btn-primary';btn.style.background='var(--c-done)';
@@ -597,6 +600,17 @@ async function confirmClaim(){
   showView('inprogress');
   try{await apiPost({action:'claimTask',id:t.id,takenBy:name})}
   catch(e){/* sync quietly */}
+}
+
+async function markDoneNoVolunteer(id){
+  const t=tasks.find(x=>String(x.id)===String(id));if(!t)return;
+  tasks=tasks.filter(x=>String(x.id)!==String(id));
+  const doneRow={id:'done_'+Date.now(),title:t.title,section:t.section,takenBy:'Staff / completed internally',note:'Task completed without a volunteer — great work getting this done! 💛'};
+  doneTasks.unshift(doneRow);
+  closeDetail();render();
+  showToast('✅ Task marked as complete!');
+  showView('done');
+  try{await apiPost({action:'addDone',row:doneRow})}catch(e){}
 }
 
 async function markDone(id){
