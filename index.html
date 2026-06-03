@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safe Soulmates — Volunteer Task Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -64,8 +61,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .tt-remote{background:#e8f5e9;color:#2e7d32}.tt-inprogress{background:#fff3cd;color:#e07b39}
 .tt-skill{background:var(--purple-light);color:var(--purple)}.tt-person{background:var(--pink-light);color:var(--pink)}
 .task-arrow{color:#ccc;font-size:1rem;flex-shrink:0;margin-top:3px}
-.quick-move-btn{background:var(--sage-light);border:none;border-radius:8px;width:30px;height:30px;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:background .13s}
-.quick-move-btn:hover{background:var(--sage-mid)}
 .empty-msg{text-align:center;padding:22px 16px;font-size:.84rem;color:var(--charcoal);opacity:.42}
 /* IN PROGRESS VIEW */
 .inprogress-hero{background:linear-gradient(135deg,#e07b39 0%,#c96020 100%);border-radius:var(--radius);padding:20px 20px 18px;margin-bottom:18px;color:var(--white)}
@@ -196,6 +191,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #loadingBar{display:none;background:var(--sage);color:var(--white);text-align:center;font-size:.8rem;font-weight:600;padding:8px 16px;position:sticky;top:0;z-index:99;letter-spacing:.02em}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.btn-edit{background:var(--blue-light);color:var(--blue);border:2px solid var(--blue);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;padding:8px 16px;display:inline-flex;align-items:center;gap:6px;transition:all .13s}
+.btn-edit:hover{background:var(--blue);color:#fff}
+.comment-item{background:var(--sage-light);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.comment-author{font-size:.72rem;font-weight:700;color:var(--sage);margin-bottom:2px}
+.comment-time{font-size:.65rem;opacity:.45;margin-left:6px;font-weight:400}
+.comment-text{font-size:.84rem;color:var(--charcoal);line-height:1.45;word-break:break-word}
+.comment-link{color:var(--blue);text-decoration:underline}
 </style>
 </head>
 <body>
@@ -488,14 +490,8 @@ function renderInProgress(){
 
 function buildCard(t){
   const cfg=sc(t.section);const div=document.createElement('div');
-  div.className='task-card';
-  div.style.cssText='position:relative';
-  div.innerHTML=`<div class="task-dot" style="background:${cfg.color}"></div><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta">${ptag(t.priority)}${t.time?`<span class="task-tag tt-time">⏱ ${esc(t.time)}</span>`:''}${rtag(t.remote)}${t.skills?`<span class="task-tag tt-skill">🔧 ${esc(t.skills.split(',')[0].trim())}</span>`:''}</div></div><div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><button class="quick-move-btn" title="Move to another section" onclick="event.stopPropagation();openMoveModal('${t.id}')">↕️</button><div class="task-arrow">›</div></div>`;
-  div.querySelector('.task-main').addEventListener('click',()=>openDetail(t.id));
-  div.querySelector('.task-arrow').addEventListener('click',()=>openDetail(t.id));
-  div.querySelector('.task-dot').addEventListener('click',()=>openDetail(t.id));
-  div.onclick=null;
-  div.addEventListener('click',(e)=>{if(!e.target.closest('.quick-move-btn'))openDetail(t.id)});
+  div.className='task-card';div.onclick=()=>openDetail(t.id);
+  div.innerHTML=`<div class="task-dot" style="background:${cfg.color}"></div><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta">${ptag(t.priority)}${t.time?`<span class="task-tag tt-time">⏱ ${esc(t.time)}</span>`:''}${rtag(t.remote)}${t.skills?`<span class="task-tag tt-skill">🔧 ${esc(t.skills.split(',')[0].trim())}</span>`:''}</div></div><div class="task-arrow">›</div>`;
   return div;
 }
 
@@ -547,19 +543,19 @@ function openDetail(id){
   document.getElementById('dTitle').textContent=t.title;
   document.getElementById('dStripe').style.background=t.taken?'#e07b39':cfg.color;
   const dr=(icon,key,val)=>val?`<div class="d-row"><div class="d-icon">${icon}</div><div class="d-key">${key}</div><div class="d-val">${esc(val)}</div></div>`:'';
-  const updatesHtml=t.taken?`
+  const updatesHtml=`
     <div class="updates-section">
-      <div class="updates-title">💬 Updates &amp; Notes</div>
+      <div class="updates-title">💬 Comments &amp; Questions</div>
       <div id="updatesThread">${renderUpdates(t)}</div>
       <div class="add-update-box">
-        <textarea id="updateText" placeholder="Leave an update, ask a question, or say thank you… 💛" rows="2"></textarea>
+        <textarea id="updateText" placeholder="Ask a question, add a note, or paste a link… 💛" rows="2"></textarea>
         <div class="update-inputs">
           <input class="update-name-input" id="updateName" placeholder="Your name" autocomplete="given-name">
           <button class="btn-update" id="postUpdateBtn">Post 💬</button>
         </div>
-        <p style="font-size:.72rem;opacity:.5;margin-top:8px;line-height:1.5">💡 For urgent questions, please email us at <a href="mailto:info@safesoulmates.org" style="color:var(--sage)">info@safesoulmates.org</a> — we may not always see updates here straight away.</p>
+        <p style="font-size:.72rem;opacity:.5;margin-top:8px;line-height:1.5">💡 You can paste links in comments — they will be clickable. For urgent questions email <a href="mailto:info@safesoulmates.org" style="color:var(--sage)">info@safesoulmates.org</a></p>
       </div>
-    </div>`:'';
+    </div>`;
   document.getElementById('dBody').innerHTML=`
     <div class="d-row"><div class="d-icon">${cfg.emoji}</div><div class="d-key">Section</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>
     ${t.taken?`<div class="taken-by-box">⏳ <strong>${esc(t.takenBy||'Someone')}</strong> is currently doing this task.</div>`:''}
@@ -572,10 +568,8 @@ function openDetail(id){
     ${t.contact||t.email?`<div class="d-section-title">Contact</div>${dr('👤','Name',t.contact)}${t.email?`<div class="d-row"><div class="d-icon">✉️</div><div class="d-key">Email</div><div class="d-val"><a href="mailto:${esc(t.email)}?subject=${encodeURIComponent('Volunteer: '+t.title)}" style="color:var(--sage)">${esc(t.email)}</a></div></div>`:''}`:``}
     ${updatesHtml}`;
   const foot=document.getElementById('dFooter');foot.innerHTML='';
-  if(t.taken){
-    const postBtn=document.getElementById('postUpdateBtn');
-    if(postBtn) postBtn.onclick=()=>addUpdate(t.id);
-  }
+  const postBtn=document.getElementById('postUpdateBtn');
+  if(postBtn) postBtn.onclick=()=>addUpdate(t.id);
   if(!t.taken){
     const btn=document.createElement('button');btn.className='btn-primary';btn.textContent="🙋 I'd like to do this task!";
     btn.onclick=()=>{closeDetail();openClaim(id)};foot.appendChild(btn);
@@ -587,39 +581,67 @@ function openDetail(id){
     const btn=document.createElement('button');btn.className='btn-primary';btn.style.background='var(--c-done)';
     btn.textContent="✅ Mark as done — it's finished!";btn.onclick=()=>markDone(id);foot.appendChild(btn);
   }
+  const editBtn=document.createElement('button');
+  editBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--blue-light);color:var(--blue);border:2px solid var(--blue);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
+  editBtn.textContent='✏️ Edit this task';
+  editBtn.onclick=()=>openEditModal(t.id);
+  foot.appendChild(editBtn);
   const cl=document.createElement('button');cl.className='btn-secondary';cl.textContent='Close';cl.onclick=closeDetail;foot.appendChild(cl);
   document.getElementById('detailOverlay').classList.add('open');document.body.style.overflow='hidden';
 }
-function openMoveModal(id){
+function openEditModal(id){
   const t=tasks.find(x=>String(x.id)===String(id));if(!t)return;
-  const existing=document.getElementById('moveOverlay');if(existing)existing.remove();
-  const overlay=document.createElement('div');overlay.id='moveOverlay';
-  overlay.style.cssText='display:flex;position:fixed;inset:0;background:rgba(90,90,90,.5);z-index:400;align-items:flex-end;justify-content:center';
-  const sheet=document.createElement('div');
-  sheet.style.cssText='background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:600px;padding:24px 20px 32px;max-height:80vh;overflow-y:auto';
-  const currentCfg=sc(t.section);
-  sheet.innerHTML=`<div style="font-family:DM Serif Display,serif;font-size:1.1rem;margin-bottom:4px">↕️ Move task</div><div style="font-size:.8rem;opacity:.55;margin-bottom:4px;font-style:italic">${esc(t.title)}</div><div style="font-size:.75rem;background:${currentCfg.color}20;color:${currentCfg.color};padding:4px 10px;border-radius:20px;display:inline-block;margin-bottom:14px;font-weight:700">${currentCfg.emoji} Currently in: ${esc(currentCfg.label)}</div><div style="display:flex;flex-direction:column;gap:8px" id="moveSectionList"></div><button onclick="document.getElementById('moveOverlay').remove()" style="margin-top:14px;display:block;width:100%;min-height:44px;background:none;border:2px solid var(--border);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;color:var(--charcoal)">Cancel</button>`;
-  overlay.appendChild(sheet);document.body.appendChild(overlay);
-  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
-  const list=document.getElementById('moveSectionList');
-  Object.keys(SECS).forEach(key=>{
-    if(key===t.section)return;
-    const cfg=sc(key);
-    const btn=document.createElement('button');
-    btn.style.cssText=`display:flex;align-items:center;gap:10px;width:100%;min-height:46px;background:${cfg.color}18;border:2px solid ${cfg.color}40;border-radius:12px;font-family:DM Sans,sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;padding:0 14px;color:var(--charcoal);text-align:left`;
-    btn.innerHTML=`<span style="font-size:1.2rem">${cfg.emoji}</span><span>${cfg.label}</span>`;
-    btn.onclick=()=>moveTask(id,key);
-    list.appendChild(btn);
-  });
+  closeDetail();
+  // Reuse the add modal but pre-fill it
+  addMode='task';
+  document.getElementById('taskFields').style.display='';
+  document.getElementById('oppFields').style.display='none';
+  document.getElementById('addTitle').textContent='✏️ Edit Task';
+  document.getElementById('addSubmitBtn').textContent='💾 Save changes';
+  document.getElementById('addStripe').style.background=sc(t.section).color;
+  document.getElementById('f-title').value=t.title||'';
+  document.getElementById('f-section').value=t.section||'';
+  document.getElementById('f-time').value=t.time||'';
+  document.getElementById('f-date').value=t.date||'';
+  document.getElementById('f-skills').value=t.skills||'';
+  document.getElementById('f-desc').value=t.desc||'';
+  document.getElementById('f-contact-name').value=t.contact||'';
+  document.getElementById('f-contact-email').value=t.email||'';
+  document.getElementById('f-notes').value=t.notes||'';
+  // Set priority pills
+  document.querySelectorAll('#f-priority .pill-toggle').forEach(b=>{b.classList.toggle('on',b.dataset.val===t.priority)});
+  document.querySelectorAll('#f-remote .pill-toggle').forEach(b=>{b.classList.toggle('on',b.dataset.val===t.remote)});
+  document.getElementById('addOverlay').classList.add('open');document.body.style.overflow='hidden';
+  // Override submit to save edit
+  document.getElementById('addSubmitBtn').onclick=()=>saveEdit(id);
 }
-async function moveTask(id,newSection){
+async function saveEdit(id){
+  const title=document.getElementById('f-title').value.trim();
+  const section=document.getElementById('f-section').value;
+  const desc=document.getElementById('f-desc').value.trim();
+  let ok=true;
+  if(!title){document.getElementById('e-title').classList.add('show');ok=false}else document.getElementById('e-title').classList.remove('show');
+  if(!section){document.getElementById('e-section').classList.add('show');ok=false}else document.getElementById('e-section').classList.remove('show');
+  if(!desc){document.getElementById('e-desc').classList.add('show');ok=false}else document.getElementById('e-desc').classList.remove('show');
+  if(!ok)return;
   const t=tasks.find(x=>String(x.id)===String(id));if(!t)return;
-  const oldLabel=sc(t.section).label;
-  t.section=newSection;
-  const mo=document.getElementById('moveOverlay');if(mo)mo.remove();
-  closeDetail();render();
-  showToast('↕️ Moved to '+sc(newSection).label+'!');
-  try{await apiPost({action:'moveTask',id:t.id,section:newSection})}catch(e){}
+  t.title=title;t.section=section;t.desc=desc;
+  t.priority=getOne('f-priority')||t.priority;
+  t.time=document.getElementById('f-time').value.trim();
+  t.date=document.getElementById('f-date').value.trim();
+  t.remote=getOne('f-remote')||t.remote;
+  t.skills=document.getElementById('f-skills').value.trim();
+  t.contact=document.getElementById('f-contact-name').value.trim();
+  t.email=document.getElementById('f-contact-email').value.trim();
+  t.notes=document.getElementById('f-notes').value.trim();
+  closeAdd();render();
+  showToast('✏️ Task updated!');
+  // Reset submit button
+  document.getElementById('addSubmitBtn').onclick=null;
+  document.getElementById('addSubmitBtn').setAttribute('onclick','submitForm()');
+  document.getElementById('addTitle').textContent='Add a Task';
+  document.getElementById('addSubmitBtn').textContent='✅ Add this task';
+  try{await apiPost({action:'editTask',row:t})}catch(e){}
 }
 function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');document.body.style.overflow=''}
 
@@ -668,12 +690,14 @@ async function markDone(id){
 }
 
 function renderUpdates(t){
-  if(!t.updates||!t.updates.length) return '<div style="font-size:.8rem;opacity:.4;padding:4px 0 8px">No updates yet — be the first to leave one! 💛</div>';
-  return t.updates.map(u=>`
-    <div class="update-item${u.isStaff?' staff-note':''}">
+  if(!t.updates||!t.updates.length) return '<div style="font-size:.8rem;opacity:.4;padding:4px 0 8px">No comments yet — ask a question or add a note! 💛</div>';
+  return t.updates.map(u=>{
+    const linkedText=esc(u.text).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener" class="comment-link">$1</a>');
+    return `<div class="update-item${u.isStaff?' staff-note':''}">
       <div class="update-author">${esc(u.name)}<span class="update-time">${esc(u.time)}</span></div>
-      <div class="update-text">${esc(u.text)}</div>
-    </div>`).join('');
+      <div class="comment-text">${linkedText}</div>
+    </div>`;
+  }).join('');
 }
 
 function addUpdate(taskId){
