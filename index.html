@@ -191,6 +191,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #loadingBar{display:none;background:var(--sage);color:var(--white);text-align:center;font-size:.8rem;font-weight:600;padding:8px 16px;position:sticky;top:0;z-index:99;letter-spacing:.02em}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.opp-card.closed{opacity:.75;border-left:4px solid #ccc;background:#f9f9f9}
+.opp-closed-badge{display:inline-block;background:#f0f0f0;color:#888;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:4px}
+.past-opps-header{font-family:DM Serif Display,serif;font-size:1.1rem;color:var(--charcoal);margin:20px 0 10px;padding-top:16px;border-top:2px solid var(--border);opacity:.7}
+
 .btn-edit{background:var(--blue-light);color:var(--blue);border:2px solid var(--blue);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;padding:8px 16px;display:inline-flex;align-items:center;gap:6px;transition:all .13s}
 .btn-edit:hover{background:var(--blue);color:#fff}
 .comment-item{background:var(--sage-light);border-radius:10px;padding:10px 12px;margin-bottom:8px}
@@ -472,15 +476,24 @@ function renderDone(){
 function renderOpps(){
   const grid=document.getElementById('oppsGrid');grid.innerHTML='';
   const filtered=currentOppType==='all'?opps:opps.filter(o=>o.type===currentOppType);
+  const active=filtered.filter(o=>o.status!=='closed');
+  const closed=filtered.filter(o=>o.status==='closed');
   if(!filtered.length){grid.innerHTML='<div class="empty-msg">No opportunities in this category yet — add one!</div>';return}
-  filtered.forEach(o=>{
-    const cfg=ot(o.type);const card=document.createElement('div');card.className='opp-card';card.onclick=()=>openOppDetail(o.id);
+  function makeOppCard(o){
+    const cfg=ot(o.type);const card=document.createElement('div');
+    card.className='opp-card'+(o.status==='closed'?' closed':'');card.onclick=()=>openOppDetail(o.id);
     const cTag=o.cost==='Free'?'<span class="task-tag ot-free">🆓 Free</span>':o.cost==='Funded'?'<span class="task-tag ot-funded">Funded</span>':o.cost==='Paid'?'<span class="task-tag ot-paid">Paid</span>':'';
     const fTag=o.format==='Online'?'<span class="task-tag ot-online">💻 Online</span>':o.format==='In person'?'<span class="task-tag ot-inperson">📍 In person</span>':o.format==='Both'?'<span class="task-tag ot-online">↔ Both</span>':'';
     const lTag=o.location&&o.location.toLowerCase().includes('cambridge')?'<span class="task-tag ot-cambridge">📍 Cambridge</span>':'';
-    card.innerHTML=`<div class="opp-icon-wrap" style="background:${cfg.color}20">${cfg.emoji}</div><div class="opp-main"><div class="opp-type-badge" style="color:${cfg.color}">${cfg.label}</div><div class="opp-title">${esc(o.title)}</div><div class="opp-provider">${esc(o.provider)}</div><div class="opp-tags">${cTag}${fTag}${lTag}</div></div><div class="opp-arrow">›</div>`;
+    const closedTag=o.status==='closed'?'<div class="opp-closed-badge">🔴 No longer available</div>':'';
+    card.innerHTML=`<div class="opp-icon-wrap" style="background:${cfg.color}20">${cfg.emoji}</div><div class="opp-main">${closedTag}<div class="opp-type-badge" style="color:${cfg.color}">${cfg.label}</div><div class="opp-title">${esc(o.title)}</div><div class="opp-provider">${esc(o.provider)}</div><div class="opp-tags">${cTag}${fTag}${lTag}</div></div><div class="opp-arrow">›</div>`;
     grid.appendChild(card);
-  });
+  }
+  active.forEach(makeOppCard);
+  if(closed.length){
+    const hdr=document.createElement('div');hdr.className='past-opps-header';hdr.textContent='📦 Past Opportunities';grid.appendChild(hdr);
+    closed.forEach(makeOppCard);
+  }
 }
 function filterOpps(type,btn){currentOppType=type;document.querySelectorAll('.opp-type-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderOpps()}
 
@@ -684,19 +697,32 @@ function openOppDetail(id){
   const dr=(icon,key,val)=>val?`<div class="d-row"><div class="d-icon">${icon}</div><div class="d-key">${key}</div><div class="d-val">${esc(val)}</div></div>`:'';
   document.getElementById('dBody').innerHTML=`<div class="d-row"><div class="d-icon">${cfg.emoji}</div><div class="d-key">Type</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>${dr('🏢','Provider',o.provider)}${dr('💰','Cost',o.cost)}${dr('💻','Format',o.format)}${dr('📅','When',o.date)}${dr('📍','Location',o.location)}${dr('♿','Accessibility',o.access)}<div class="d-section-title">About this opportunity</div><p style="font-size:.88rem;line-height:1.6;margin-bottom:10px">${esc(o.desc)}</p>${dr('💡','Why it matters',o.why)}`;
   const foot=document.getElementById('dFooter');foot.innerHTML='';
-  if(o.link){const a=document.createElement('a');a.className='btn-primary';a.href=o.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent='🔗 Find out more';foot.appendChild(a)}
-  const editOppBtn=document.createElement('button');
-  editOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--blue-light);color:var(--blue);border:2px solid var(--blue);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
-  editOppBtn.textContent='✏️ Edit this opportunity';
-  editOppBtn.onclick=()=>openEditOppModal(o.id);foot.appendChild(editOppBtn);
-  const doneOppBtn=document.createElement('button');
-  doneOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:#4caf8a;color:#fff;border:none;border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
-  doneOppBtn.textContent='✅ Mark as no longer available';
-  doneOppBtn.onclick=()=>removeOpp(o.id,'done');foot.appendChild(doneOppBtn);
+  if(o.link&&o.status!=='closed'){const a=document.createElement('a');a.className='btn-primary';a.href=o.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent='🔗 Find out more';foot.appendChild(a)}
+  if(o.status==='closed'){
+    // Volunteer notify button
+    const notifyBtn=document.createElement('button');
+    notifyBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--purple-light);color:var(--purple);border:2px solid var(--purple);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
+    notifyBtn.textContent='🔔 Notify me if this comes back';
+    notifyBtn.onclick=()=>requestOppNotify(o.id,o.title);foot.appendChild(notifyBtn);
+    // Staff reactivate button
+    const reactBtn=document.createElement('button');
+    reactBtn.style.cssText='display:block;width:100%;min-height:44px;background:#4caf8a;color:#fff;border:none;border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
+    reactBtn.textContent='♻️ Reactivate this opportunity';
+    reactBtn.onclick=()=>reactivateOpp(o.id);foot.appendChild(reactBtn);
+  } else {
+    const editOppBtn=document.createElement('button');
+    editOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--blue-light);color:var(--blue);border:2px solid var(--blue);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
+    editOppBtn.textContent='✏️ Edit this opportunity';
+    editOppBtn.onclick=()=>openEditOppModal(o.id);foot.appendChild(editOppBtn);
+    const closeOppBtn=document.createElement('button');
+    closeOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:#fff3cd;color:#856404;border:2px solid #f0d060;border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
+    closeOppBtn.textContent='🔴 Mark as no longer available';
+    closeOppBtn.onclick=()=>closeOpp(o.id);foot.appendChild(closeOppBtn);
+  }
   const delOppBtn=document.createElement('button');
   delOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--pink-light);color:var(--pink);border:2px solid var(--pink);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
-  delOppBtn.textContent='🗑️ Delete this opportunity';
-  delOppBtn.onclick=()=>removeOpp(o.id,'delete');foot.appendChild(delOppBtn);
+  delOppBtn.textContent='🗑️ Delete permanently';
+  delOppBtn.onclick=()=>deleteOpp(o.id);foot.appendChild(delOppBtn);
   const cl=document.createElement('button');cl.className='btn-secondary';cl.textContent='Close';cl.onclick=closeDetail;foot.appendChild(cl);
   document.getElementById('detailOverlay').classList.add('open');document.body.style.overflow='hidden';
 }
@@ -745,15 +771,32 @@ async function saveEditOpp(id){
   try{await apiPost({action:'editOpp',row:o})}catch(e){}
 }
 
-async function removeOpp(id,action){
+async function closeOpp(id){
   const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
-  if(action==='delete'){
-    if(!confirm('Are you sure you want to delete this opportunity?'))return;
-  }
+  o.status='closed';
+  closeDetail();render();showView('opps');
+  showToast('🔴 Marked as no longer available — still visible in Past Opportunities');
+  try{await apiPost({action:'closeOpp',id})}catch(e){}
+}
+async function reactivateOpp(id){
+  const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
+  o.status='active';
+  closeDetail();render();showView('opps');
+  showToast('♻️ Opportunity reactivated!');
+  try{await apiPost({action:'reactivateOpp',id})}catch(e){}
+}
+async function deleteOpp(id){
+  if(!confirm('Permanently delete this opportunity? This cannot be undone.'))return;
   opps=opps.filter(x=>String(x.id)!==String(id));
   closeDetail();render();showView('opps');
-  showToast(action==='delete'?'🗑️ Opportunity deleted':'✅ Marked as no longer available');
-  try{await apiPost({action:'removeOpp',id,reason:action})}catch(e){}
+  showToast('🗑️ Opportunity deleted');
+  try{await apiPost({action:'deleteOpp',id})}catch(e){}
+}
+async function requestOppNotify(id,title){
+  const name=prompt('Your name (so we can let you know when it comes back):');
+  if(!name)return;
+  showToast('🔔 Thanks '+name+'! We will let you know if '+title+' comes back.');
+  try{await apiPost({action:'oppNotify',id,title,name})}catch(e){}
 }
 
 function openAddModal(mode,preSection){
