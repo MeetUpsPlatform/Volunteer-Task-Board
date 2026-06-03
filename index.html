@@ -378,54 +378,10 @@ const SCRIPT_URL='https://script.google.com/macros/s/AKfycbyI1DxT3kTnMgEXj2LWApW
 async function apiGet(action){const res=await fetch(`${SCRIPT_URL}?action=${action}`);return res.json()}
 async function apiPost(body){const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(body)});return res.json()}
 
-// ── DEFAULT TASKS (always shown — sheet data merges on top) ──
-const DEFAULT_TASKS=[
-  {id:'dt1',section:'quick',title:"Share this month's event post on social media",priority:'Urgent',time:'5 mins',date:'This week',remote:'yes',skills:'Social media',desc:"Share our latest event post on your Facebook, Instagram or Twitter. Helps us reach more people in Cambridge. We'll send you the post to share.",contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt2',section:'quick',title:"Welcome a new Soulmate to our WhatsApp group",priority:'Ongoing',time:'5 mins',date:'As needed',remote:'yes',skills:'Friendly, welcoming',desc:"When a new Soulmate joins our WhatsApp group, send them a warm welcome message and let them know what the group is for.",contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt3',section:'quick',title:'Count and sort feedback forms after an event',priority:'Soon',time:'20 mins',date:'After events',remote:'no',skills:'Organised',desc:'After each social event, help us count and sort the paper feedback forms so we can read them and improve future events.',contact:'',email:'',notes:'',taken:false,takenBy:''},
-  {id:'dt4',section:'quick',title:'Print and label name badges for the next social',priority:'Soon',time:'15 mins',date:'Before next social',remote:'either',skills:'',desc:"Print the name badge sheet (we'll email it to you), cut them out, and pop them in the badge holders. About 20 to 30 badges.",contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt5',section:'events',title:'Event host for the November monthly social',priority:'Urgent',time:'3 to 4 hours',date:'November — date TBC',remote:'no',skills:'Confident, friendly, calm under pressure',desc:'Be the friendly face who welcomes people at the door, keeps things running, introduces activities, and checks everyone is okay. Full briefing provided beforehand.',contact:'Safe',email:'info@safesoulmates.org',notes:'Great for confident volunteers who enjoy supporting people.',taken:false,takenBy:''},
-  {id:'dt6',section:'events',title:'Set up board games and activities before the social',priority:'Soon',time:'1 hour',date:'Before each social',remote:'no',skills:'',desc:"Arrive 45 minutes early and set up the board games, activity tables, sensory items, and welcome display. We'll give you a setup checklist.",contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt7',section:'events',title:'Quiet space support at the Christmas event',priority:'Soon',time:'Half day',date:'December — date TBC',remote:'no',skills:'Calm, understanding of sensory needs',desc:'Sit in or near the quiet room during the Christmas event. Offer a friendly smile if someone needs a break. No pressure to do anything — just be present and welcoming.',contact:'Safe',email:'info@safesoulmates.org',notes:'Perfect for volunteers who prefer a quieter role.',taken:false,takenBy:''},
-  {id:'dt8',section:'digital',title:'Schedule three Facebook posts for next week',priority:'Soon',time:'30 mins',date:'Rolling',remote:'yes',skills:'Facebook, Canva helpful but not required',desc:"We have content ready — we just need someone to schedule it using our Facebook Page. We'll give you access and a simple guide.",contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt9',section:'digital',title:'Upload October events to our online calendar',priority:'Urgent',time:'1 hour',date:'Late September',remote:'yes',skills:'Basic computer skills',desc:"Add our October events to the website calendar and Google calendar. We'll give you all the event details and a step-by-step guide.",contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt10',section:'digital',title:'Organise the Soulmates Google Drive folder',priority:'Ongoing',time:'2 hours',date:'Flexible',remote:'yes',skills:'Organised, Google Drive',desc:'Our shared Drive has grown a lot! Help us sort files into the right folders, rename anything confusing, and flag any duplicates.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt11',section:'media',title:'Take photos at the October social (with consent)',priority:'Soon',time:'2 to 3 hours',date:'October social',remote:'no',skills:'Photography — phone camera is fine',desc:"Take warm, natural photos of the event to use on social media and in our newsletter. We'll give you a consent guide and photo checklist.",contact:'Safe',email:'info@safesoulmates.org',notes:'Please read our photo consent guidance before the event.',taken:false,takenBy:''},
-  {id:'dt12',section:'media',title:'Write a short newsletter article about a recent event',priority:'Ongoing',time:'1 to 2 hours',date:'Monthly',remote:'yes',skills:'Writing, friendly tone',desc:'Write 150 to 200 words about something that happened at a recent Safe Soulmates event. Easy Read style preferred — short sentences, friendly.',contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt13',section:'media',title:'Design a poster for the Christmas social on Canva',priority:'Soon',time:'2 hours',date:'November',remote:'yes',skills:'Canva — we have a template',desc:"Use our Canva template to create a festive poster for the Christmas social. We'll give you all the details, our brand colours, and access to our Canva account.",contact:'',email:'info@safesoulmates.org',notes:'Brand colours: Sage Green, Purple, Lime Yellow, Berry Pink.',taken:false,takenBy:''},
-  {id:'dt14',section:'community',title:'Welcome buddy for a new Soulmate joining their first event',priority:'Ongoing',time:'2 to 3 hours',date:'As needed',remote:'no',skills:'Warm, patient, understanding',desc:"Be a friendly buddy for someone coming to their very first event. Meet them at the door, stay nearby during the event, and make sure they feel included. No training needed — just kindness.",contact:'Safe',email:'info@safesoulmates.org',notes:'This role makes a huge difference to new members.',taken:false,takenBy:''},
-  {id:'dt15',section:'community',title:'Send check-in messages to members who missed last event',priority:'Soon',time:'30 mins',date:'After each event',remote:'yes',skills:'Warm, good written communication',desc:"After each event, send a short friendly message to any Soulmates who were expected but did not make it — just to let them know they were missed. We'll give you a template to adapt.",contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt16',section:'lived',title:'Review our Reasonable Adjustments checklist',priority:'Soon',time:'1 to 2 hours',date:'Flexible',remote:'yes',skills:'Lived experience of neurodivergence or disability',desc:'Read through our Reasonable Adjustments checklist and tell us: does it feel right? Is anything missing? Is the language right? Your feedback will directly shape the final version.',contact:'Safe',email:'info@safesoulmates.org',notes:'Your lived experience makes this better than any expert review.',taken:false,takenBy:''},
-  {id:'dt17',section:'lived',title:'Accessibility testing of our new events webpage',priority:'Urgent',time:'1 hour',date:'October',remote:'yes',skills:'Lived experience of accessibility barriers',desc:'Go through our new events page as a user. Can you find events easily? Is anything confusing, inaccessible, or overwhelming? Tell us what works and what does not.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt18',section:'training',title:'Help set up the training room before OMMT delivery',priority:'Soon',time:'1 hour',date:'Various — check with Safe',remote:'no',skills:'Practical, organised',desc:'Arrive an hour before training to help arrange tables, print resources, set up the laptop and display, put out name labels and pens.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt19',section:'admin',title:'Data entry — add new volunteer details to our spreadsheet',priority:'Soon',time:'1 to 2 hours',date:'Flexible',remote:'yes',skills:'Spreadsheets, attention to detail',desc:'We have a pile of paper volunteer forms that need entering into our secure spreadsheet. Accuracy matters — take your time. All data handled in line with GDPR.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt20',section:'admin',title:'Print and pack 50 resource folders for November training',priority:'Urgent',time:'2 hours',date:'Late October',remote:'either',skills:'',desc:"Print the training resources (we'll send you the files), fold and staple them, and put them into 50 folders. Can be done at home if you have a printer.",contact:'Safe',email:'info@safesoulmates.org',notes:'About 8 pages per pack.',taken:false,takenBy:''},
-  {id:'dt21',section:'fundraise',title:'Research local businesses for raffle prize donations',priority:'Soon',time:'2 hours',date:'Before November',remote:'yes',skills:'Research, confident written communication',desc:"Find 10 to 15 local Cambridge businesses who might donate a prize for our Christmas raffle. We'll give you a template email to send.",contact:'',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt22',section:'fundraise',title:'Help run a community stall at the Cambridge Market',priority:'Soon',time:'Half day',date:'Date TBC',remote:'no',skills:'Friendly, confident talking to public',desc:'Stand at our table, chat to passersby about Safe Soulmates, hand out leaflets, and help collect donations. Training and briefing provided.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt23',section:'access',title:'Easy Read check — review our new member welcome letter',priority:'Urgent',time:'1 hour',date:'This week',remote:'yes',skills:'Plain language, lived experience of reading differences',desc:'Read our new welcome letter and tell us: Is it clear? Are the sentences too long? Is any word confusing? Does it feel friendly? Your feedback will shape the final version sent to all new Soulmates.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-  {id:'dt24',section:'access',title:'Inclusive language review of the volunteer handbook',priority:'Soon',time:'1 to 2 hours',date:'Flexible',remote:'yes',skills:'Knowledge of inclusive and gender-neutral language',desc:'Go through our volunteer handbook and flag any language that does not feel gender-neutral, LGBTQIA+ inclusive, or neurodivergent-friendly. Suggest alternatives where you can.',contact:'Safe',email:'info@safesoulmates.org',notes:'',taken:false,takenBy:''},
-];
+const DEFAULT_TASKS=[];
+const DEFAULT_DONE=[];
 
-const DEFAULT_DONE=[
-  {id:'dd1',title:'Redesigned the volunteer welcome pack',section:'admin',takenBy:'Jordan',note:'Completely refreshed — so much clearer and friendlier now. Every new volunteer will benefit from this work. 💛'},
-  {id:'dd2',title:'Hosted the September monthly social',section:'events',takenBy:'A volunteer',note:'Brilliant job keeping everything running smoothly and making everyone feel welcome from the moment they walked in.'},
-  {id:'dd3',title:'Created Easy Read version of the events page',section:'access',takenBy:'A Soulmate volunteer',note:'This is exactly the kind of lived-experience work that makes Safe Soulmates different. Thank you so much.'},
-  {id:'dd4',title:'Sorted and labelled 3 months of the Google Drive',section:'digital',takenBy:'A volunteer',note:'The Drive is so much easier to use now — a real gift to everyone on the team. 🙌'},
-  {id:'dd5',title:'Baked cakes for the summer fundraising stall',section:'fundraise',takenBy:'Two wonderful volunteers',note:'They raised over £80 and had a wonderful time doing it. We are so incredibly grateful.'},
-];
-
-const DEFAULT_OPPS=[
-  {id:'do1',type:'training',title:'AI for Everyone',provider:'DeepLearning.AI / Coursera',cost:'Free',format:'Online',date:'Rolling',location:'Online',desc:'A plain-English introduction to AI — what it is, how it is used, and how it affects work and daily life. No technical knowledge needed.',why:'Recommended by Safe.',link:'https://www.coursera.org/learn/ai-for-everyone',access:'Subtitles available. Self-paced.'},
-  {id:'do2',type:'training',title:'Introduction to Safeguarding Adults',provider:'SCIE',cost:'Free',format:'Online',date:'Always available',location:'Online',desc:'Covers safeguarding principles, how to recognise signs of abuse or neglect, and what to do.',why:'Suitable for all volunteers and staff working with vulnerable adults.',link:'https://www.scie.org.uk/safeguarding/adults/introduction/',access:'Screen reader compatible.'},
-  {id:'do3',type:'training',title:'Understanding Autism',provider:'FutureLearn / Autism Education Trust',cost:'Free',format:'Online',date:'Multiple cohorts per year',location:'Online',desc:'Explores what autism is, how it affects people differently, and how to create more inclusive environments.',why:'Brilliant for anyone new to Safe Soulmates.',link:'https://www.futurelearn.com/courses/autism',access:'Subtitles available. Self-paced.'},
-  {id:'do4',type:'training',title:'BSL Level 1 — British Sign Language',provider:'Cambridge Regional College',cost:'Funded',format:'Both',date:'Autumn and Spring terms',location:'Cambridge / Online',desc:'Introduces BSL from scratch — greetings, everyday conversation, the fingerspelling alphabet, and Deaf culture.',why:'Inspired by Ellen — one of our Soulmates who taught BSL to others at Cambridge Arts Theatre.',link:'https://www.camre.ac.uk/',access:'Delivered in BSL and English together.'},
-  {id:'do5',type:'training',title:'Mental Health First Aid',provider:'MHFA England',cost:'Paid',format:'Both',date:'Regular dates across England',location:'Cambridge / Online',desc:'Trains people to be a point of contact for anyone experiencing a mental health issue or crisis.',why:'Highly recommended for anyone in a listening or support role at Safe Soulmates.',link:'https://mhfaengland.org/',access:'Contact provider in advance to discuss access needs.'},
-  {id:'do6',type:'volunteering',title:'Befriending volunteer — Age UK Cambridgeshire',provider:'Age UK Cambridgeshire',cost:'Free',format:'In person',date:'Rolling applications',location:'Cambridge',desc:'Spend an hour or two a week with an older person who is isolated. Just chat, go for a walk, have a cup of tea.',why:'Aligns beautifully with Safe Soulmates values.',link:'https://www.ageuk.org.uk/cambridgeshireandpeterborough/',access:''},
-  {id:'do7',type:'event',title:'Cambridge Volunteer Fair',provider:'Volunteer Centre Cambridgeshire',cost:'Free',format:'In person',date:'Spring — check website',location:'Cambridge city centre',desc:'Meet local charities and organisations looking for volunteers.',why:'Good for Soulmates exploring volunteering for the first time.',link:'https://www.volunteeringcambs.org.uk/',access:'Check website for accessibility information.'},
-  {id:'do8',type:'work',title:'Google Digital Garage — Digital Marketing',provider:'Google Digital Garage',cost:'Free',format:'Online',date:'Available any time',location:'Online',desc:'Covers social media, analytics, content marketing, mobile, and video. 26 short bite-sized modules.',why:'Brilliant for Soulmates exploring work in comms, marketing, or charity.',link:'https://learndigital.withgoogle.com/digitalgarage/course/digital-marketing',access:'Fully online. Subtitles. Self-paced.'},
-  {id:'do9',type:'social',title:'Cambridge Gaming Cafe — Evening Social',provider:'Cambridge Gaming Cafe',cost:'Paid',format:'In person',date:'Monthly evenings — check with Safe',location:'Cambridge',desc:'An evening at the Gaming Cafe — board games, card games, relaxed social time in a welcoming space.',why:'A relaxed way to connect. Great for people who find large social events overwhelming.',link:'',access:'Quiet corners available.'},
-  {id:'do10',type:'training',title:'Care Certificate — 15 Standards',provider:'Skills for Care',cost:'Free',format:'Both',date:'Rolling — self-paced',location:'Online / workplace',desc:'The nationally recognised foundation of care work — covers duty of care, equality, safeguarding, communication, and person-centred support.',why:'Essential for anyone new to a social care role.',link:'https://www.skillsforcare.org.uk/care-certificate',access:'Accessible formats available on request.'},
-];
+const DEFAULT_OPPS=[];
 
 let tasks=[...DEFAULT_TASKS];
 let doneTasks=[...DEFAULT_DONE];
@@ -636,11 +592,14 @@ async function saveEdit(id){
   t.notes=document.getElementById('f-notes').value.trim();
   closeAdd();render();
   showToast('✏️ Task updated!');
-  // Reset submit button
-  document.getElementById('addSubmitBtn').onclick=null;
-  document.getElementById('addSubmitBtn').setAttribute('onclick','submitForm()');
+  // Reset submit button back to normal
+  const sb=document.getElementById('addSubmitBtn');
+  sb.onclick=null;
+  sb.textContent='✅ Add this task';
   document.getElementById('addTitle').textContent='Add a Task';
-  document.getElementById('addSubmitBtn').textContent='✅ Add this task';
+  document.getElementById('addStripe').style.background='var(--sage)';
+  // Re-attach normal submit
+  sb.addEventListener('click', function handler(){ submitForm(); });
   try{await apiPost({action:'editTask',row:t})}catch(e){}
 }
 function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');document.body.style.overflow=''}
@@ -726,8 +685,75 @@ function openOppDetail(id){
   document.getElementById('dBody').innerHTML=`<div class="d-row"><div class="d-icon">${cfg.emoji}</div><div class="d-key">Type</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>${dr('🏢','Provider',o.provider)}${dr('💰','Cost',o.cost)}${dr('💻','Format',o.format)}${dr('📅','When',o.date)}${dr('📍','Location',o.location)}${dr('♿','Accessibility',o.access)}<div class="d-section-title">About this opportunity</div><p style="font-size:.88rem;line-height:1.6;margin-bottom:10px">${esc(o.desc)}</p>${dr('💡','Why it matters',o.why)}`;
   const foot=document.getElementById('dFooter');foot.innerHTML='';
   if(o.link){const a=document.createElement('a');a.className='btn-primary';a.href=o.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent='🔗 Find out more';foot.appendChild(a)}
+  const editOppBtn=document.createElement('button');
+  editOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--blue-light);color:var(--blue);border:2px solid var(--blue);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
+  editOppBtn.textContent='✏️ Edit this opportunity';
+  editOppBtn.onclick=()=>openEditOppModal(o.id);foot.appendChild(editOppBtn);
+  const doneOppBtn=document.createElement('button');
+  doneOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:#4caf8a;color:#fff;border:none;border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
+  doneOppBtn.textContent='✅ Mark as no longer available';
+  doneOppBtn.onclick=()=>removeOpp(o.id,'done');foot.appendChild(doneOppBtn);
+  const delOppBtn=document.createElement('button');
+  delOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--pink-light);color:var(--pink);border:2px solid var(--pink);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
+  delOppBtn.textContent='🗑️ Delete this opportunity';
+  delOppBtn.onclick=()=>removeOpp(o.id,'delete');foot.appendChild(delOppBtn);
   const cl=document.createElement('button');cl.className='btn-secondary';cl.textContent='Close';cl.onclick=closeDetail;foot.appendChild(cl);
   document.getElementById('detailOverlay').classList.add('open');document.body.style.overflow='hidden';
+}
+
+function openEditOppModal(id){
+  const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
+  closeDetail();
+  addMode='opp';
+  document.getElementById('taskFields').style.display='none';
+  document.getElementById('oppFields').style.display='';
+  document.getElementById('addTitle').textContent='✏️ Edit Opportunity';
+  const sb=document.getElementById('addSubmitBtn');
+  sb.textContent='💾 Save changes';
+  sb.onclick=null;
+  sb.setAttribute('onclick','saveEditOpp("'+id+'")');
+  document.getElementById('addStripe').style.background='var(--c-opps)';
+  document.getElementById('fo-title').value=o.title||'';
+  document.getElementById('fo-type').value=o.type||'';
+  document.getElementById('fo-provider').value=o.provider||'';
+  document.getElementById('fo-cost').value=o.cost||'';
+  document.getElementById('fo-format').value=o.format||'';
+  document.getElementById('fo-date').value=o.date||'';
+  document.getElementById('fo-location').value=o.location||'';
+  document.getElementById('fo-desc').value=o.desc||'';
+  document.getElementById('fo-why').value=o.why||'';
+  document.getElementById('fo-link').value=o.link||'';
+  document.getElementById('fo-access').value=o.access||'';
+  document.getElementById('addOverlay').classList.add('open');document.body.style.overflow='hidden';
+}
+
+async function saveEditOpp(id){
+  const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
+  const title=document.getElementById('fo-title').value.trim();
+  const type=document.getElementById('fo-type').value;
+  const desc=document.getElementById('fo-desc').value.trim();
+  if(!title||!type||!desc){showToast('Please fill in the required fields');return}
+  o.title=title;o.type=type;o.provider=document.getElementById('fo-provider').value.trim();
+  o.cost=document.getElementById('fo-cost').value;o.format=document.getElementById('fo-format').value;
+  o.date=document.getElementById('fo-date').value.trim();o.location=document.getElementById('fo-location').value.trim();
+  o.desc=desc;o.why=document.getElementById('fo-why').value.trim();
+  o.link=document.getElementById('fo-link').value.trim();o.access=document.getElementById('fo-access').value.trim();
+  closeAdd();render();showView('opps');
+  showToast('✏️ Opportunity updated!');
+  const sb=document.getElementById('addSubmitBtn');sb.onclick=null;sb.setAttribute('onclick','submitForm()');
+  document.getElementById('addTitle').textContent='Add a Task';sb.textContent='✅ Add this task';
+  try{await apiPost({action:'editOpp',row:o})}catch(e){}
+}
+
+async function removeOpp(id,action){
+  const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
+  if(action==='delete'){
+    if(!confirm('Are you sure you want to delete this opportunity?'))return;
+  }
+  opps=opps.filter(x=>String(x.id)!==String(id));
+  closeDetail();render();showView('opps');
+  showToast(action==='delete'?'🗑️ Opportunity deleted':'✅ Marked as no longer available');
+  try{await apiPost({action:'removeOpp',id,reason:action})}catch(e){}
 }
 
 function openAddModal(mode,preSection){
@@ -735,7 +761,10 @@ function openAddModal(mode,preSection){
   document.getElementById('taskFields').style.display=addMode==='task'?'':'none';
   document.getElementById('oppFields').style.display=addMode==='opp'?'':'none';
   document.getElementById('addTitle').textContent=addMode==='opp'?'Add an Opportunity':'Add a Task';
-  document.getElementById('addSubmitBtn').textContent=addMode==='opp'?'✅ Add this opportunity':'✅ Add this task';
+  const sb=document.getElementById('addSubmitBtn');
+  sb.textContent=addMode==='opp'?'✅ Add this opportunity':'✅ Add this task';
+  sb.onclick=null;
+  sb.setAttribute('onclick','submitForm()');
   document.getElementById('addStripe').style.background=addMode==='opp'?'var(--c-opps)':'var(--sage)';
   if(preSection)document.getElementById('f-section').value=preSection;
   document.getElementById('addOverlay').classList.add('open');document.body.style.overflow='hidden';
