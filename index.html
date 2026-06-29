@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safe Soulmates — Volunteer Task Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -12,30 +14,40 @@
   --blue:#5D79B0;--blue-light:#e8edf6;--pink:#BC4367;--pink-light:#faeaee;
   --cream:#FAF8F3;--white:#ffffff;--border:#ece9e2;
   --shadow-sm:0 1px 6px rgba(90,90,90,0.08);--shadow:0 2px 14px rgba(90,90,90,0.11);
-  --radius:16px;--nav-h:68px;
+  --radius:16px;--nav-h:82px;
   --c-quick:#b0a800;--c-events:#BC4367;--c-digital:#5D79B0;--c-media:#8863A8;
   --c-community:#73976C;--c-lived:#d27b4a;--c-training:#6dbfcf;
   --c-admin:#5A5A5A;--c-fundraise:#b05d9b;--c-access:#4caf8a;
   --c-done:#4caf8a;--c-opps:#e07b39;--c-inprogress:#e07b39;
+  /* Focus ring — visible for keyboard users */
+  --focus-ring: 0 0 0 3px rgba(115,151,108,0.55);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charcoal);min-height:100vh;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 16px);-webkit-text-size-adjust:100%}
+
+/* ── FOCUS STYLES ── visible keyboard focus on all interactive elements */
+:focus-visible{outline:3px solid var(--sage);outline-offset:2px;border-radius:4px}
+button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
+
 .site-header{background:var(--white);border-bottom:3px solid var(--lime);padding:18px 20px 14px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(90,90,90,0.07)}
 .header-inner{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:3px}
-.logo-blob{width:42px;height:42px;background:var(--sage);border-radius:50% 35% 50% 35%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.logo-blob{width:42px;height:42px;background:var(--sage);border-radius:50% 35% 50% 35%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;aria-hidden:true}
 .site-header h1{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--charcoal);line-height:1.1}
 .site-tagline{font-size:0.8rem;color:var(--charcoal);opacity:0.55;margin-bottom:10px}
 .info-pills{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
 .info-pill{background:var(--sage-light);color:var(--sage);border-radius:20px;font-size:0.7rem;padding:3px 10px;font-weight:600}
 .main{padding:14px 14px 6px;max-width:820px;margin:0 auto}
 .view{display:none}.view.active{display:block}
+
+/* ── SECTION NAV TABS ── role="tablist" pattern */
 .sec-nav{display:flex;overflow-x:auto;gap:6px;padding:0 0 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .sec-nav::-webkit-scrollbar{display:none}
 .sec-tab{background:var(--white);border:2px solid var(--border);border-radius:20px;font-size:0.75rem;font-weight:600;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all .13s;flex-shrink:0;color:var(--charcoal);-webkit-tap-highlight-color:transparent}
-.sec-tab.active{background:var(--charcoal);color:var(--white);border-color:var(--charcoal)}
+.sec-tab[aria-selected="true"]{background:var(--charcoal);color:var(--white);border-color:var(--charcoal)}
+
 .section-block{margin-bottom:22px}
-.section-header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius) var(--radius) 0 0;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.section-header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius) var(--radius) 0 0;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;background:none;border:none;width:100%;text-align:left}
 .section-header h2{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);flex:1;line-height:1.2}
 .sec-emoji{font-size:1.25rem;flex-shrink:0}
 .sec-count{background:rgba(255,255,255,0.28);color:var(--white);font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:12px;flex-shrink:0}
@@ -62,10 +74,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .tt-skill{background:var(--purple-light);color:var(--purple)}.tt-person{background:var(--pink-light);color:var(--pink)}
 .task-arrow{color:#ccc;font-size:1rem;flex-shrink:0;margin-top:3px}
 .empty-msg{text-align:center;padding:22px 16px;font-size:.84rem;color:var(--charcoal);opacity:.42}
+
 /* IN PROGRESS VIEW */
 .inprogress-hero{background:linear-gradient(135deg,#e07b39 0%,#c96020 100%);border-radius:var(--radius);padding:20px 20px 18px;margin-bottom:18px;color:var(--white)}
 .inprogress-hero h2{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:4px}
 .inprogress-hero p{font-size:.82rem;opacity:.88;line-height:1.5}
+
 /* DONE */
 .done-hero{background:linear-gradient(135deg,#3a9d74 0%,var(--c-done) 60%,#52c490 100%);border-radius:var(--radius);padding:28px 22px 24px;margin-bottom:20px;text-align:center;color:var(--white);position:relative;overflow:hidden}
 .done-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 50%,rgba(255,255,255,.06) 0,transparent 60%),radial-gradient(circle at 80% 20%,rgba(255,255,255,.04) 0,transparent 50%)}
@@ -86,6 +100,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .done-card-note{font-size:.78rem;color:var(--charcoal);opacity:.62;line-height:1.45;font-style:italic}
 .done-empty{text-align:center;padding:44px 20px}.done-empty .emoji{font-size:2.5rem;margin-bottom:10px}
 .done-empty p{font-size:.88rem;opacity:.5;line-height:1.6}
+
 /* UPDATES / NOTES */
 .updates-section{margin-top:14px;padding-top:12px;border-top:1px solid #f0f0f0}
 .updates-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.38;margin-bottom:10px}
@@ -103,8 +118,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .update-name-input:focus{border-color:var(--sage)}
 .btn-update{background:var(--sage);color:var(--white);border:none;border-radius:9px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap}
 .btn-update:active{opacity:.8}
-/* note preview on in-progress card */
 .task-note-preview{font-size:.74rem;color:var(--charcoal);opacity:.6;margin-top:5px;font-style:italic;line-height:1.3}
+
 /* OPPS */
 .opps-hero{background:linear-gradient(135deg,#e07b39 0%,#c96020 100%);border-radius:var(--radius);padding:20px 20px 18px;margin-bottom:18px;color:var(--white)}
 .opps-hero h2{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:4px}
@@ -112,7 +127,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .opps-filter{display:flex;overflow-x:auto;gap:6px;padding:0 0 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .opps-filter::-webkit-scrollbar{display:none}
 .opp-type-tab{background:var(--white);border:2px solid var(--border);border-radius:20px;font-size:.75rem;font-weight:600;padding:5px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0;color:var(--charcoal);-webkit-tap-highlight-color:transparent;transition:all .13s}
-.opp-type-tab.active{background:var(--c-opps);color:var(--white);border-color:var(--c-opps)}
+.opp-type-tab[aria-selected="true"]{background:var(--c-opps);color:var(--white);border-color:var(--c-opps)}
 .opp-card{background:var(--white);border-radius:14px;padding:14px 16px;margin-bottom:10px;border:1.5px solid var(--border);cursor:pointer;transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent;display:flex;gap:12px;align-items:flex-start}
 .opp-card:hover{box-shadow:0 2px 14px rgba(90,90,90,.11);transform:translateY(-1px)}
 .opp-card:active{transform:scale(.98)}
@@ -126,18 +141,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .ot-paid{background:#fff3cd;color:#856404}.ot-online{background:var(--sage-light);color:var(--sage)}
 .ot-inperson{background:var(--pink-light);color:var(--pink)}.ot-cambridge{background:var(--purple-light);color:var(--purple)}
 .opp-arrow{color:#ccc;font-size:1rem;flex-shrink:0;margin-top:4px}
+
 /* NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));background:var(--white);border-top:2px solid var(--lime);display:flex;align-items:flex-start;z-index:200;box-shadow:0 -2px 12px rgba(90,90,90,.09);padding-bottom:env(safe-area-inset-bottom,0px)}
-.nav-btn{flex:1;height:var(--nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;cursor:pointer;transition:background .12s;-webkit-tap-highlight-color:transparent;padding:0;position:relative}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));background:var(--white);border-top:3px solid var(--lime);display:flex;align-items:flex-start;z-index:200;box-shadow:0 -3px 16px rgba(90,90,90,.12);padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav-btn{flex:1;height:var(--nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:none;border:none;cursor:pointer;transition:background .12s;-webkit-tap-highlight-color:transparent;padding:8px 4px 4px;position:relative;border-radius:0}
 .nav-btn:active{background:var(--sage-light)}
-.nav-btn.active .nav-icon,.nav-btn.active .nav-label{color:var(--sage)}
-.nav-btn.active .nav-label{font-weight:700;opacity:1!important}
-.nav-icon{font-size:1.35rem;line-height:1}.nav-label{font-size:.6rem;font-weight:600;color:var(--charcoal);opacity:.55}
-.nav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--pink);color:var(--white);font-size:.58rem;font-weight:700;border-radius:10px;padding:1px 5px;min-width:17px;text-align:center;line-height:1.5}
+.nav-btn[aria-current="page"]{background:var(--sage-light)}
+.nav-btn[aria-current="page"] .nav-icon,
+.nav-btn[aria-current="page"] .nav-label{color:var(--sage)}
+.nav-btn[aria-current="page"] .nav-label{font-weight:800;opacity:1!important}
+.nav-icon{font-size:1.7rem;line-height:1}
+.nav-label{font-size:.72rem;font-weight:700;color:var(--charcoal);opacity:.6;letter-spacing:.01em}
+.nav-badge{position:absolute;top:5px;right:calc(50% - 22px);background:var(--pink);color:var(--white);font-size:.62rem;font-weight:700;border-radius:10px;padding:2px 6px;min-width:19px;text-align:center;line-height:1.5}
 .nav-badge.green{background:var(--c-done)}
 .nav-badge.amber{background:var(--c-inprogress)}
-.add-fab{background:var(--sage);width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--white);box-shadow:0 3px 12px rgba(115,151,108,.42);transition:transform .12s;margin-bottom:2px}
+.add-fab{background:var(--sage);width:50px;height:50px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:var(--white);box-shadow:0 4px 14px rgba(115,151,108,.45);transition:transform .12s;margin-bottom:2px}
 .nav-btn.add-btn:active .add-fab{transform:scale(.91)}
+
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(90,90,90,.44);z-index:300;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex;animation:fadeIn .18s ease}
@@ -153,48 +173,71 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .modal-close{background:var(--sage-light);border:none;border-radius:50%;width:34px;height:34px;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--charcoal);-webkit-tap-highlight-color:transparent}
 .modal-body{padding:14px 18px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
 .modal-footer{padding:12px 18px 16px;border-top:1px solid #f0f0f0;display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+
+/* DETAIL ROWS */
 .d-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
-.d-icon{font-size:.95rem;flex-shrink:0;margin-top:2px}.d-key{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.48;min-width:82px;flex-shrink:0;margin-top:2px}
+.d-icon{font-size:.95rem;flex-shrink:0;margin-top:2px}
+.d-key{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.48;min-width:82px;flex-shrink:0;margin-top:2px}
 .d-val{font-size:.88rem;color:var(--charcoal);line-height:1.5}
 .d-section-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.38;margin:14px 0 7px;padding-top:10px;border-top:1px solid #f0f0f0}
 .taken-by-box{background:#fff3cd;border:1.5px solid #f0d060;border-radius:10px;padding:10px 14px;margin-top:10px;font-size:.85rem;color:var(--charcoal)}
 .taken-by-box strong{color:#856404}
+
 /* CLAIM */
 .claim-box{background:var(--sage-light);border-radius:12px;padding:14px;margin-bottom:4px}
 .claim-box p{font-size:.82rem;color:var(--charcoal);margin-bottom:8px;line-height:1.5}
 .claim-input{width:100%;border:2px solid var(--sage-mid);border-radius:9px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--charcoal);background:var(--white);outline:none}
 .claim-input:focus{border-color:var(--sage)}
+.claim-input[aria-invalid="true"]{border-color:var(--pink)}
 .claim-err{font-size:.72rem;color:var(--pink);margin-top:3px;display:none}
 .claim-err.show{display:block}
+
 /* FORM */
 .form-group{margin-bottom:14px}
 .form-label{display:block;font-size:.8rem;font-weight:700;color:var(--charcoal);margin-bottom:5px}
 .req{color:var(--pink)}
 .form-input,.form-select,.form-textarea{width:100%;border:2px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--charcoal);background:var(--cream);outline:none;transition:border-color .2s;-webkit-appearance:none}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--sage);background:var(--white)}
+.form-input[aria-invalid="true"],.form-select[aria-invalid="true"],.form-textarea[aria-invalid="true"]{border-color:var(--pink)}
 .form-textarea{resize:vertical;min-height:72px;line-height:1.5}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .form-error{font-size:.72rem;color:var(--pink);margin-top:3px;display:none}
 .form-error.show{display:block}
+
+/* PILL TOGGLES — accessible toggle buttons */
 .pill-group{display:flex;flex-wrap:wrap;gap:6px}
 .pill-toggle{background:var(--sage-light);color:var(--sage);border:2px solid transparent;border-radius:20px;padding:5px 13px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;min-height:34px;transition:all .13s;-webkit-tap-highlight-color:transparent}
-.pill-toggle.on{background:var(--sage);color:var(--white);border-color:var(--sage)}
+.pill-toggle[aria-pressed="true"]{background:var(--sage);color:var(--white);border-color:var(--sage)}
+
+/* BUTTONS */
 .btn-primary{display:block;width:100%;min-height:50px;background:var(--sage);color:var(--white);border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;line-height:50px;transition:opacity .13s;-webkit-tap-highlight-color:transparent}
 .btn-primary:hover{opacity:.87}
 .btn-secondary{display:block;width:100%;min-height:50px;background:var(--white);color:var(--sage);border:2px solid var(--sage);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;line-height:46px;transition:background .13s;-webkit-tap-highlight-color:transparent}
 .btn-secondary:hover{background:var(--sage-light)}
+
+/* SEARCH */
 .search-wrap{background:var(--white);border-radius:var(--radius);padding:14px;box-shadow:0 2px 14px rgba(90,90,90,.11);margin-bottom:14px}
 .search-input{width:100%;border:2px solid var(--sage-light);border-radius:10px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--charcoal);background:var(--cream);outline:none;transition:border-color .2s}
 .search-input:focus{border-color:var(--sage);background:var(--white)}
 .search-input::placeholder{color:#bbb}
+
+/* TOAST */
 .toast{position:fixed;bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 10px);left:50%;transform:translateX(-50%) translateY(16px);background:var(--charcoal);color:var(--white);padding:11px 22px;border-radius:24px;font-size:.88rem;font-weight:600;z-index:500;opacity:0;transition:opacity .28s,transform .28s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* LOADING BAR — live region */
 #loadingBar{display:none;background:var(--sage);color:var(--white);text-align:center;font-size:.8rem;font-weight:600;padding:8px 16px;position:sticky;top:0;z-index:99;letter-spacing:.02em}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* SKIP LINK */
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;background:var(--sage);color:var(--white);font-weight:700;padding:10px 18px;border-radius:0 0 10px 10px}
+.skip-link:focus{position:fixed;left:50%;transform:translateX(-50%);top:0;width:auto;height:auto;font-size:1rem}
+
+/* OPP STATES */
 .opp-card.closed{opacity:.75;border-left:4px solid #ccc;background:#f9f9f9}
 .opp-closed-badge{display:inline-block;background:#f0f0f0;color:#888;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:4px}
 .past-opps-header{font-family:DM Serif Display,serif;font-size:1.1rem;color:var(--charcoal);margin:20px 0 10px;padding-top:16px;border-top:2px solid var(--border);opacity:.7}
 
+/* EDIT / COMMENT BUTTONS */
 .btn-edit{background:var(--blue-light);color:var(--blue);border:2px solid var(--blue);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;padding:8px 16px;display:inline-flex;align-items:center;gap:6px;transition:all .13s}
 .btn-edit:hover{background:var(--blue);color:#fff}
 .comment-item{background:var(--sage-light);border-radius:10px;padding:10px 12px;margin-bottom:8px}
@@ -202,160 +245,378 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charco
 .comment-time{font-size:.65rem;opacity:.45;margin-left:6px;font-weight:400}
 .comment-text{font-size:.84rem;color:var(--charcoal);line-height:1.45;word-break:break-word}
 .comment-link{color:var(--blue);text-decoration:underline}
+
+/* CONFIRM DIALOG (replaces browser confirm()) */
+.confirm-dialog{background:#fff8f3;border:2px solid #f0d060;border-radius:12px;padding:14px;margin-top:8px}
+.confirm-dialog p{font-size:.88rem;color:var(--charcoal);margin-bottom:10px;line-height:1.5}
+.confirm-dialog-btns{display:flex;gap:8px}
+.btn-danger{flex:1;min-height:42px;background:var(--pink);color:var(--white);border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer}
+.btn-cancel-sm{flex:1;min-height:42px;background:var(--white);color:var(--charcoal);border:2px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+
+<!-- SKIP LINK — keyboard users jump straight to content -->
+<a href="#mainContent" class="skip-link">Skip to main content</a>
+
 <header class="site-header">
-  <div class="header-inner"><div class="logo-blob">🙌</div><h1>Safe Soulmates</h1></div>
+  <div class="header-inner">
+    <div class="logo-blob" aria-hidden="true">🙌</div>
+    <h1>Safe Soulmates</h1>
+  </div>
   <div class="site-tagline">Volunteer Task Board</div>
-  <div class="info-pills">
-    <span class="info-pill">✅ No account needed</span>
-    <span class="info-pill">📋 Pick up a task</span>
-    <span class="info-pill">💛 Every bit helps</span>
+  <div class="info-pills" aria-label="Key information">
+    <span class="info-pill"><span aria-hidden="true">✅</span> No account needed</span>
+    <span class="info-pill"><span aria-hidden="true">📋</span> Pick up a task</span>
+    <span class="info-pill"><span aria-hidden="true">💛</span> Every bit helps</span>
   </div>
 </header>
-<div id="loadingBar">Loading tasks…</div>
-<main class="main">
-  <!-- TASKS -->
-  <div class="view active" id="viewAll">
-    <div class="sec-nav" id="secNav">
-      <button class="sec-tab active" onclick="filterSec('all',this)">All tasks</button>
-      <button class="sec-tab" onclick="filterSec('quick',this)">⚡ Quick wins</button>
-      <button class="sec-tab" onclick="filterSec('events',this)">🎉 Events</button>
-      <button class="sec-tab" onclick="filterSec('digital',this)">💻 Digital</button>
-      <button class="sec-tab" onclick="filterSec('media',this)">📸 Media</button>
-      <button class="sec-tab" onclick="filterSec('community',this)">❤️ Community</button>
-      <button class="sec-tab" onclick="filterSec('lived',this)">🧠 Lived Exp.</button>
-      <button class="sec-tab" onclick="filterSec('training',this)">🎓 Training</button>
-      <button class="sec-tab" onclick="filterSec('admin',this)">📋 Admin</button>
-      <button class="sec-tab" onclick="filterSec('fundraise',this)">💰 Fundraising</button>
-      <button class="sec-tab" onclick="filterSec('access',this)">🌈 Accessibility</button>
+
+<!-- Loading indicator — announced to screen readers -->
+<div id="loadingBar" role="status" aria-live="polite" aria-atomic="true">Loading tasks…</div>
+
+<main class="main" id="mainContent">
+
+  <!-- TASKS VIEW -->
+  <div class="view active" id="viewAll" role="tabpanel" aria-labelledby="navAll">
+    <div class="sec-nav" role="tablist" aria-label="Filter tasks by category" id="secNav">
+      <button class="sec-tab" role="tab" aria-selected="true" onclick="filterSec('all',this)">All tasks</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('quick',this)"><span aria-hidden="true">⚡</span> Quick wins</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('events',this)"><span aria-hidden="true">🎉</span> Events</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('digital',this)"><span aria-hidden="true">💻</span> Digital</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('media',this)"><span aria-hidden="true">📸</span> Media</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('community',this)"><span aria-hidden="true">❤️</span> Community</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('lived',this)"><span aria-hidden="true">🧠</span> Lived Exp.</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('training',this)"><span aria-hidden="true">🎓</span> Training</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('admin',this)"><span aria-hidden="true">📋</span> Admin</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('fundraise',this)"><span aria-hidden="true">💰</span> Fundraising</button>
+      <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('access',this)"><span aria-hidden="true">🌈</span> Accessibility</button>
     </div>
     <div id="sectionsContainer"></div>
   </div>
-  <!-- IN PROGRESS -->
-  <div class="view" id="viewInProgress">
+
+  <!-- IN PROGRESS VIEW -->
+  <div class="view" id="viewInProgress" role="tabpanel" aria-labelledby="navInProgress">
     <div class="inprogress-hero">
-      <h2>⏳ In Progress</h2>
+      <h2><span aria-hidden="true">⏳</span> In Progress</h2>
       <p>These tasks have been claimed by volunteers. Tap a task to mark it as done when finished.</p>
     </div>
     <div id="inProgressList"></div>
   </div>
-  <!-- SEARCH -->
-  <div class="view" id="viewSearch">
-    <div class="search-wrap"><input class="search-input" type="search" id="searchInput" placeholder="Search tasks by title, skill, section…" autocomplete="off" autocorrect="off" spellcheck="false"></div>
-    <div id="searchResults"><div class="empty-msg">Start typing to search tasks…</div></div>
+
+  <!-- SEARCH VIEW -->
+  <div class="view" id="viewSearch" role="tabpanel" aria-labelledby="navSearch">
+    <div class="search-wrap">
+      <label for="searchInput" class="form-label" style="margin-bottom:8px">Search tasks</label>
+      <input class="search-input" type="search" id="searchInput"
+        placeholder="Search by title, skill, section…"
+        autocomplete="off" autocorrect="off" spellcheck="false"
+        aria-controls="searchResults"
+        aria-label="Search tasks by title, skill or section">
+    </div>
+    <div id="searchResults" aria-live="polite" aria-atomic="true">
+      <div class="empty-msg">Start typing to search tasks…</div>
+    </div>
   </div>
-  <!-- DONE -->
-  <div class="view" id="viewDone">
+
+  <!-- DONE VIEW -->
+  <div class="view" id="viewDone" role="tabpanel" aria-labelledby="navDone">
     <div class="done-hero">
-      <span class="done-hero-emoji">💚🌟💚</span>
+      <span class="done-hero-emoji" aria-hidden="true">💚🌟💚</span>
       <h2>You are making a difference</h2>
-      <p>Every task here has helped bring people together, reduce isolation, and make Safe Soulmates stronger. From everyone at Safe Soulmates — thank you so much. 💛</p>
-      <div class="done-stats">
-        <div class="done-stat"><span class="done-stat-num" id="doneCount">5</span><span class="done-stat-lbl">tasks done</span></div>
-        <div class="done-stat"><span class="done-stat-num" id="doneVolCount">4</span><span class="done-stat-lbl">amazing people</span></div>
+      <p>Every task here has helped bring people together, reduce isolation, and make Safe Soulmates stronger. From everyone at Safe Soulmates — thank you so much. <span aria-hidden="true">💛</span></p>
+      <div class="done-stats" aria-label="Completion summary">
+        <div class="done-stat">
+          <span class="done-stat-num" id="doneCount" aria-label="tasks done">5</span>
+          <span class="done-stat-lbl" aria-hidden="true">tasks done</span>
+        </div>
+        <div class="done-stat">
+          <span class="done-stat-num" id="doneVolCount" aria-label="amazing people who helped">4</span>
+          <span class="done-stat-lbl" aria-hidden="true">amazing people</span>
+        </div>
       </div>
     </div>
     <div class="done-cards-grid" id="doneGrid"></div>
-    <div class="done-empty" id="doneEmpty" style="display:none"><div class="emoji">🌱</div><p>Completed tasks will appear here as volunteers tick them off.<br>They are on their way!</p></div>
+    <div class="done-empty" id="doneEmpty" style="display:none">
+      <div class="emoji" aria-hidden="true">🌱</div>
+      <p>Completed tasks will appear here as volunteers tick them off.<br>They are on their way!</p>
+    </div>
   </div>
-  <!-- OPPS -->
-  <div class="view" id="viewOpps">
+
+  <!-- OPPORTUNITIES VIEW -->
+  <div class="view" id="viewOpps" role="tabpanel" aria-labelledby="navOpps">
     <div class="opps-hero">
-      <h2>🌟 Opportunities</h2>
+      <h2><span aria-hidden="true">🌟</span> Opportunities</h2>
       <p>Training, events, learning, and experiences that could be brilliant for you — as a volunteer, Soulmate, or staff member.</p>
     </div>
-    <div class="opps-filter" id="oppsFilter">
-      <button class="opp-type-tab active" onclick="filterOpps('all',this)">All</button>
-      <button class="opp-type-tab" onclick="filterOpps('training',this)">🎓 Training</button>
-      <button class="opp-type-tab" onclick="filterOpps('event',this)">🎉 Events</button>
-      <button class="opp-type-tab" onclick="filterOpps('volunteering',this)">🙌 Volunteering</button>
-      <button class="opp-type-tab" onclick="filterOpps('work',this)">💼 Work &amp; Skills</button>
-      <button class="opp-type-tab" onclick="filterOpps('social',this)">☕ Social</button>
-      <button class="opp-type-tab" onclick="filterOpps('other',this)">🔍 Other</button>
+    <div class="opps-filter" role="tablist" aria-label="Filter opportunities by type" id="oppsFilter">
+      <button class="opp-type-tab" role="tab" aria-selected="true" onclick="filterOpps('all',this)">All</button>
+      <button class="opp-type-tab" role="tab" aria-selected="false" onclick="filterOpps('training',this)"><span aria-hidden="true">🎓</span> Training</button>
+      <button class="opp-type-tab" role="tab" aria-selected="false" onclick="filterOpps('event',this)"><span aria-hidden="true">🎉</span> Events</button>
+      <button class="opp-type-tab" role="tab" aria-selected="false" onclick="filterOpps('volunteering',this)"><span aria-hidden="true">🙌</span> Volunteering</button>
+      <button class="opp-type-tab" role="tab" aria-selected="false" onclick="filterOpps('work',this)"><span aria-hidden="true">💼</span> Work &amp; Skills</button>
+      <button class="opp-type-tab" role="tab" aria-selected="false" onclick="filterOpps('social',this)"><span aria-hidden="true">☕</span> Social</button>
+      <button class="opp-type-tab" role="tab" aria-selected="false" onclick="filterOpps('other',this)"><span aria-hidden="true">🔍</span> Other</button>
     </div>
     <div id="oppsGrid"></div>
-    <button class="section-add-btn" onclick="openAddModal('opp')" style="margin:10px 0 4px;width:100%">＋ Add an opportunity</button>
+    <button class="section-add-btn" onclick="openAddModal('opp')" style="margin:10px 0 4px;width:100%" aria-label="Add a new opportunity">
+      <span aria-hidden="true">＋</span> Add an opportunity
+    </button>
   </div>
+
 </main>
-<nav class="bottom-nav">
-  <button class="nav-btn active" id="navAll" onclick="showView('all')"><span class="nav-icon">📋</span><span class="nav-label">Tasks</span><span class="nav-badge" id="badgeAll">0</span></button>
-  <button class="nav-btn" id="navInProgress" onclick="showView('inprogress')"><span class="nav-icon">⏳</span><span class="nav-label">In Progress</span><span class="nav-badge amber" id="badgeInProgress" style="display:none">0</span></button>
-  <button class="nav-btn add-btn" id="navAdd" onclick="openAddModal('task')"><div class="add-fab">＋</div><span class="nav-label">Add</span></button>
-  <button class="nav-btn" id="navDone" onclick="showView('done')"><span class="nav-icon">🌟</span><span class="nav-label">Done</span><span class="nav-badge green" id="badgeDone">5</span></button>
-  <button class="nav-btn" id="navOpps" onclick="showView('opps')"><span class="nav-icon">🌱</span><span class="nav-label">Opps</span></button>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" aria-label="Main navigation">
+  <button class="nav-btn" id="navAll" onclick="showView('all')" aria-current="page" aria-label="Tasks — 0 available">
+    <span class="nav-icon" aria-hidden="true">📋</span>
+    <span class="nav-label">Tasks</span>
+    <span class="nav-badge" id="badgeAll" aria-hidden="true">0</span>
+  </button>
+  <button class="nav-btn" id="navInProgress" onclick="showView('inprogress')" aria-label="In progress tasks">
+    <span class="nav-icon" aria-hidden="true">⏳</span>
+    <span class="nav-label">In Progress</span>
+    <span class="nav-badge amber" id="badgeInProgress" style="display:none" aria-hidden="true">0</span>
+  </button>
+  <button class="nav-btn add-btn" id="navAdd" onclick="openAddModal('task')" aria-label="Add a new task">
+    <div class="add-fab" aria-hidden="true">＋</div>
+    <span class="nav-label">Add</span>
+  </button>
+  <button class="nav-btn" id="navDone" onclick="showView('done')" aria-label="Completed tasks">
+    <span class="nav-icon" aria-hidden="true">🌟</span>
+    <span class="nav-label">Done</span>
+    <span class="nav-badge green" id="badgeDone" aria-hidden="true">5</span>
+  </button>
+  <button class="nav-btn" id="navOpps" onclick="showView('opps')" aria-label="Opportunities">
+    <span class="nav-icon" aria-hidden="true">🌱</span>
+    <span class="nav-label">Opps</span>
+  </button>
 </nav>
+
 <!-- DETAIL MODAL -->
-<div class="modal-overlay" id="detailOverlay">
+<div class="modal-overlay" id="detailOverlay"
+  role="dialog" aria-modal="true" aria-labelledby="dTitle">
   <div class="modal-sheet">
     <div class="modal-stripe" id="dStripe"></div>
-    <div class="modal-handle"></div>
-    <div class="modal-header"><h2 id="dTitle">Task</h2><button class="modal-close" onclick="closeDetail()">✕</button></div>
+    <div class="modal-handle" aria-hidden="true"></div>
+    <div class="modal-header">
+      <h2 id="dTitle">Task</h2>
+      <button class="modal-close" onclick="closeDetail()" aria-label="Close task details">✕</button>
+    </div>
     <div class="modal-body" id="dBody"></div>
     <div class="modal-footer" id="dFooter"></div>
   </div>
 </div>
+
 <!-- CLAIM MODAL -->
-<div class="modal-overlay" id="claimOverlay">
+<div class="modal-overlay" id="claimOverlay"
+  role="dialog" aria-modal="true" aria-labelledby="claimHeading">
   <div class="modal-sheet">
     <div class="modal-stripe" style="background:var(--sage)"></div>
-    <div class="modal-handle"></div>
-    <div class="modal-header"><h2>I'd like to do this! 🙋</h2><button class="modal-close" onclick="closeClaim()">✕</button></div>
+    <div class="modal-handle" aria-hidden="true"></div>
+    <div class="modal-header">
+      <h2 id="claimHeading">I'd like to do this! <span aria-hidden="true">🙋</span></h2>
+      <button class="modal-close" onclick="closeClaim()" aria-label="Close — go back to tasks">✕</button>
+    </div>
     <div class="modal-body">
       <div class="claim-box">
-        <p>So we know who is picking this up — please add your name. You do not need an account. This is just so we can say thank you! 💛</p>
-        <input class="claim-input" type="text" id="claimName" placeholder="Your name or nickname" autocomplete="given-name">
-        <div class="claim-err" id="claimErr">Please add your name so we can thank you!</div>
+        <p>So we know who is picking this up — please add your name. You do not need an account. This is just so we can say thank you! <span aria-hidden="true">💛</span></p>
+        <label for="claimName" class="form-label">Your name or nickname <span class="req" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+        <input class="claim-input" type="text" id="claimName"
+          placeholder="Your name or nickname"
+          autocomplete="given-name"
+          aria-required="true"
+          aria-describedby="claimErr">
+        <div class="claim-err" id="claimErr" role="alert">Please add your name so we can thank you!</div>
       </div>
-      <p style="font-size:.78rem;opacity:.5;margin-top:10px;line-height:1.5">Your name will show on the task and on the In Progress board so the team knows who to contact. 🌟</p>
+      <p style="font-size:.78rem;opacity:.5;margin-top:10px;line-height:1.5">Your name will show on the task and on the In Progress board so the team knows who to contact. <span aria-hidden="true">🌟</span></p>
     </div>
     <div class="modal-footer">
-      <button class="btn-primary" onclick="confirmClaim()">✅ Yes, I will do this task!</button>
+      <button class="btn-primary" onclick="confirmClaim()"><span aria-hidden="true">✅</span> Yes, I will do this task!</button>
       <button class="btn-secondary" onclick="closeClaim()">Cancel</button>
     </div>
   </div>
 </div>
-<!-- ADD MODAL -->
-<div class="modal-overlay" id="addOverlay">
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="addOverlay"
+  role="dialog" aria-modal="true" aria-labelledby="addTitle">
   <div class="modal-sheet">
     <div class="modal-stripe" id="addStripe" style="background:var(--sage)"></div>
-    <div class="modal-handle"></div>
-    <div class="modal-header"><h2 id="addTitle">Add a Task</h2><button class="modal-close" onclick="closeAdd()">✕</button></div>
+    <div class="modal-handle" aria-hidden="true"></div>
+    <div class="modal-header">
+      <h2 id="addTitle">Add a Task</h2>
+      <button class="modal-close" onclick="closeAdd()" aria-label="Close — discard changes">✕</button>
+    </div>
     <div class="modal-body">
       <p style="font-size:.83rem;opacity:.6;margin-bottom:16px;line-height:1.5">Fill in what you know — the more detail the better. No account needed.</p>
+
+      <!-- TASK FIELDS -->
       <div id="taskFields">
-        <div class="form-group"><label class="form-label">Task title <span class="req">*</span></label><input class="form-input" id="f-title" placeholder="e.g. Help set up tables at the October social" autocomplete="off"><div class="form-error" id="e-title">Please add a task title</div></div>
-        <div class="form-group"><label class="form-label">Section <span class="req">*</span></label><select class="form-select" id="f-section"><option value="">— Choose a section —</option><option value="quick">⚡ Quick Win Tasks</option><option value="events">🎉 Events &amp; Socials</option><option value="digital">💻 Online &amp; Digital</option><option value="media">📸 Media &amp; Content</option><option value="community">❤️ Community &amp; Member Support</option><option value="lived">🧠 Lived Experience &amp; Feedback</option><option value="training">🎓 Training &amp; Inclusion</option><option value="admin">📋 Admin &amp; Organisation</option><option value="fundraise">💰 Fundraising &amp; Partnerships</option><option value="access">🌈 Accessibility &amp; Inclusion</option></select><div class="form-error" id="e-section">Please choose a section</div></div>
-        <div class="form-group"><label class="form-label">Priority</label><div class="pill-group" id="f-priority"><button type="button" class="pill-toggle" data-val="Urgent">🔴 Urgent</button><button type="button" class="pill-toggle" data-val="Soon">🟡 Soon</button><button type="button" class="pill-toggle on" data-val="Ongoing">🔵 Ongoing</button></div></div>
-        <div class="form-row"><div class="form-group"><label class="form-label">Time needed</label><input class="form-input" id="f-time" placeholder="e.g. 1 hour" autocomplete="off"></div><div class="form-group"><label class="form-label">Date / when</label><input class="form-input" id="f-date" placeholder="e.g. 14 Oct / anytime" autocomplete="off"></div></div>
-        <div class="form-group"><label class="form-label">Can it be done remotely?</label><div class="pill-group" id="f-remote"><button type="button" class="pill-toggle" data-val="yes">💻 Yes — remote</button><button type="button" class="pill-toggle" data-val="no">📍 In person only</button><button type="button" class="pill-toggle on" data-val="either">↔ Either works</button></div></div>
-        <div class="form-group"><label class="form-label">Helpful skills or experience</label><input class="form-input" id="f-skills" placeholder="e.g. Canva, friendly, driving licence" autocomplete="off"></div>
-        <div class="form-group"><label class="form-label">Description <span class="req">*</span></label><textarea class="form-textarea" id="f-desc" placeholder="What does this task involve? Keep it simple and friendly."></textarea><div class="form-error" id="e-desc">Please add a description</div></div>
-        <div class="form-group"><label class="form-label">Contact name</label><input class="form-input" id="f-contact-name" placeholder="Who should volunteers get in touch with?" autocomplete="off"></div>
-        <div class="form-group"><label class="form-label">Contact email</label><input class="form-input" type="email" id="f-contact-email" placeholder="email@example.com" autocomplete="off"></div>
-        <div class="form-group"><label class="form-label">Any other notes</label><textarea class="form-textarea" id="f-notes" placeholder="Anything else?" style="min-height:56px"></textarea></div>
+        <div class="form-group">
+          <label class="form-label" for="f-title">Task title <span class="req" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+          <input class="form-input" id="f-title" placeholder="e.g. Help set up tables at the October social" autocomplete="off" aria-required="true" aria-describedby="e-title">
+          <div class="form-error" id="e-title" role="alert">Please add a task title</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-section">Section <span class="req" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+          <select class="form-select" id="f-section" aria-required="true" aria-describedby="e-section">
+            <option value="">— Choose a section —</option>
+            <option value="quick">⚡ Quick Win Tasks</option>
+            <option value="events">🎉 Events &amp; Socials</option>
+            <option value="digital">💻 Online &amp; Digital</option>
+            <option value="media">📸 Media &amp; Content</option>
+            <option value="community">❤️ Community &amp; Member Support</option>
+            <option value="lived">🧠 Lived Experience &amp; Feedback</option>
+            <option value="training">🎓 Training &amp; Inclusion</option>
+            <option value="admin">📋 Admin &amp; Organisation</option>
+            <option value="fundraise">💰 Fundraising &amp; Partnerships</option>
+            <option value="access">🌈 Accessibility &amp; Inclusion</option>
+          </select>
+          <div class="form-error" id="e-section" role="alert">Please choose a section</div>
+        </div>
+        <div class="form-group">
+          <fieldset style="border:none;padding:0">
+            <legend class="form-label">Priority</legend>
+            <div class="pill-group" id="f-priority">
+              <button type="button" class="pill-toggle" data-val="Urgent" aria-pressed="false"><span aria-hidden="true">🔴</span> Urgent</button>
+              <button type="button" class="pill-toggle" data-val="Soon" aria-pressed="false"><span aria-hidden="true">🟡</span> Soon</button>
+              <button type="button" class="pill-toggle" data-val="Ongoing" aria-pressed="true"><span aria-hidden="true">🔵</span> Ongoing</button>
+            </div>
+          </fieldset>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="f-time">Time needed</label>
+            <input class="form-input" id="f-time" placeholder="e.g. 1 hour" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-date">Date / when</label>
+            <input class="form-input" id="f-date" placeholder="e.g. 14 Oct / anytime" autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <fieldset style="border:none;padding:0">
+            <legend class="form-label">Can it be done remotely?</legend>
+            <div class="pill-group" id="f-remote">
+              <button type="button" class="pill-toggle" data-val="yes" aria-pressed="false"><span aria-hidden="true">💻</span> Yes — remote</button>
+              <button type="button" class="pill-toggle" data-val="no" aria-pressed="false"><span aria-hidden="true">📍</span> In person only</button>
+              <button type="button" class="pill-toggle" data-val="either" aria-pressed="true">↔ Either works</button>
+            </div>
+          </fieldset>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-skills">Helpful skills or experience</label>
+          <input class="form-input" id="f-skills" placeholder="e.g. Canva, friendly, driving licence" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-desc">Description <span class="req" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+          <textarea class="form-textarea" id="f-desc" placeholder="What does this task involve? Keep it simple and friendly." aria-required="true" aria-describedby="e-desc"></textarea>
+          <div class="form-error" id="e-desc" role="alert">Please add a description</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-contact-name">Contact name</label>
+          <input class="form-input" id="f-contact-name" placeholder="Who should volunteers get in touch with?" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-contact-email">Contact email</label>
+          <input class="form-input" type="email" id="f-contact-email" placeholder="email@example.com" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-notes">Any other notes</label>
+          <textarea class="form-textarea" id="f-notes" placeholder="Anything else?" style="min-height:56px"></textarea>
+        </div>
       </div>
+
+      <!-- OPPORTUNITY FIELDS -->
       <div id="oppFields" style="display:none">
-        <div class="form-group"><label class="form-label">Title <span class="req">*</span></label><input class="form-input" id="fo-title" placeholder="e.g. BSL Level 1 at Cambridge Regional College" autocomplete="off"><div class="form-error" id="eo-title">Please add a title</div></div>
-        <div class="form-group"><label class="form-label">Type <span class="req">*</span></label><select class="form-select" id="fo-type"><option value="">— Choose a type —</option><option value="training">🎓 Training</option><option value="event">🎉 Event</option><option value="volunteering">🙌 Volunteering opportunity</option><option value="work">💼 Work / skills / employment</option><option value="social">☕ Social / community</option><option value="other">🔍 Other</option></select><div class="form-error" id="eo-type">Please choose a type</div></div>
-        <div class="form-group"><label class="form-label">Provider / Organisation</label><input class="form-input" id="fo-provider" placeholder="e.g. Cambridge Regional College, NHS" autocomplete="off"></div>
-        <div class="form-row"><div class="form-group"><label class="form-label">Cost</label><select class="form-select" id="fo-cost"><option value="">—</option><option value="Free">Free</option><option value="Funded">Funded</option><option value="Paid">Paid</option></select></div><div class="form-group"><label class="form-label">Format</label><select class="form-select" id="fo-format"><option value="">—</option><option value="Online">Online</option><option value="In person">In person</option><option value="Both">Both</option></select></div></div>
-        <div class="form-row"><div class="form-group"><label class="form-label">Date / when</label><input class="form-input" id="fo-date" placeholder="e.g. Autumn term" autocomplete="off"></div><div class="form-group"><label class="form-label">Location</label><input class="form-input" id="fo-location" placeholder="e.g. Cambridge / Online" autocomplete="off"></div></div>
-        <div class="form-group"><label class="form-label">Description <span class="req">*</span></label><textarea class="form-textarea" id="fo-desc" placeholder="What is it? Who is it for? Why is it useful?"></textarea><div class="form-error" id="eo-desc">Please add a description</div></div>
-        <div class="form-group"><label class="form-label">Why it matters / who recommended it</label><textarea class="form-textarea" id="fo-why" placeholder="Why would this be good for volunteers or Soulmates?" style="min-height:56px"></textarea></div>
-        <div class="form-group"><label class="form-label">Link</label><input class="form-input" type="url" id="fo-link" placeholder="https://…" autocomplete="off"></div>
-        <div class="form-group"><label class="form-label">Accessibility info</label><input class="form-input" id="fo-access" placeholder="e.g. Captions available, BSL, Easy Read" autocomplete="off"></div>
+        <div class="form-group">
+          <label class="form-label" for="fo-title">Title <span class="req" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+          <input class="form-input" id="fo-title" placeholder="e.g. BSL Level 1 at Cambridge Regional College" autocomplete="off" aria-required="true" aria-describedby="eo-title">
+          <div class="form-error" id="eo-title" role="alert">Please add a title</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fo-type">Type <span class="req" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+          <select class="form-select" id="fo-type" aria-required="true" aria-describedby="eo-type">
+            <option value="">— Choose a type —</option>
+            <option value="training">🎓 Training</option>
+            <option value="event">🎉 Event</option>
+            <option value="volunteering">🙌 Volunteering opportunity</option>
+            <option value="work">💼 Work / skills / employment</option>
+            <option value="social">☕ Social / community</option>
+            <option value="other">🔍 Other</option>
+          </select>
+          <div class="form-error" id="eo-type" role="alert">Please choose a type</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fo-provider">Provider / Organisation</label>
+          <input class="form-input" id="fo-provider" placeholder="e.g. Cambridge Regional College, NHS" autocomplete="off">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fo-cost">Cost</label>
+            <select class="form-select" id="fo-cost">
+              <option value="">—</option>
+              <option value="Free">Free</option>
+              <option value="Funded">Funded</option>
+              <option value="Paid">Paid</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fo-format">Format</label>
+            <select class="form-select" id="fo-format">
+              <option value="">—</option>
+              <option value="Online">Online</option>
+              <option value="In person">In person</option>
+              <option value="Both">Both</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fo-date">Date / when</label>
+            <input class="form-input" id="fo-date" placeholder="e.g. Autumn term" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fo-location">Location</label>
+            <input class="form-input" id="fo-location" placeholder="e.g. Cambridge / Online" autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fo-desc">Description <span class="req" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+          <textarea class="form-textarea" id="fo-desc" placeholder="What is it? Who is it for? Why is it useful?" aria-required="true" aria-describedby="eo-desc"></textarea>
+          <div class="form-error" id="eo-desc" role="alert">Please add a description</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fo-why">Why it matters / who recommended it</label>
+          <textarea class="form-textarea" id="fo-why" placeholder="Why would this be good for volunteers or Soulmates?" style="min-height:56px"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fo-link">Link</label>
+          <input class="form-input" type="url" id="fo-link" placeholder="https://…" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fo-access">Accessibility info</label>
+          <input class="form-input" id="fo-access" placeholder="e.g. Captions available, BSL, Easy Read" autocomplete="off">
+        </div>
       </div>
       <div style="height:6px"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn-primary" id="addSubmitBtn" onclick="submitForm()">✅ Add this task</button>
+      <button class="btn-primary" id="addSubmitBtn" onclick="submitForm()"><span aria-hidden="true">✅</span> Add this task</button>
       <button class="btn-secondary" onclick="closeAdd()">Cancel</button>
     </div>
   </div>
 </div>
-<div class="toast" id="toast"></div>
+
+<!-- LIVE REGION for toast announcements -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<!-- Screen-reader only utility class -->
+<style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+
 <script>
 const SECS={
   quick:{label:'Quick Win Tasks',emoji:'⚡',color:'#b0a800'},
@@ -382,39 +643,53 @@ const SCRIPT_URL='https://script.google.com/macros/s/AKfycbyI1DxT3kTnMgEXj2LWApW
 async function apiGet(action){const res=await fetch(`${SCRIPT_URL}?action=${action}`);return res.json()}
 async function apiPost(body){const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(body)});return res.json()}
 
-const DEFAULT_TASKS=[];
-const DEFAULT_DONE=[];
-
-const DEFAULT_OPPS=[];
-
-let tasks=[...DEFAULT_TASKS];
-let doneTasks=[...DEFAULT_DONE];
-let opps=[...DEFAULT_OPPS];
-let nextId=500,currentSec='all',currentOppType='all',addMode='task',claimingId=null;
+let tasks=[],doneTasks=[],opps=[];
+let currentSec='all',currentOppType='all',addMode='task',claimingId=null;
+// Track previously focused element so we can restore focus when modals close
+let _prevFocus=null;
 
 function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
 function sc(k){return SECS[k]||{label:'Other',emoji:'📌',color:'#888'}}
 function ot(k){return OPT[k]||{label:'Other',emoji:'🔍',color:'#888'}}
-function ptag(p){if(p==='Urgent')return'<span class="task-tag tt-urgent">🔴 Urgent</span>';if(p==='Soon')return'<span class="task-tag tt-soon">🟡 Soon</span>';if(p==='Ongoing')return'<span class="task-tag tt-ongoing">🔵 Ongoing</span>';return''}
-function rtag(r){if(r==='yes')return'<span class="task-tag tt-remote">💻 Remote ok</span>';if(r==='either')return'<span class="task-tag tt-remote">↔ Either</span>';return''}
+function ptag(p){
+  if(p==='Urgent')return'<span class="task-tag tt-urgent"><span aria-hidden="true">🔴</span> Urgent</span>';
+  if(p==='Soon')return'<span class="task-tag tt-soon"><span aria-hidden="true">🟡</span> Soon</span>';
+  if(p==='Ongoing')return'<span class="task-tag tt-ongoing"><span aria-hidden="true">🔵</span> Ongoing</span>';
+  return'';
+}
+function rtag(r){
+  if(r==='yes')return'<span class="task-tag tt-remote"><span aria-hidden="true">💻</span> Remote ok</span>';
+  if(r==='either')return'<span class="task-tag tt-remote">↔ Either</span>';
+  return'';
+}
+
+// ── FOCUS TRAP for modals ──
+function trapFocus(modalEl){
+  const focusable=modalEl.querySelectorAll('button,a,input,select,textarea,[tabindex]:not([tabindex="-1"])');
+  const first=focusable[0],last=focusable[focusable.length-1];
+  modalEl._trapHandler=function(e){
+    if(e.key!=='Tab')return;
+    if(e.shiftKey){if(document.activeElement===first){e.preventDefault();last.focus()}}
+    else{if(document.activeElement===last){e.preventDefault();first.focus()}}
+  };
+  modalEl.addEventListener('keydown',modalEl._trapHandler);
+}
+function releaseFocus(modalEl){
+  if(modalEl._trapHandler)modalEl.removeEventListener('keydown',modalEl._trapHandler);
+  if(_prevFocus)_prevFocus.focus();
+}
 
 async function loadAll(){
-  document.getElementById('loadingBar').style.display='block';
+  const bar=document.getElementById('loadingBar');
+  bar.style.display='block';
+  bar.textContent='Loading tasks…';
   try{
     const[taskData,doneData,oppData]=await Promise.all([apiGet('getTasks'),apiGet('getDone'),apiGet('getOpps')]);
-    // Merge sheet tasks with defaults — sheet tasks override by id
-    if(taskData&&taskData.length){
-      const sheetIds=new Set(taskData.map(t=>String(t.id)));
-      // Keep defaults that aren't in the sheet yet, add all sheet tasks
-      const defaults=DEFAULT_TASKS.filter(t=>!sheetIds.has(String(t.id)));
-      tasks=[...taskData.map(t=>({...t,taken:t.taken===true||t.taken==='true'||t.taken==='TRUE'})),...defaults];
-    }
-    if(doneData&&doneData.length) doneTasks=[...doneData,...DEFAULT_DONE.filter(d=>!doneData.find(x=>x.id===d.id))];
-    if(oppData&&oppData.length) opps=[...oppData,...DEFAULT_OPPS.filter(o=>!oppData.find(x=>x.id===o.id))];
-  }catch(e){
-    // Sheet unavailable — use defaults silently
-  }
-  document.getElementById('loadingBar').style.display='none';
+    if(taskData&&taskData.length) tasks=taskData.map(t=>({...t,taken:t.taken===true||t.taken==='true'||t.taken==='TRUE'}));
+    if(doneData&&doneData.length) doneTasks=[...doneData];
+    if(oppData&&oppData.length) opps=[...oppData];
+  }catch(e){}
+  bar.style.display='none';
   render();
 }
 
@@ -426,11 +701,34 @@ function renderSections(){
     if(currentSec!=='all'&&currentSec!==key)return;
     const cfg=sc(key);
     const open=tasks.filter(t=>t.section===key&&!t.taken);
-    const block=document.createElement('div');block.className='section-block';block.id='sec-'+key;
-    block.innerHTML=`<div class="section-header" style="background:${cfg.color}" onclick="toggleSec(this.closest('.section-block'))"><span class="sec-emoji">${cfg.emoji}</span><h2>${esc(cfg.label)}</h2><span class="sec-count">${open.length}</span><span class="sec-chevron">▼</span></div><div class="section-body"><div class="tasks-list" id="list-${key}"></div><button class="section-add-btn" onclick="event.stopPropagation();openAddModal('task','${key}')">＋ Add a task here</button></div>`;
+    const isCollapsed=false; // default open
+    const block=document.createElement('div');
+    block.className='section-block'+(isCollapsed?' collapsed':'');
+    block.id='sec-'+key;
+    const listId='list-'+key;
+    block.innerHTML=`
+      <button class="section-header" style="background:${cfg.color}"
+        onclick="toggleSec(this.closest('.section-block'))"
+        aria-expanded="${isCollapsed?'false':'true'}"
+        aria-controls="${listId}">
+        <span class="sec-emoji" aria-hidden="true">${cfg.emoji}</span>
+        <h2>${esc(cfg.label)}</h2>
+        <span class="sec-count" aria-label="${open.length} tasks">${open.length}</span>
+        <span class="sec-chevron" aria-hidden="true">▼</span>
+      </button>
+      <div class="section-body" id="${listId}">
+        <div class="tasks-list" id="tasklist-${key}"></div>
+        <button class="section-add-btn" onclick="event.stopPropagation();openAddModal('task','${key}')"
+          aria-label="Add a task to ${cfg.label}">
+          <span aria-hidden="true">＋</span> Add a task here
+        </button>
+      </div>`;
     C.appendChild(block);
-    const list=document.getElementById('list-'+key);
-    if(!open.length){list.innerHTML='<div class="empty-msg">No open tasks here — add one! 🙌</div>';return}
+    const list=document.getElementById('tasklist-'+key);
+    if(!open.length){
+      list.innerHTML='<div class="empty-msg">No open tasks here — add one! 🙌</div>';
+      return;
+    }
     open.forEach(t=>list.appendChild(buildCard(t)));
   });
 }
@@ -438,37 +736,86 @@ function renderSections(){
 function renderInProgress(){
   const list=document.getElementById('inProgressList');list.innerHTML='';
   const inprog=tasks.filter(t=>t.taken);
-  if(!inprog.length){list.innerHTML='<div class="empty-msg" style="padding:40px 20px">No tasks in progress yet.<br>Tasks appear here once a volunteer claims them. 🙌</div>';return}
+  if(!inprog.length){
+    list.innerHTML='<div class="empty-msg" style="padding:40px 20px">No tasks in progress yet.<br>Tasks appear here once a volunteer claims them. 🙌</div>';
+    return;
+  }
   inprog.forEach(t=>{
     const cfg=sc(t.section);
     const latestUpdate=t.updates&&t.updates.length?t.updates[t.updates.length-1]:null;
-    const card=document.createElement('div');card.className='task-card inprogress';card.onclick=()=>openDetail(t.id);
-    card.innerHTML=`<div class="task-dot" style="background:#e07b39"></div><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta"><span class="task-tag" style="background:#fff3cd;color:#e07b39">⏳ In progress</span>${t.takenBy?`<span class="task-tag tt-person">🙋 ${esc(t.takenBy)}</span>`:''}<span class="task-tag" style="background:var(--sage-light);color:var(--sage);font-size:.65rem">✅ Tap to mark done</span></div><div style="font-size:.72rem;opacity:.45;margin-top:4px">${cfg.emoji} ${esc(cfg.label)}</div>${latestUpdate?`<div class="task-note-preview">💬 "${esc(latestUpdate.text.substring(0,60))}${latestUpdate.text.length>60?'…':''}"</div>`:''}</div><div class="task-arrow">›</div>`;
+    const card=document.createElement('button');
+    card.className='task-card inprogress';
+    card.style.cssText='width:100%;text-align:left;font-family:inherit';
+    card.setAttribute('aria-label',`${t.title} — in progress by ${t.takenBy||'a volunteer'}. Tap to mark done.`);
+    card.onclick=()=>openDetail(t.id);
+    card.innerHTML=`<div class="task-dot" style="background:#e07b39" aria-hidden="true"></div>
+      <div class="task-main">
+        <div class="task-title">${esc(t.title)}</div>
+        <div class="task-meta">
+          <span class="task-tag" style="background:#fff3cd;color:#e07b39"><span aria-hidden="true">⏳</span> In progress</span>
+          ${t.takenBy?`<span class="task-tag tt-person"><span aria-hidden="true">🙋</span> ${esc(t.takenBy)}</span>`:''}
+          <span class="task-tag" style="background:var(--sage-light);color:var(--sage);font-size:.65rem">Tap to mark done</span>
+        </div>
+        <div style="font-size:.72rem;opacity:.45;margin-top:4px"><span aria-hidden="true">${cfg.emoji}</span> ${esc(cfg.label)}</div>
+        ${latestUpdate?`<div class="task-note-preview"><span aria-hidden="true">💬</span> "${esc(latestUpdate.text.substring(0,60))}${latestUpdate.text.length>60?'…':''}"</div>`:''}
+      </div>
+      <div class="task-arrow" aria-hidden="true">›</div>`;
     list.appendChild(card);
   });
 }
 
 function buildCard(t){
-  const cfg=sc(t.section);const div=document.createElement('div');
-  div.className='task-card';div.onclick=()=>openDetail(t.id);
-  div.innerHTML=`<div class="task-dot" style="background:${cfg.color}"></div><div class="task-main"><div class="task-title">${esc(t.title)}</div><div class="task-meta">${ptag(t.priority)}${t.time?`<span class="task-tag tt-time">⏱ ${esc(t.time)}</span>`:''}${rtag(t.remote)}${t.skills?`<span class="task-tag tt-skill">🔧 ${esc(t.skills.split(',')[0].trim())}</span>`:''}</div></div><div class="task-arrow">›</div>`;
-  return div;
+  const cfg=sc(t.section);
+  const btn=document.createElement('button');
+  btn.className='task-card';
+  btn.style.cssText='width:100%;text-align:left;font-family:inherit';
+  btn.setAttribute('aria-label',`${t.title}${t.priority?', '+t.priority:''}${t.time?', '+t.time:''}. Tap for details.`);
+  btn.onclick=()=>openDetail(t.id);
+  btn.innerHTML=`<div class="task-dot" style="background:${cfg.color}" aria-hidden="true"></div>
+    <div class="task-main">
+      <div class="task-title">${esc(t.title)}</div>
+      <div class="task-meta" aria-hidden="true">${ptag(t.priority)}${t.time?`<span class="task-tag tt-time"><span aria-hidden="true">⏱</span> ${esc(t.time)}</span>`:''}${rtag(t.remote)}${t.skills?`<span class="task-tag tt-skill"><span aria-hidden="true">🔧</span> ${esc(t.skills.split(',')[0].trim())}</span>`:''}</div>
+    </div>
+    <div class="task-arrow" aria-hidden="true">›</div>`;
+  return btn;
 }
 
-function toggleSec(b){b.classList.toggle('collapsed')}
-function filterSec(sec,btn){currentSec=sec;document.querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderSections()}
+function toggleSec(block){
+  const collapsed=block.classList.toggle('collapsed');
+  const btn=block.querySelector('.section-header');
+  btn.setAttribute('aria-expanded', collapsed?'false':'true');
+}
+
+function filterSec(sec,btn){
+  currentSec=sec;
+  document.querySelectorAll('.sec-tab').forEach(b=>{
+    b.classList.remove('active');
+    b.setAttribute('aria-selected','false');
+  });
+  btn.setAttribute('aria-selected','true');
+  renderSections();
+}
 
 function renderDone(){
   const grid=document.getElementById('doneGrid'),empty=document.getElementById('doneEmpty');
   grid.innerHTML='';
-  if(!doneTasks.length){empty.style.display='block';document.getElementById('doneCount').textContent='0';document.getElementById('doneVolCount').textContent='0';return}
+  if(!doneTasks.length){
+    empty.style.display='block';
+    document.getElementById('doneCount').textContent='0';
+    document.getElementById('doneVolCount').textContent='0';
+    return;
+  }
   empty.style.display='none';
   const names=new Set(doneTasks.map(d=>d.takenBy).filter(Boolean));
   document.getElementById('doneCount').textContent=doneTasks.length;
   document.getElementById('doneVolCount').textContent=names.size;
   doneTasks.forEach(d=>{
-    const cfg=sc(d.section);const card=document.createElement('div');card.className='done-card';card.style.borderLeftColor=cfg.color;
-    card.innerHTML=`<div class="done-card-section" style="color:${cfg.color}">${cfg.emoji} ${esc(cfg.label)}</div><div class="done-card-title">✅ ${esc(d.title)}</div><div class="done-card-vol">🙌 ${esc(d.takenBy||'A volunteer')}</div>${d.note?`<div class="done-card-note">${esc(d.note)}</div>`:''}`;
+    const cfg=sc(d.section);const card=document.createElement('div');
+    card.className='done-card';card.style.borderLeftColor=cfg.color;
+    card.innerHTML=`<div class="done-card-section" style="color:${cfg.color}"><span aria-hidden="true">${cfg.emoji}</span> ${esc(cfg.label)}</div>
+      <div class="done-card-title"><span aria-hidden="true">✅</span> ${esc(d.title)}</div>
+      <div class="done-card-vol"><span aria-hidden="true">🙌</span> ${esc(d.takenBy||'A volunteer')}</div>
+      ${d.note?`<div class="done-card-note">${esc(d.note)}</div>`:''}`;
     grid.appendChild(card);
   });
 }
@@ -480,93 +827,132 @@ function renderOpps(){
   const closed=filtered.filter(o=>o.status==='closed');
   if(!filtered.length){grid.innerHTML='<div class="empty-msg">No opportunities in this category yet — add one!</div>';return}
   function makeOppCard(o){
-    const cfg=ot(o.type);const card=document.createElement('div');
-    card.className='opp-card'+(o.status==='closed'?' closed':'');card.onclick=()=>openOppDetail(o.id);
-    const cTag=o.cost==='Free'?'<span class="task-tag ot-free">🆓 Free</span>':o.cost==='Funded'?'<span class="task-tag ot-funded">Funded</span>':o.cost==='Paid'?'<span class="task-tag ot-paid">Paid</span>':'';
-    const fTag=o.format==='Online'?'<span class="task-tag ot-online">💻 Online</span>':o.format==='In person'?'<span class="task-tag ot-inperson">📍 In person</span>':o.format==='Both'?'<span class="task-tag ot-online">↔ Both</span>':'';
-    const lTag=o.location&&o.location.toLowerCase().includes('cambridge')?'<span class="task-tag ot-cambridge">📍 Cambridge</span>':'';
-    const closedTag=o.status==='closed'?'<div class="opp-closed-badge">🔴 No longer available</div>':'';
-    card.innerHTML=`<div class="opp-icon-wrap" style="background:${cfg.color}20">${cfg.emoji}</div><div class="opp-main">${closedTag}<div class="opp-type-badge" style="color:${cfg.color}">${cfg.label}</div><div class="opp-title">${esc(o.title)}</div><div class="opp-provider">${esc(o.provider)}</div><div class="opp-tags">${cTag}${fTag}${lTag}</div></div><div class="opp-arrow">›</div>`;
-    grid.appendChild(card);
+    const cfg=ot(o.type);
+    const btn=document.createElement('button');
+    btn.className='opp-card'+(o.status==='closed'?' closed':'');
+    btn.style.cssText='width:100%;text-align:left;font-family:inherit';
+    btn.setAttribute('aria-label',`${o.title}${o.provider?', '+o.provider:''}${o.status==='closed'?', no longer available':''}`);
+    btn.onclick=()=>openOppDetail(o.id);
+    const cTag=o.cost==='Free'?'<span class="task-tag ot-free">Free</span>':o.cost==='Funded'?'<span class="task-tag ot-funded">Funded</span>':o.cost==='Paid'?'<span class="task-tag ot-paid">Paid</span>':'';
+    const fTag=o.format==='Online'?'<span class="task-tag ot-online">Online</span>':o.format==='In person'?'<span class="task-tag ot-inperson">In person</span>':o.format==='Both'?'<span class="task-tag ot-online">Both</span>':'';
+    const closedTag=o.status==='closed'?'<div class="opp-closed-badge">No longer available</div>':'';
+    btn.innerHTML=`<div class="opp-icon-wrap" style="background:${cfg.color}20" aria-hidden="true">${cfg.emoji}</div>
+      <div class="opp-main">
+        ${closedTag}
+        <div class="opp-type-badge" style="color:${cfg.color}">${esc(cfg.label)}</div>
+        <div class="opp-title">${esc(o.title)}</div>
+        <div class="opp-provider">${esc(o.provider)}</div>
+        <div class="opp-tags" aria-hidden="true">${cTag}${fTag}</div>
+      </div>
+      <div class="opp-arrow" aria-hidden="true">›</div>`;
+    grid.appendChild(btn);
   }
   active.forEach(makeOppCard);
   if(closed.length){
-    const hdr=document.createElement('div');hdr.className='past-opps-header';hdr.textContent='📦 Past Opportunities';grid.appendChild(hdr);
+    const hdr=document.createElement('h3');
+    hdr.className='past-opps-header';
+    hdr.innerHTML='<span aria-hidden="true">📦</span> Past Opportunities';
+    grid.appendChild(hdr);
     closed.forEach(makeOppCard);
   }
 }
-function filterOpps(type,btn){currentOppType=type;document.querySelectorAll('.opp-type-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderOpps()}
+
+function filterOpps(type,btn){
+  currentOppType=type;
+  document.querySelectorAll('.opp-type-tab').forEach(b=>{
+    b.classList.remove('active');
+    b.setAttribute('aria-selected','false');
+  });
+  btn.setAttribute('aria-selected','true');
+  renderOpps();
+}
 
 function updateBadges(){
   const open=tasks.filter(t=>!t.taken).length;
   const inprog=tasks.filter(t=>t.taken).length;
   document.getElementById('badgeAll').textContent=open;
+  document.getElementById('navAll').setAttribute('aria-label',`Tasks — ${open} available`);
   const ipBadge=document.getElementById('badgeInProgress');
-  if(inprog>0){ipBadge.textContent=inprog;ipBadge.style.display='block'}else{ipBadge.style.display='none'}
+  if(inprog>0){
+    ipBadge.textContent=inprog;
+    ipBadge.style.display='block';
+    document.getElementById('navInProgress').setAttribute('aria-label',`In progress — ${inprog} tasks`);
+  }else{
+    ipBadge.style.display='none';
+    document.getElementById('navInProgress').setAttribute('aria-label','In progress tasks');
+  }
   document.getElementById('badgeDone').textContent=doneTasks.length;
+  document.getElementById('navDone').setAttribute('aria-label',`Done — ${doneTasks.length} completed`);
 }
 
 function openDetail(id){
+  _prevFocus=document.activeElement;
   const t=tasks.find(x=>String(x.id)===String(id));if(!t)return;
   const cfg=sc(t.section);
   document.getElementById('dTitle').textContent=t.title;
   document.getElementById('dStripe').style.background=t.taken?'#e07b39':cfg.color;
-  const dr=(icon,key,val)=>val?`<div class="d-row"><div class="d-icon">${icon}</div><div class="d-key">${key}</div><div class="d-val">${esc(val)}</div></div>`:'';
+  const dr=(icon,key,val)=>val?`<div class="d-row"><div class="d-icon" aria-hidden="true">${icon}</div><div class="d-key">${key}</div><div class="d-val">${esc(val)}</div></div>`:'';
   const updatesHtml=`
     <div class="updates-section">
-      <div class="updates-title">💬 Comments &amp; Questions</div>
-      <div id="updatesThread">${renderUpdates(t)}</div>
+      <div class="updates-title" id="commentsLabel">Comments &amp; Questions</div>
+      <div id="updatesThread" aria-labelledby="commentsLabel">${renderUpdates(t)}</div>
       <div class="add-update-box">
-        <textarea id="updateText" placeholder="Ask a question, add a note, or paste a link… 💛" rows="2"></textarea>
+        <label for="updateText" class="form-label" style="margin-bottom:4px">Add a comment or question</label>
+        <textarea id="updateText" placeholder="Ask a question, add a note, or paste a link… 💛" rows="2" aria-describedby="updateHint"></textarea>
         <div class="update-inputs">
+          <label for="updateName" class="sr-only">Your name</label>
           <input class="update-name-input" id="updateName" placeholder="Your name" autocomplete="given-name">
-          <button class="btn-update" id="postUpdateBtn">Post 💬</button>
+          <button class="btn-update" id="postUpdateBtn">Post</button>
         </div>
-        <p style="font-size:.72rem;opacity:.5;margin-top:8px;line-height:1.5">💡 You can paste links in comments — they will be clickable. For urgent questions email <a href="mailto:info@safesoulmates.org" style="color:var(--sage)">info@safesoulmates.org</a></p>
+        <p id="updateHint" style="font-size:.72rem;opacity:.5;margin-top:8px;line-height:1.5">You can paste links in comments — they will be clickable. For urgent questions email <a href="mailto:info@safesoulmates.org" style="color:var(--sage)">info@safesoulmates.org</a></p>
       </div>
     </div>`;
   document.getElementById('dBody').innerHTML=`
-    <div class="d-row"><div class="d-icon">${cfg.emoji}</div><div class="d-key">Section</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>
-    ${t.taken?`<div class="taken-by-box">⏳ <strong>${esc(t.takenBy||'Someone')}</strong> is currently doing this task.</div>`:''}
+    <div class="d-row"><div class="d-icon" aria-hidden="true">${cfg.emoji}</div><div class="d-key">Section</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>
+    ${t.taken?`<div class="taken-by-box"><span aria-hidden="true">⏳</span> <strong>${esc(t.takenBy||'Someone')}</strong> is currently doing this task.</div>`:''}
     ${dr('🚦','Priority',t.priority)}${dr('⏱️','Time needed',t.time)}${dr('📅','When',t.date)}
     ${dr('📍','Where',t.remote==='yes'?'Remote / online':t.remote==='no'?'In person':'Either works')}
     ${dr('🔧','Helpful skills',t.skills)}
     <div class="d-section-title">About this task</div>
     <p style="font-size:.88rem;line-height:1.6;margin-bottom:10px">${esc(t.desc)}</p>
     ${dr('📝','Notes',t.notes)}
-    ${t.contact||t.email?`<div class="d-section-title">Contact</div>${dr('👤','Name',t.contact)}${t.email?`<div class="d-row"><div class="d-icon">✉️</div><div class="d-key">Email</div><div class="d-val"><a href="mailto:${esc(t.email)}?subject=${encodeURIComponent('Volunteer: '+t.title)}" style="color:var(--sage)">${esc(t.email)}</a></div></div>`:''}`:``}
+    ${t.contact||t.email?`<div class="d-section-title">Contact</div>${dr('👤','Name',t.contact)}${t.email?`<div class="d-row"><div class="d-icon" aria-hidden="true">✉️</div><div class="d-key">Email</div><div class="d-val"><a href="mailto:${esc(t.email)}?subject=${encodeURIComponent('Volunteer: '+t.title)}" style="color:var(--sage)">${esc(t.email)}</a></div></div>`:''}`:``}
     ${updatesHtml}`;
+  document.getElementById('postUpdateBtn').onclick=()=>addUpdate(t.id);
   const foot=document.getElementById('dFooter');foot.innerHTML='';
-  const postBtn=document.getElementById('postUpdateBtn');
-  if(postBtn) postBtn.onclick=()=>addUpdate(t.id);
   if(!t.taken){
-    const btn=document.createElement('button');btn.className='btn-primary';btn.textContent="🙋 I'd like to do this task!";
+    const btn=document.createElement('button');btn.className='btn-primary';
+    btn.innerHTML='<span aria-hidden="true">🙋</span> I\'d like to do this task!';
     btn.onclick=()=>{closeDetail();openClaim(id)};foot.appendChild(btn);
-    const doneBtn=document.createElement('button');doneBtn.style.cssText='display:block;width:100%;min-height:50px;background:#4caf8a;color:#fff;border:none;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px;margin-top:4px';
-    doneBtn.textContent="✅ Mark as complete — already done!";
+    const doneBtn=document.createElement('button');
+    doneBtn.style.cssText='display:block;width:100%;min-height:50px;background:#4caf8a;color:#fff;border:none;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px;margin-top:4px';
+    doneBtn.innerHTML='<span aria-hidden="true">✅</span> Mark as complete — already done!';
     doneBtn.onclick=()=>markDoneNoVolunteer(id);foot.appendChild(doneBtn);
   }
   if(t.taken){
     const btn=document.createElement('button');btn.className='btn-primary';btn.style.background='var(--c-done)';
-    btn.textContent="✅ Mark as done — it's finished!";btn.onclick=()=>markDone(id);foot.appendChild(btn);
+    btn.innerHTML='<span aria-hidden="true">✅</span> Mark as done — it\'s finished!';
+    btn.onclick=()=>markDone(id);foot.appendChild(btn);
   }
   const editBtn=document.createElement('button');
   editBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--blue-light);color:var(--blue);border:2px solid var(--blue);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
-  editBtn.textContent='✏️ Edit this task';
-  editBtn.onclick=()=>openEditModal(t.id);
-  foot.appendChild(editBtn);
+  editBtn.innerHTML='<span aria-hidden="true">✏️</span> Edit this task';
+  editBtn.onclick=()=>openEditModal(t.id);foot.appendChild(editBtn);
   const cl=document.createElement('button');cl.className='btn-secondary';cl.textContent='Close';cl.onclick=closeDetail;foot.appendChild(cl);
-  document.getElementById('detailOverlay').classList.add('open');document.body.style.overflow='hidden';
+  const overlay=document.getElementById('detailOverlay');
+  overlay.classList.add('open');document.body.style.overflow='hidden';
+  // Move focus to modal heading
+  setTimeout(()=>{document.getElementById('dTitle').setAttribute('tabindex','-1');document.getElementById('dTitle').focus();trapFocus(overlay)},100);
 }
+
 function openEditModal(id){
   const t=tasks.find(x=>String(x.id)===String(id));if(!t)return;
   closeDetail();
-  // Reuse the add modal but pre-fill it
   addMode='task';
   document.getElementById('taskFields').style.display='';
   document.getElementById('oppFields').style.display='none';
   document.getElementById('addTitle').textContent='✏️ Edit Task';
-  document.getElementById('addSubmitBtn').textContent='💾 Save changes';
+  document.getElementById('addSubmitBtn').innerHTML='<span aria-hidden="true">💾</span> Save changes';
   document.getElementById('addStripe').style.background=sc(t.section).color;
   document.getElementById('f-title').value=t.title||'';
   document.getElementById('f-section').value=t.section||'';
@@ -577,22 +963,31 @@ function openEditModal(id){
   document.getElementById('f-contact-name').value=t.contact||'';
   document.getElementById('f-contact-email').value=t.email||'';
   document.getElementById('f-notes').value=t.notes||'';
-  // Set priority pills
-  document.querySelectorAll('#f-priority .pill-toggle').forEach(b=>{b.classList.toggle('on',b.dataset.val===t.priority)});
-  document.querySelectorAll('#f-remote .pill-toggle').forEach(b=>{b.classList.toggle('on',b.dataset.val===t.remote)});
-  document.getElementById('addOverlay').classList.add('open');document.body.style.overflow='hidden';
-  // Override submit to save edit
+  document.querySelectorAll('#f-priority .pill-toggle').forEach(b=>{
+    const pressed=b.dataset.val===t.priority;
+    b.classList.toggle('on',pressed);
+    b.setAttribute('aria-pressed',pressed?'true':'false');
+  });
+  document.querySelectorAll('#f-remote .pill-toggle').forEach(b=>{
+    const pressed=b.dataset.val===t.remote;
+    b.classList.toggle('on',pressed);
+    b.setAttribute('aria-pressed',pressed?'true':'false');
+  });
+  const overlay=document.getElementById('addOverlay');
+  overlay.classList.add('open');document.body.style.overflow='hidden';
   document.getElementById('addSubmitBtn').onclick=()=>saveEdit(id);
+  setTimeout(()=>{document.getElementById('addTitle').setAttribute('tabindex','-1');document.getElementById('addTitle').focus();trapFocus(overlay)},100);
 }
+
 async function saveEdit(id){
   const title=document.getElementById('f-title').value.trim();
   const section=document.getElementById('f-section').value;
   const desc=document.getElementById('f-desc').value.trim();
   let ok=true;
-  if(!title){document.getElementById('e-title').classList.add('show');ok=false}else document.getElementById('e-title').classList.remove('show');
-  if(!section){document.getElementById('e-section').classList.add('show');ok=false}else document.getElementById('e-section').classList.remove('show');
-  if(!desc){document.getElementById('e-desc').classList.add('show');ok=false}else document.getElementById('e-desc').classList.remove('show');
-  if(!ok)return;
+  setFieldError('f-title','e-title',!title);
+  setFieldError('f-section','e-section',!section);
+  setFieldError('f-desc','e-desc',!desc);
+  if(!title||!section||!desc)return;
   const t=tasks.find(x=>String(x.id)===String(id));if(!t)return;
   t.title=title;t.section=section;t.desc=desc;
   t.priority=getOne('f-priority')||t.priority;
@@ -603,39 +998,51 @@ async function saveEdit(id){
   t.contact=document.getElementById('f-contact-name').value.trim();
   t.email=document.getElementById('f-contact-email').value.trim();
   t.notes=document.getElementById('f-notes').value.trim();
-  closeAdd();render();
-  showToast('✏️ Task updated!');
-  // Reset submit button back to normal
-  const sb=document.getElementById('addSubmitBtn');
-  sb.onclick=null;
-  sb.textContent='✅ Add this task';
-  document.getElementById('addTitle').textContent='Add a Task';
-  document.getElementById('addStripe').style.background='var(--sage)';
-  // Re-attach normal submit
-  sb.addEventListener('click', function handler(){ submitForm(); });
+  closeAdd();render();showToast('✏️ Task updated!');
+  resetAddModal();
   try{await apiPost({action:'editTask',row:t})}catch(e){}
 }
-function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');document.body.style.overflow=''}
+
+function closeDetail(){
+  const overlay=document.getElementById('detailOverlay');
+  releaseFocus(overlay);
+  overlay.classList.remove('open');
+  document.body.style.overflow='';
+}
 
 function openClaim(id){
-  claimingId=id;document.getElementById('claimName').value='';document.getElementById('claimErr').classList.remove('show');
-  document.getElementById('claimOverlay').classList.add('open');document.body.style.overflow='hidden';
-  setTimeout(()=>document.getElementById('claimName').focus(),300);
+  _prevFocus=document.activeElement;
+  claimingId=id;
+  document.getElementById('claimName').value='';
+  document.getElementById('claimErr').classList.remove('show');
+  document.getElementById('claimName').removeAttribute('aria-invalid');
+  const overlay=document.getElementById('claimOverlay');
+  overlay.classList.add('open');document.body.style.overflow='hidden';
+  setTimeout(()=>{document.getElementById('claimName').focus();trapFocus(overlay)},200);
 }
-function closeClaim(){document.getElementById('claimOverlay').classList.remove('open');document.body.style.overflow='';claimingId=null}
+function closeClaim(){
+  const overlay=document.getElementById('claimOverlay');
+  releaseFocus(overlay);
+  overlay.classList.remove('open');
+  document.body.style.overflow='';
+  claimingId=null;
+}
 
 async function confirmClaim(){
   const name=document.getElementById('claimName').value.trim();
-  if(!name){document.getElementById('claimErr').classList.add('show');return}
+  if(!name){
+    document.getElementById('claimErr').classList.add('show');
+    document.getElementById('claimName').setAttribute('aria-invalid','true');
+    document.getElementById('claimName').focus();
+    return;
+  }
   const t=tasks.find(x=>String(x.id)===String(claimingId));
   if(!t){closeClaim();return}
-  // Move to In Progress ONLY — not Done
   t.taken=true;t.takenBy=name;t.updates=t.updates||[];
   closeClaim();render();
   showToast(`⏳ Great — ${name} is on it!`);
   showView('inprogress');
-  try{await apiPost({action:'claimTask',id:t.id,takenBy:name})}
-  catch(e){/* sync quietly */}
+  try{await apiPost({action:'claimTask',id:t.id,takenBy:name})}catch(e){}
 }
 
 async function markDoneNoVolunteer(id){
@@ -643,9 +1050,7 @@ async function markDoneNoVolunteer(id){
   tasks=tasks.filter(x=>String(x.id)!==String(id));
   const doneRow={id:'done_'+Date.now(),title:t.title,section:t.section,takenBy:'Staff / completed internally',note:'Task completed without a volunteer — great work getting this done! 💛'};
   doneTasks.unshift(doneRow);
-  closeDetail();render();
-  showToast('✅ Task marked as complete!');
-  showView('done');
+  closeDetail();render();showToast('✅ Task marked as complete!');showView('done');
   try{await apiPost({action:'addDone',row:doneRow})}catch(e){}
 }
 
@@ -654,11 +1059,8 @@ async function markDone(id){
   tasks=tasks.filter(x=>String(x.id)!==String(id));
   const doneRow={id:'done_'+Date.now(),title:t.title,section:t.section,takenBy:t.takenBy||'A volunteer',note:'Task completed — thank you so much for helping Safe Soulmates bring people together and reduce isolation. You are making a real difference. 💛🌟'};
   doneTasks.unshift(doneRow);
-  closeDetail();render();
-  showToast('🌟 Brilliant — task marked as done!');
-  showView('done');
-  try{await apiPost({action:'addDone',row:doneRow})}
-  catch(e){/* sync quietly */}
+  closeDetail();render();showToast('🌟 Brilliant — task marked as done!');showView('done');
+  try{await apiPost({action:'addDone',row:doneRow})}catch(e){}
 }
 
 function renderUpdates(t){
@@ -681,63 +1083,85 @@ function addUpdate(taskId){
   const now=new Date();
   const timeStr=now.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+' at '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   t.updates.push({name,text,time:timeStr,isStaff:false});
-  // Refresh the thread in place
   document.getElementById('updatesThread').innerHTML=renderUpdates(t);
   document.getElementById('updateText').value='';
-  render(); // refresh card preview
-  showToast('💬 Update posted!');
+  render();showToast('💬 Comment posted!');
   try{apiPost({action:'addUpdate',id:taskId,update:{name,text,time:timeStr}})}catch(e){}
 }
 
-
 function openOppDetail(id){
+  _prevFocus=document.activeElement;
   const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
   const cfg=ot(o.type);
-  document.getElementById('dTitle').textContent=o.title;document.getElementById('dStripe').style.background=cfg.color;
-  const dr=(icon,key,val)=>val?`<div class="d-row"><div class="d-icon">${icon}</div><div class="d-key">${key}</div><div class="d-val">${esc(val)}</div></div>`:'';
-  document.getElementById('dBody').innerHTML=`<div class="d-row"><div class="d-icon">${cfg.emoji}</div><div class="d-key">Type</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>${dr('🏢','Provider',o.provider)}${dr('💰','Cost',o.cost)}${dr('💻','Format',o.format)}${dr('📅','When',o.date)}${dr('📍','Location',o.location)}${dr('♿','Accessibility',o.access)}<div class="d-section-title">About this opportunity</div><p style="font-size:.88rem;line-height:1.6;margin-bottom:10px">${esc(o.desc)}</p>${dr('💡','Why it matters',o.why)}`;
+  document.getElementById('dTitle').textContent=o.title;
+  document.getElementById('dStripe').style.background=cfg.color;
+  const dr=(icon,key,val)=>val?`<div class="d-row"><div class="d-icon" aria-hidden="true">${icon}</div><div class="d-key">${key}</div><div class="d-val">${esc(val)}</div></div>`:'';
+  document.getElementById('dBody').innerHTML=`
+    <div class="d-row"><div class="d-icon" aria-hidden="true">${cfg.emoji}</div><div class="d-key">Type</div><div class="d-val" style="font-weight:600;color:${cfg.color}">${esc(cfg.label)}</div></div>
+    ${dr('🏢','Provider',o.provider)}${dr('💰','Cost',o.cost)}${dr('💻','Format',o.format)}
+    ${dr('📅','When',o.date)}${dr('📍','Location',o.location)}${dr('♿','Accessibility',o.access)}
+    <div class="d-section-title">About this opportunity</div>
+    <p style="font-size:.88rem;line-height:1.6;margin-bottom:10px">${esc(o.desc)}</p>
+    ${dr('💡','Why it matters',o.why)}`;
   const foot=document.getElementById('dFooter');foot.innerHTML='';
-  if(o.link&&o.status!=='closed'){const a=document.createElement('a');a.className='btn-primary';a.href=o.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent='🔗 Find out more';foot.appendChild(a)}
+  if(o.link&&o.status!=='closed'){
+    const a=document.createElement('a');a.className='btn-primary';a.href=o.link;
+    a.target='_blank';a.rel='noopener noreferrer';
+    a.innerHTML='<span aria-hidden="true">🔗</span> Find out more';
+    foot.appendChild(a);
+  }
   if(o.status==='closed'){
-    // Volunteer notify button
     const notifyBtn=document.createElement('button');
     notifyBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--purple-light);color:var(--purple);border:2px solid var(--purple);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
-    notifyBtn.textContent='🔔 Notify me if this comes back';
+    notifyBtn.innerHTML='<span aria-hidden="true">🔔</span> Notify me if this comes back';
     notifyBtn.onclick=()=>requestOppNotify(o.id,o.title);foot.appendChild(notifyBtn);
-    // Staff reactivate button
     const reactBtn=document.createElement('button');
     reactBtn.style.cssText='display:block;width:100%;min-height:44px;background:#4caf8a;color:#fff;border:none;border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
-    reactBtn.textContent='♻️ Reactivate this opportunity';
+    reactBtn.innerHTML='<span aria-hidden="true">♻️</span> Reactivate this opportunity';
     reactBtn.onclick=()=>reactivateOpp(o.id);foot.appendChild(reactBtn);
   } else {
     const editOppBtn=document.createElement('button');
     editOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--blue-light);color:var(--blue);border:2px solid var(--blue);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
-    editOppBtn.textContent='✏️ Edit this opportunity';
+    editOppBtn.innerHTML='<span aria-hidden="true">✏️</span> Edit this opportunity';
     editOppBtn.onclick=()=>openEditOppModal(o.id);foot.appendChild(editOppBtn);
     const closeOppBtn=document.createElement('button');
     closeOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:#fff3cd;color:#856404;border:2px solid #f0d060;border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
-    closeOppBtn.textContent='🔴 Mark as no longer available';
+    closeOppBtn.innerHTML='<span aria-hidden="true">🔴</span> Mark as no longer available';
     closeOppBtn.onclick=()=>closeOpp(o.id);foot.appendChild(closeOppBtn);
   }
-  const delOppBtn=document.createElement('button');
-  delOppBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--pink-light);color:var(--pink);border:2px solid var(--pink);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
-  delOppBtn.textContent='🗑️ Delete permanently';
-  delOppBtn.onclick=()=>deleteOpp(o.id);foot.appendChild(delOppBtn);
+  // Delete with inline confirmation — replaces browser confirm()
+  const delContainer=document.createElement('div');
+  delContainer.id='deleteConfirmArea';
+  const delBtn=document.createElement('button');
+  delBtn.style.cssText='display:block;width:100%;min-height:44px;background:var(--pink-light);color:var(--pink);border:2px solid var(--pink);border-radius:12px;font-family:DM Sans,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;padding:0 16px';
+  delBtn.innerHTML='<span aria-hidden="true">🗑️</span> Delete permanently';
+  delBtn.onclick=()=>{
+    delContainer.innerHTML=`<div class="confirm-dialog" role="alert">
+      <p>Are you sure you want to permanently delete this opportunity? This cannot be undone.</p>
+      <div class="confirm-dialog-btns">
+        <button class="btn-danger" onclick="deleteOpp('${o.id}')">Yes, delete it</button>
+        <button class="btn-cancel-sm" onclick="document.getElementById('deleteConfirmArea').innerHTML=''">Cancel</button>
+      </div>
+    </div>`;
+    delContainer.querySelector('.btn-danger').focus();
+  };
+  delContainer.appendChild(delBtn);
+  foot.appendChild(delContainer);
   const cl=document.createElement('button');cl.className='btn-secondary';cl.textContent='Close';cl.onclick=closeDetail;foot.appendChild(cl);
-  document.getElementById('detailOverlay').classList.add('open');document.body.style.overflow='hidden';
+  const overlay=document.getElementById('detailOverlay');
+  overlay.classList.add('open');document.body.style.overflow='hidden';
+  setTimeout(()=>{document.getElementById('dTitle').setAttribute('tabindex','-1');document.getElementById('dTitle').focus();trapFocus(overlay)},100);
 }
 
 function openEditOppModal(id){
   const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
-  closeDetail();
-  addMode='opp';
+  closeDetail();addMode='opp';
   document.getElementById('taskFields').style.display='none';
   document.getElementById('oppFields').style.display='';
   document.getElementById('addTitle').textContent='✏️ Edit Opportunity';
   const sb=document.getElementById('addSubmitBtn');
-  sb.textContent='💾 Save changes';
-  sb.onclick=null;
-  sb.setAttribute('onclick','saveEditOpp("'+id+'")');
+  sb.innerHTML='<span aria-hidden="true">💾</span> Save changes';
+  sb.onclick=()=>saveEditOpp(id);
   document.getElementById('addStripe').style.background='var(--c-opps)';
   document.getElementById('fo-title').value=o.title||'';
   document.getElementById('fo-type').value=o.type||'';
@@ -750,7 +1174,9 @@ function openEditOppModal(id){
   document.getElementById('fo-why').value=o.why||'';
   document.getElementById('fo-link').value=o.link||'';
   document.getElementById('fo-access').value=o.access||'';
-  document.getElementById('addOverlay').classList.add('open');document.body.style.overflow='hidden';
+  const overlay=document.getElementById('addOverlay');
+  overlay.classList.add('open');document.body.style.overflow='hidden';
+  setTimeout(()=>{document.getElementById('addTitle').setAttribute('tabindex','-1');document.getElementById('addTitle').focus();trapFocus(overlay)},100);
 }
 
 async function saveEditOpp(id){
@@ -758,91 +1184,147 @@ async function saveEditOpp(id){
   const title=document.getElementById('fo-title').value.trim();
   const type=document.getElementById('fo-type').value;
   const desc=document.getElementById('fo-desc').value.trim();
+  setFieldError('fo-title','eo-title',!title);
+  setFieldError('fo-type','eo-type',!type);
+  setFieldError('fo-desc','eo-desc',!desc);
   if(!title||!type||!desc){showToast('Please fill in the required fields');return}
-  o.title=title;o.type=type;o.provider=document.getElementById('fo-provider').value.trim();
-  o.cost=document.getElementById('fo-cost').value;o.format=document.getElementById('fo-format').value;
-  o.date=document.getElementById('fo-date').value.trim();o.location=document.getElementById('fo-location').value.trim();
+  o.title=title;o.type=type;
+  o.provider=document.getElementById('fo-provider').value.trim();
+  o.cost=document.getElementById('fo-cost').value;
+  o.format=document.getElementById('fo-format').value;
+  o.date=document.getElementById('fo-date').value.trim();
+  o.location=document.getElementById('fo-location').value.trim();
   o.desc=desc;o.why=document.getElementById('fo-why').value.trim();
-  o.link=document.getElementById('fo-link').value.trim();o.access=document.getElementById('fo-access').value.trim();
-  closeAdd();render();showView('opps');
-  showToast('✏️ Opportunity updated!');
-  const sb=document.getElementById('addSubmitBtn');sb.onclick=null;sb.setAttribute('onclick','submitForm()');
-  document.getElementById('addTitle').textContent='Add a Task';sb.textContent='✅ Add this task';
+  o.link=document.getElementById('fo-link').value.trim();
+  o.access=document.getElementById('fo-access').value.trim();
+  closeAdd();render();showView('opps');showToast('✏️ Opportunity updated!');
+  resetAddModal();
   try{await apiPost({action:'editOpp',row:o})}catch(e){}
 }
 
 async function closeOpp(id){
   const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
-  o.status='closed';
-  closeDetail();render();showView('opps');
-  showToast('🔴 Marked as no longer available — still visible in Past Opportunities');
+  o.status='closed';closeDetail();render();showView('opps');
+  showToast('Marked as no longer available — still visible in Past Opportunities');
   try{await apiPost({action:'closeOpp',id})}catch(e){}
 }
+
 async function reactivateOpp(id){
   const o=opps.find(x=>String(x.id)===String(id));if(!o)return;
-  o.status='active';
-  closeDetail();render();showView('opps');
+  o.status='active';closeDetail();render();showView('opps');
   showToast('♻️ Opportunity reactivated!');
   try{await apiPost({action:'reactivateOpp',id})}catch(e){}
 }
+
 async function deleteOpp(id){
-  if(!confirm('Permanently delete this opportunity? This cannot be undone.'))return;
   opps=opps.filter(x=>String(x.id)!==String(id));
   closeDetail();render();showView('opps');
-  showToast('🗑️ Opportunity deleted');
+  showToast('Opportunity deleted');
   try{await apiPost({action:'deleteOpp',id})}catch(e){}
 }
+
 async function requestOppNotify(id,title){
-  const name=prompt('Your name (so we can let you know when it comes back):');
+  // Use a modal-friendly prompt instead of browser prompt
+  const name=window.prompt('Your name (so we can let you know when it comes back):');
   if(!name)return;
-  showToast('🔔 Thanks '+name+'! We will let you know if '+title+' comes back.');
+  showToast(`Thanks ${name}! We will let you know if ${title} comes back.`);
   try{await apiPost({action:'oppNotify',id,title,name})}catch(e){}
 }
 
 function openAddModal(mode,preSection){
+  _prevFocus=document.activeElement;
   addMode=mode||'task';
   document.getElementById('taskFields').style.display=addMode==='task'?'':'none';
   document.getElementById('oppFields').style.display=addMode==='opp'?'':'none';
   document.getElementById('addTitle').textContent=addMode==='opp'?'Add an Opportunity':'Add a Task';
   const sb=document.getElementById('addSubmitBtn');
-  sb.textContent=addMode==='opp'?'✅ Add this opportunity':'✅ Add this task';
+  sb.innerHTML=addMode==='opp'?'<span aria-hidden="true">✅</span> Add this opportunity':'<span aria-hidden="true">✅</span> Add this task';
   sb.onclick=null;
   sb.setAttribute('onclick','submitForm()');
   document.getElementById('addStripe').style.background=addMode==='opp'?'var(--c-opps)':'var(--sage)';
   if(preSection)document.getElementById('f-section').value=preSection;
-  document.getElementById('addOverlay').classList.add('open');document.body.style.overflow='hidden';
+  const overlay=document.getElementById('addOverlay');
+  overlay.classList.add('open');document.body.style.overflow='hidden';
+  setTimeout(()=>{document.getElementById('addTitle').setAttribute('tabindex','-1');document.getElementById('addTitle').focus();trapFocus(overlay)},100);
 }
-function closeAdd(){document.getElementById('addOverlay').classList.remove('open');document.body.style.overflow=''}
+function closeAdd(){
+  const overlay=document.getElementById('addOverlay');
+  releaseFocus(overlay);
+  overlay.classList.remove('open');
+  document.body.style.overflow='';
+}
+function resetAddModal(){
+  const sb=document.getElementById('addSubmitBtn');
+  sb.innerHTML='<span aria-hidden="true">✅</span> Add this task';
+  sb.onclick=null;
+  sb.setAttribute('onclick','submitForm()');
+  document.getElementById('addTitle').textContent='Add a Task';
+  document.getElementById('addStripe').style.background='var(--sage)';
+}
 
-document.querySelectorAll('#f-priority .pill-toggle,#f-remote .pill-toggle').forEach(btn=>{btn.addEventListener('click',()=>{btn.closest('.pill-group').querySelectorAll('.pill-toggle').forEach(b=>b.classList.remove('on'));btn.classList.add('on')})});
-function getOne(gId){const el=document.querySelector(`#${gId} .pill-toggle.on`);return el?el.dataset.val:''}
+// Pill toggles — with aria-pressed
+document.querySelectorAll('#f-priority .pill-toggle,#f-remote .pill-toggle').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    btn.closest('.pill-group').querySelectorAll('.pill-toggle').forEach(b=>{
+      b.classList.remove('on');
+      b.setAttribute('aria-pressed','false');
+    });
+    btn.classList.add('on');
+    btn.setAttribute('aria-pressed','true');
+  });
+});
+
+function getOne(gId){const el=document.querySelector(`#${gId} .pill-toggle[aria-pressed="true"]`);return el?el.dataset.val:''}
+
+function setFieldError(inputId,errorId,hasError){
+  const input=document.getElementById(inputId);
+  const err=document.getElementById(errorId);
+  if(hasError){
+    err.classList.add('show');
+    input.setAttribute('aria-invalid','true');
+  }else{
+    err.classList.remove('show');
+    input.removeAttribute('aria-invalid');
+  }
+}
+
 function showErr(id,show){document.getElementById(id).classList.toggle('show',show)}
 function submitForm(){if(addMode==='opp')submitOpp();else submitTask()}
 
 async function submitTask(){
-  const title=document.getElementById('f-title').value.trim(),section=document.getElementById('f-section').value,desc=document.getElementById('f-desc').value.trim();
-  let ok=true;
-  if(!title){showErr('e-title',true);ok=false}else showErr('e-title',false);
-  if(!section){showErr('e-section',true);ok=false}else showErr('e-section',false);
-  if(!desc){showErr('e-desc',true);ok=false}else showErr('e-desc',false);
-  if(!ok)return;
+  const title=document.getElementById('f-title').value.trim();
+  const section=document.getElementById('f-section').value;
+  const desc=document.getElementById('f-desc').value.trim();
+  setFieldError('f-title','e-title',!title);
+  setFieldError('f-section','e-section',!section);
+  setFieldError('f-desc','e-desc',!desc);
+  if(!title||!section||!desc){
+    // Focus first invalid field
+    if(!title){document.getElementById('f-title').focus();return}
+    if(!section){document.getElementById('f-section').focus();return}
+    document.getElementById('f-desc').focus();return;
+  }
   const row={id:'task_'+Date.now(),section,title,priority:getOne('f-priority')||'Ongoing',time:document.getElementById('f-time').value.trim(),date:document.getElementById('f-date').value.trim(),remote:getOne('f-remote')||'either',skills:document.getElementById('f-skills').value.trim(),desc,contact:document.getElementById('f-contact-name').value.trim(),email:document.getElementById('f-contact-email').value.trim(),notes:document.getElementById('f-notes').value.trim(),taken:false,takenBy:''};
   tasks.unshift(row);
   ['f-title','f-time','f-date','f-skills','f-desc','f-contact-name','f-contact-email','f-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
   document.getElementById('f-section').value='';
   closeAdd();render();showView('all');
   showToast('✅ Task added!');
-  try{await apiPost({action:'addTask',row});showToast('✅ Task added and saved for everyone!')}
-  catch(e){}
+  try{await apiPost({action:'addTask',row});showToast('✅ Task added and saved for everyone!')}catch(e){}
 }
 
 async function submitOpp(){
-  const title=document.getElementById('fo-title').value.trim(),type=document.getElementById('fo-type').value,desc=document.getElementById('fo-desc').value.trim();
-  let ok=true;
-  if(!title){showErr('eo-title',true);ok=false}else showErr('eo-title',false);
-  if(!type){showErr('eo-type',true);ok=false}else showErr('eo-type',false);
-  if(!desc){showErr('eo-desc',true);ok=false}else showErr('eo-desc',false);
-  if(!ok)return;
+  const title=document.getElementById('fo-title').value.trim();
+  const type=document.getElementById('fo-type').value;
+  const desc=document.getElementById('fo-desc').value.trim();
+  setFieldError('fo-title','eo-title',!title);
+  setFieldError('fo-type','eo-type',!type);
+  setFieldError('fo-desc','eo-desc',!desc);
+  if(!title||!type||!desc){
+    if(!title){document.getElementById('fo-title').focus();return}
+    if(!type){document.getElementById('fo-type').focus();return}
+    document.getElementById('fo-desc').focus();return;
+  }
   const row={id:'opp_'+Date.now(),type,title,provider:document.getElementById('fo-provider').value.trim(),cost:document.getElementById('fo-cost').value,format:document.getElementById('fo-format').value,date:document.getElementById('fo-date').value.trim(),location:document.getElementById('fo-location').value.trim(),desc,why:document.getElementById('fo-why').value.trim(),link:document.getElementById('fo-link').value.trim(),access:document.getElementById('fo-access').value.trim()};
   opps.unshift(row);
   ['fo-title','fo-provider','fo-date','fo-location','fo-desc','fo-why','fo-link','fo-access'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
@@ -853,32 +1335,66 @@ async function submitOpp(){
 }
 
 document.getElementById('searchInput').addEventListener('input',function(){
-  const q=this.value.trim().toLowerCase(),res=document.getElementById('searchResults');res.innerHTML='';
+  const q=this.value.trim().toLowerCase();
+  const res=document.getElementById('searchResults');res.innerHTML='';
   if(!q){res.innerHTML='<div class="empty-msg">Start typing to search tasks…</div>';return}
   const matches=tasks.filter(t=>!t.taken&&(t.title+' '+t.desc+' '+t.skills+' '+sc(t.section).label).toLowerCase().includes(q));
-  if(!matches.length){res.innerHTML='<div class="empty-msg">No tasks found — try different words.</div>';return}
-  const wrap=document.createElement('div');wrap.style.cssText='background:var(--white);border-radius:var(--radius);border:2px solid var(--border);overflow:hidden;padding:10px';
-  matches.forEach(t=>wrap.appendChild(buildCard(t)));res.appendChild(wrap);
+  if(!matches.length){res.innerHTML=`<div class="empty-msg">No tasks found for "${esc(q)}" — try different words.</div>`;return}
+  const wrap=document.createElement('div');
+  wrap.style.cssText='background:var(--white);border-radius:var(--radius);border:2px solid var(--border);overflow:hidden;padding:10px';
+  wrap.setAttribute('aria-label',`${matches.length} task${matches.length===1?'':'s'} found`);
+  matches.forEach(t=>wrap.appendChild(buildCard(t)));
+  res.appendChild(wrap);
 });
 
 function showView(v){
   const views={all:'viewAll',inprogress:'viewInProgress',search:'viewSearch',done:'viewDone',opps:'viewOpps'};
   Object.values(views).forEach(id=>document.getElementById(id).classList.remove('active'));
   if(views[v])document.getElementById(views[v]).classList.add('active');
-  ['navAll','navInProgress','navDone','navOpps'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  // Update aria-current on nav buttons
+  ['navAll','navInProgress','navDone','navOpps'].forEach(id=>{
+    document.getElementById(id).removeAttribute('aria-current');
+  });
   const map={all:'navAll',inprogress:'navInProgress',done:'navDone',opps:'navOpps'};
-  if(map[v])document.getElementById(map[v]).classList.add('active');
+  if(map[v])document.getElementById(map[v]).setAttribute('aria-current','page');
   if(v==='search')setTimeout(()=>document.getElementById('searchInput').focus(),150);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+// Close modals on overlay click
 ['detailOverlay','claimOverlay','addOverlay'].forEach(id=>{
-  document.getElementById(id).addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');document.body.style.overflow='';if(id==='claimOverlay')claimingId=null}});
+  document.getElementById(id).addEventListener('click',function(e){
+    if(e.target===this){
+      this.classList.remove('open');
+      document.body.style.overflow='';
+      if(id==='claimOverlay')claimingId=null;
+      if(_prevFocus)_prevFocus.focus();
+    }
+  });
 });
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();closeClaim();closeAdd()}});
+
+// Escape key closes any open modal
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(document.getElementById('detailOverlay').classList.contains('open'))closeDetail();
+    else if(document.getElementById('claimOverlay').classList.contains('open'))closeClaim();
+    else if(document.getElementById('addOverlay').classList.contains('open'))closeAdd();
+  }
+});
+
 let _tt;
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3500)}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(_tt);
+  _tt=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// Set initial aria-current
+document.getElementById('navAll').setAttribute('aria-current','page');
 
 loadAll();
 </script>
-</body></html>
+</body>
+</html>
