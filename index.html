@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Safe Soulmates — Volunteer Task Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
@@ -23,8 +23,8 @@
   --focus-ring: 0 0 0 3px rgba(115,151,108,0.55);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charcoal);min-height:100vh;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 16px);-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;height:-webkit-fill-available}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charcoal);min-height:100vh;min-height:-webkit-fill-available;min-height:100dvh;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 16px);-webkit-text-size-adjust:100%}
 
 /* ── FOCUS STYLES ── visible keyboard focus on all interactive elements */
 :focus-visible{outline:3px solid var(--sage);outline-offset:2px;border-radius:4px}
@@ -254,6 +254,11 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
 .btn-cancel-sm{flex:1;min-height:42px;background:var(--white);color:var(--charcoal);border:2px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* NAV HINT — gentle reminder that tabs are at the bottom, shown at end of scrollable content */
+.nav-hint{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--sage-light);color:var(--sage);border-radius:14px;padding:12px 16px;margin:18px 0 4px;font-size:.82rem;font-weight:600;text-align:center;line-height:1.5}
+.nav-hint .bounce-arrow{display:inline-block;animation:bounceDown 1.4s ease-in-out infinite}
+@keyframes bounceDown{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 </style>
 </head>
 <body>
@@ -294,7 +299,9 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
       <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('fundraise',this)"><span aria-hidden="true">💰</span> Fundraising</button>
       <button class="sec-tab" role="tab" aria-selected="false" onclick="filterSec('access',this)"><span aria-hidden="true">🌈</span> Accessibility</button>
     </div>
+    <div class="nav-hint nav-hint-top"><span aria-hidden="true">👇</span> Use the tabs at the bottom to get around — Tasks, In Progress, Add, Done, Opps</div>
     <div id="sectionsContainer"></div>
+    <div class="nav-hint"><span aria-hidden="true">👇</span> Use the tabs at the bottom to get around — Tasks, In Progress, Add, Done, Opps <span class="bounce-arrow" aria-hidden="true">⌄</span></div>
   </div>
 
   <!-- IN PROGRESS VIEW -->
@@ -303,7 +310,9 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
       <h2><span aria-hidden="true">⏳</span> In Progress</h2>
       <p>These tasks have been claimed by volunteers. Tap a task to mark it as done when finished.</p>
     </div>
+    <div class="nav-hint nav-hint-top"><span aria-hidden="true">👇</span> Use the tabs at the bottom to get around — Tasks, In Progress, Add, Done, Opps</div>
     <div id="inProgressList"></div>
+    <div class="nav-hint"><span aria-hidden="true">👇</span> Use the tabs at the bottom to get around — Tasks, In Progress, Add, Done, Opps <span class="bounce-arrow" aria-hidden="true">⌄</span></div>
   </div>
 
   <!-- SEARCH VIEW -->
@@ -338,11 +347,13 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
         </div>
       </div>
     </div>
+    <div class="nav-hint nav-hint-top"><span aria-hidden="true">👇</span> Use the tabs at the bottom to get around — Tasks, In Progress, Add, Done, Opps</div>
     <div class="done-cards-grid" id="doneGrid"></div>
     <div class="done-empty" id="doneEmpty" style="display:none">
       <div class="emoji" aria-hidden="true">🌱</div>
       <p>Completed tasks will appear here as volunteers tick them off.<br>They are on their way!</p>
     </div>
+    <div class="nav-hint"><span aria-hidden="true">👇</span> Use the tabs at the bottom to get around — Tasks, In Progress, Add, Done, Opps <span class="bounce-arrow" aria-hidden="true">⌄</span></div>
   </div>
 
   <!-- OPPORTUNITIES VIEW -->
@@ -360,10 +371,12 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
       <button class="opp-type-tab" role="tab" aria-selected="false" onclick="filterOpps('social',this)"><span aria-hidden="true">☕</span> Social</button>
       <button class="opp-type-tab" role="tab" aria-selected="false" onclick="filterOpps('other',this)"><span aria-hidden="true">🔍</span> Other</button>
     </div>
+    <div class="nav-hint nav-hint-top"><span aria-hidden="true">👇</span> Use the tabs at the bottom to get around — Tasks, In Progress, Add, Done, Opps</div>
     <div id="oppsGrid"></div>
     <button class="section-add-btn" onclick="openAddModal('opp')" style="margin:10px 0 4px;width:100%" aria-label="Add a new opportunity">
       <span aria-hidden="true">＋</span> Add an opportunity
     </button>
+    <div class="nav-hint"><span aria-hidden="true">👇</span> Use the tabs at the bottom to get around — Tasks, In Progress, Add, Done, Opps <span class="bounce-arrow" aria-hidden="true">⌄</span></div>
   </div>
 
 </main>
