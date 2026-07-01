@@ -255,6 +255,12 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+/* PUBLIC WARNING NOTICE */
+.public-warning{background:#fff8e1;border-left:4px solid #f0a500;border-radius:12px;padding:12px 16px;margin:12px 0;display:flex;align-items:flex-start;gap:10px}
+.public-warning-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px}
+.public-warning-text{font-size:.82rem;color:var(--charcoal);line-height:1.6}
+.public-warning-text strong{display:block;margin-bottom:3px;font-size:.88rem}
+
 /* NAV HINT — gentle reminder that tabs are at the bottom, shown at end of scrollable content */
 .nav-hint{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--sage-light);color:var(--sage);border-radius:14px;padding:12px 16px;margin:18px 0 4px;font-size:.82rem;font-weight:600;text-align:center;line-height:1.5}
 .nav-hint .bounce-arrow{display:inline-block;animation:bounceDown 1.4s ease-in-out infinite}
@@ -276,6 +282,13 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
     <span class="info-pill"><span aria-hidden="true">✅</span> No account needed</span>
     <span class="info-pill"><span aria-hidden="true">📋</span> Pick up a task</span>
     <span class="info-pill"><span aria-hidden="true">💛</span> Every bit helps</span>
+  </div>
+  <div class="public-warning" role="note" style="margin:10px 20px 4px;text-align:left">
+    <div class="public-warning-icon" aria-hidden="true">🌟</div>
+    <div class="public-warning-text">
+      <strong>A reminder for our community 💛</strong>
+      Please do not share any personal or confidential information about yourself or other Soulmates on this board — such as addresses, phone numbers, or anything private. This board can be seen by others. If you need to share something sensitive, please contact us directly at <a href="mailto:info@safesoulmates.org" style="color:var(--sage)">info@safesoulmates.org</a>
+    </div>
   </div>
 </header>
 
@@ -464,7 +477,8 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
       <button class="modal-close" onclick="closeAdd()" aria-label="Close — discard changes">✕</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:.83rem;opacity:.6;margin-bottom:16px;line-height:1.5">Fill in what you know — the more detail the better. No account needed.</p>
+      <p style="font-size:.83rem;opacity:.6;margin-bottom:10px;line-height:1.5">Fill in what you know — the more detail the better. No account needed.</p>
+      <p style="font-size:.78rem;color:#856404;background:#fff8e1;border-radius:10px;padding:10px 12px;margin-bottom:16px;line-height:1.6"><span aria-hidden="true">🌟</span> <strong>A reminder:</strong> Please do not include personal or confidential information about yourself or other Soulmates. This board can be seen by others. Contact <a href="mailto:info@safesoulmates.org" style="color:var(--sage)">info@safesoulmates.org</a> if you need to share anything sensitive.</p>
 
       <!-- TASK FIELDS -->
       <div id="taskFields">
@@ -918,6 +932,7 @@ function openDetail(id){
           <button class="btn-update" id="postUpdateBtn">Post</button>
         </div>
         <p id="updateHint" style="font-size:.72rem;opacity:.5;margin-top:8px;line-height:1.5">You can paste links in comments — they will be clickable. For urgent questions email <a href="mailto:info@safesoulmates.org" style="color:var(--sage)">info@safesoulmates.org</a></p>
+        <p style="font-size:.72rem;color:#856404;background:#fff8e1;border-radius:8px;padding:8px 10px;margin-top:8px;line-height:1.5"><span aria-hidden="true">🌟</span> Please do not share personal or confidential information about yourself or other Soulmates in comments. This board can be seen by others.</p>
       </div>
     </div>`;
   document.getElementById('dBody').innerHTML=`
