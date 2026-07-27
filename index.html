@@ -265,12 +265,171 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
 .nav-hint{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--sage-light);color:var(--sage);border-radius:14px;padding:12px 16px;margin:18px 0 4px;font-size:.82rem;font-weight:600;text-align:center;line-height:1.5}
 .nav-hint .bounce-arrow{display:inline-block;animation:bounceDown 1.4s ease-in-out infinite}
 @keyframes bounceDown{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+/* ══════════════════════════════════════
+   DESKTOP SIDEBAR LAYOUT — 900px+
+   Fixed sidebar, full-width content
+   ══════════════════════════════════════ */
+.desktop-topbar{display:none}
+@media(min-width:900px){
+  body{padding-bottom:0}
+  .bottom-nav{display:none!important}
+  .nav-hint{display:none!important}
+  .site-header{display:none!important}
+
+  /* Sidebar */
+  .desktop-sidebar{
+    position:fixed;top:0;left:0;bottom:0;width:220px;
+    background:var(--charcoal);
+    display:flex;flex-direction:column;
+    z-index:200;
+    box-shadow:4px 0 20px rgba(0,0,0,.18);
+  }
+  .sidebar-brand{
+    padding:22px 18px 18px;
+    border-bottom:3px solid var(--lime);
+    display:flex;align-items:center;gap:11px;
+    flex-shrink:0;
+  }
+  .sidebar-blob{
+    width:42px;height:42px;background:var(--sage);
+    border-radius:50% 35% 50% 35%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;flex-shrink:0;
+  }
+  .sidebar-brand-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);line-height:1.1}
+  .sidebar-brand-sub{font-size:.6rem;color:rgba(255,255,255,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+  .sidebar-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
+  .sb-btn{
+    display:flex;align-items:center;gap:11px;
+    width:100%;background:none;border:none;
+    border-radius:11px;padding:11px 13px;
+    font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;
+    color:rgba(255,255,255,.65);
+    cursor:pointer;text-align:left;
+    transition:all .14s;position:relative;
+  }
+  .sb-btn:hover{background:rgba(255,255,255,.09);color:var(--white)}
+  .sb-btn[aria-current="page"]{background:var(--sage);color:var(--white);font-weight:700}
+  .sb-icon{font-size:1.25rem;width:26px;text-align:center;flex-shrink:0}
+  .sb-label{flex:1}
+  .sb-badge{background:var(--pink);color:var(--white);font-size:.62rem;font-weight:700;border-radius:9px;padding:1px 6px;min-width:18px;text-align:center;line-height:1.5}
+  .sb-badge.green{background:var(--c-done)}
+  .sb-badge.amber{background:var(--c-inprogress)}
+  .sidebar-add{
+    margin:8px 10px 10px;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--lime);color:var(--charcoal);
+    border:none;border-radius:12px;padding:13px;
+    font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:800;
+    cursor:pointer;transition:all .14s;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);flex-shrink:0;
+  }
+  .sidebar-add:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.28)}
+  .sidebar-warn{
+    margin:0 10px 12px;
+    background:rgba(255,248,225,.1);
+    border:1px solid rgba(240,165,0,.25);
+    border-radius:9px;padding:9px 11px;
+    font-size:.68rem;color:rgba(255,255,255,.5);
+    line-height:1.5;text-align:center;flex-shrink:0;
+  }
+  .sidebar-warn a{color:rgba(255,255,255,.6)}
+
+  /* Top bar */
+  .desktop-topbar{
+    display:flex!important;
+    align-items:center;justify-content:space-between;
+    background:var(--white);
+    border-bottom:3px solid var(--lime);
+    padding:18px 32px;
+    position:sticky;top:0;z-index:100;
+    box-shadow:0 2px 10px rgba(90,90,90,.07);
+    gap:16px;flex-wrap:wrap;
+  }
+  .topbar-title{font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--charcoal)}
+  .topbar-pills{display:flex;gap:8px;flex-wrap:wrap}
+  .topbar-pill{background:var(--sage-light);color:var(--sage);border-radius:20px;font-size:.75rem;padding:4px 12px;font-weight:600}
+
+  /* Content area */
+  .desktop-content-wrap{margin-left:220px;display:flex;flex-direction:column;min-height:100vh}
+  .main{padding:28px 36px;max-width:none;width:100%}
+
+  /* Bigger text */
+  .task-title{font-size:1.05rem!important}
+  .task-tag{font-size:.76rem!important;padding:3px 10px!important}
+  .section-header h2{font-size:1.2rem!important}
+  .sec-tab{font-size:.88rem!important;padding:7px 16px!important}
+  .empty-msg{font-size:.95rem!important}
+  .section-add-btn{font-size:.9rem!important}
+  .opp-title{font-size:1.05rem!important}
+  .done-hero h2{font-size:1.8rem!important}
+  .done-hero p{font-size:.95rem!important}
+  .done-cards-grid{grid-template-columns:repeat(3,1fr)!important}
+  .sec-nav{flex-wrap:wrap;overflow-x:visible;gap:8px}
+  .public-warning{display:none!important}
+  #loadingBar{margin-left:0}
+  .toast{bottom:24px}
+  .task-card{padding:14px 18px}
+}
 </style>
 </head>
 <body>
 
 <!-- SKIP LINK — keyboard users jump straight to content -->
 <a href="#mainContent" class="skip-link">Skip to main content</a>
+
+<!-- DESKTOP SIDEBAR — hidden on mobile via CSS -->
+<aside class="desktop-sidebar" aria-label="Main navigation">
+  <div class="sidebar-brand">
+    <div class="sidebar-blob" aria-hidden="true">🙌</div>
+    <div>
+      <div class="sidebar-brand-name">Safe Soulmates</div>
+      <div class="sidebar-brand-sub">Volunteer Task Board</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav" aria-label="Sections">
+    <button class="sb-btn" id="sbAll" onclick="showView('all')" aria-current="page" aria-label="Tasks — 0 available">
+      <span class="sb-icon" aria-hidden="true">📋</span>
+      <span class="sb-label">Tasks</span>
+      <span class="sb-badge" id="sbBadgeAll" aria-hidden="true">0</span>
+    </button>
+    <button class="sb-btn" id="sbInProgress" onclick="showView('inprogress')" aria-label="In progress tasks">
+      <span class="sb-icon" aria-hidden="true">⏳</span>
+      <span class="sb-label">In Progress</span>
+      <span class="sb-badge amber" id="sbBadgeInProgress" style="display:none" aria-hidden="true">0</span>
+    </button>
+    <button class="sb-btn" id="sbDone" onclick="showView('done')" aria-label="Completed tasks">
+      <span class="sb-icon" aria-hidden="true">🌟</span>
+      <span class="sb-label">Done</span>
+      <span class="sb-badge green" id="sbBadgeDone" aria-hidden="true">0</span>
+    </button>
+    <button class="sb-btn" id="sbOpps" onclick="showView('opps')" aria-label="Opportunities">
+      <span class="sb-icon" aria-hidden="true">🌱</span>
+      <span class="sb-label">Opportunities</span>
+    </button>
+  </nav>
+  <button class="sidebar-add" onclick="openAddModal('task')" aria-label="Add a new task">
+    <span aria-hidden="true">＋</span> Add a Task
+  </button>
+  <div class="sidebar-warn">
+    <span aria-hidden="true">🌟</span> Please do not share personal information — this board can be seen by others.<br>
+    <a href="mailto:info@safesoulmates.org">info@safesoulmates.org</a>
+  </div>
+</aside>
+
+<!-- DESKTOP CONTENT WRAPPER -->
+<div class="desktop-content-wrap">
+
+<!-- DESKTOP TOP BAR -->
+<div class="desktop-topbar" role="banner">
+  <div class="topbar-title">Volunteer Task Board</div>
+  <div class="topbar-pills">
+    <span class="topbar-pill"><span aria-hidden="true">✅</span> No account needed</span>
+    <span class="topbar-pill"><span aria-hidden="true">📋</span> Pick up a task</span>
+    <span class="topbar-pill"><span aria-hidden="true">💛</span> Every bit helps</span>
+  </div>
+</div>
 
 <header class="site-header">
   <div class="header-inner">
@@ -393,6 +552,8 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
   </div>
 
 </main>
+
+</div><!-- end desktop-content-wrap -->
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav" aria-label="Main navigation">
@@ -897,19 +1058,20 @@ function filterOpps(type,btn){
 function updateBadges(){
   const open=tasks.filter(t=>!t.taken).length;
   const inprog=tasks.filter(t=>t.taken).length;
+  // Mobile bottom nav
   document.getElementById('badgeAll').textContent=open;
   document.getElementById('navAll').setAttribute('aria-label',`Tasks — ${open} available`);
   const ipBadge=document.getElementById('badgeInProgress');
-  if(inprog>0){
-    ipBadge.textContent=inprog;
-    ipBadge.style.display='block';
-    document.getElementById('navInProgress').setAttribute('aria-label',`In progress — ${inprog} tasks`);
-  }else{
-    ipBadge.style.display='none';
-    document.getElementById('navInProgress').setAttribute('aria-label','In progress tasks');
-  }
+  if(inprog>0){ipBadge.textContent=inprog;ipBadge.style.display='block';document.getElementById('navInProgress').setAttribute('aria-label',`In progress — ${inprog} tasks`)}
+  else{ipBadge.style.display='none';document.getElementById('navInProgress').setAttribute('aria-label','In progress tasks')}
   document.getElementById('badgeDone').textContent=doneTasks.length;
   document.getElementById('navDone').setAttribute('aria-label',`Done — ${doneTasks.length} completed`);
+  // Desktop sidebar badges — safe null checks
+  const sba=document.getElementById('sbBadgeAll');if(sba)sba.textContent=open;
+  const sbab=document.getElementById('sbAll');if(sbab)sbab.setAttribute('aria-label',`Tasks — ${open} available`);
+  const sbip=document.getElementById('sbBadgeInProgress');
+  if(sbip){if(inprog>0){sbip.textContent=inprog;sbip.style.display='inline-block'}else{sbip.style.display='none'}}
+  const sbbd=document.getElementById('sbBadgeDone');if(sbbd)sbbd.textContent=doneTasks.length;
 }
 
 function openDetail(id){
@@ -1379,12 +1541,18 @@ function showView(v){
   const views={all:'viewAll',inprogress:'viewInProgress',search:'viewSearch',done:'viewDone',opps:'viewOpps'};
   Object.values(views).forEach(id=>document.getElementById(id).classList.remove('active'));
   if(views[v])document.getElementById(views[v]).classList.add('active');
-  // Update aria-current on nav buttons
+  // Update mobile nav
   ['navAll','navInProgress','navDone','navOpps'].forEach(id=>{
     document.getElementById(id).removeAttribute('aria-current');
   });
   const map={all:'navAll',inprogress:'navInProgress',done:'navDone',opps:'navOpps'};
   if(map[v])document.getElementById(map[v]).setAttribute('aria-current','page');
+  // Update desktop sidebar — safe null checks
+  ['sbAll','sbInProgress','sbDone','sbOpps'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.removeAttribute('aria-current');
+  });
+  const sbmap={all:'sbAll',inprogress:'sbInProgress',done:'sbDone',opps:'sbOpps'};
+  const sbel=document.getElementById(sbmap[v]);if(sbel)sbel.setAttribute('aria-current','page');
   if(v==='search')setTimeout(()=>document.getElementById('searchInput').focus(),150);
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1421,6 +1589,7 @@ function showToast(msg){
 
 // Set initial aria-current
 document.getElementById('navAll').setAttribute('aria-current','page');
+const sbAllEl=document.getElementById('sbAll');if(sbAllEl)sbAllEl.setAttribute('aria-current','page');
 
 loadAll();
 </script>
