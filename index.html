@@ -277,61 +277,61 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
   .nav-hint{display:none!important}
   .site-header{display:none!important}
 
-  /* Sidebar */
+  /* Sidebar — wider and bigger */
   .desktop-sidebar{
-    position:fixed;top:0;left:0;bottom:0;width:220px;
+    position:fixed;top:0;left:0;bottom:0;width:260px;
     background:var(--charcoal);
     display:flex;flex-direction:column;
     z-index:200;
     box-shadow:4px 0 20px rgba(0,0,0,.18);
   }
   .sidebar-brand{
-    padding:22px 18px 18px;
+    padding:26px 22px 22px;
     border-bottom:3px solid var(--lime);
-    display:flex;align-items:center;gap:11px;
+    display:flex;align-items:center;gap:14px;
     flex-shrink:0;
   }
   .sidebar-blob{
-    width:42px;height:42px;background:var(--sage);
+    width:50px;height:50px;background:var(--sage);
     border-radius:50% 35% 50% 35%;
     display:flex;align-items:center;justify-content:center;
-    font-size:1.3rem;flex-shrink:0;
+    font-size:1.6rem;flex-shrink:0;
   }
-  .sidebar-brand-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);line-height:1.1}
-  .sidebar-brand-sub{font-size:.6rem;color:rgba(255,255,255,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
-  .sidebar-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
+  .sidebar-brand-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--white);line-height:1.1}
+  .sidebar-brand-sub{font-size:.7rem;color:rgba(255,255,255,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+  .sidebar-nav{flex:1;padding:18px 12px;display:flex;flex-direction:column;gap:6px;overflow-y:auto}
   .sb-btn{
-    display:flex;align-items:center;gap:11px;
+    display:flex;align-items:center;gap:14px;
     width:100%;background:none;border:none;
-    border-radius:11px;padding:11px 13px;
-    font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;
+    border-radius:12px;padding:14px 16px;
+    font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:600;
     color:rgba(255,255,255,.65);
     cursor:pointer;text-align:left;
     transition:all .14s;position:relative;
   }
   .sb-btn:hover{background:rgba(255,255,255,.09);color:var(--white)}
   .sb-btn[aria-current="page"]{background:var(--sage);color:var(--white);font-weight:700}
-  .sb-icon{font-size:1.25rem;width:26px;text-align:center;flex-shrink:0}
+  .sb-icon{font-size:1.45rem;width:30px;text-align:center;flex-shrink:0}
   .sb-label{flex:1}
-  .sb-badge{background:var(--pink);color:var(--white);font-size:.62rem;font-weight:700;border-radius:9px;padding:1px 6px;min-width:18px;text-align:center;line-height:1.5}
+  .sb-badge{background:var(--pink);color:var(--white);font-size:.72rem;font-weight:700;border-radius:9px;padding:2px 8px;min-width:22px;text-align:center;line-height:1.5}
   .sb-badge.green{background:var(--c-done)}
   .sb-badge.amber{background:var(--c-inprogress)}
   .sidebar-add{
-    margin:8px 10px 10px;
+    margin:8px 12px 10px;
     display:flex;align-items:center;justify-content:center;gap:8px;
     background:var(--lime);color:var(--charcoal);
-    border:none;border-radius:12px;padding:13px;
-    font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:800;
+    border:none;border-radius:14px;padding:15px;
+    font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:800;
     cursor:pointer;transition:all .14s;
     box-shadow:0 2px 8px rgba(0,0,0,.2);flex-shrink:0;
   }
   .sidebar-add:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.28)}
   .sidebar-warn{
-    margin:0 10px 12px;
+    margin:0 12px 14px;
     background:rgba(255,248,225,.1);
     border:1px solid rgba(240,165,0,.25);
-    border-radius:9px;padding:9px 11px;
-    font-size:.68rem;color:rgba(255,255,255,.5);
+    border-radius:9px;padding:10px 12px;
+    font-size:.72rem;color:rgba(255,255,255,.5);
     line-height:1.5;text-align:center;flex-shrink:0;
   }
   .sidebar-warn a{color:rgba(255,255,255,.6)}
@@ -342,51 +342,53 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
     align-items:center;justify-content:space-between;
     background:var(--white);
     border-bottom:3px solid var(--lime);
-    padding:18px 32px;
+    padding:20px 36px;
     position:sticky;top:0;z-index:100;
     box-shadow:0 2px 10px rgba(90,90,90,.07);
     gap:16px;flex-wrap:wrap;
   }
-  .topbar-title{font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--charcoal)}
+  .topbar-title{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--charcoal)}
   .topbar-pills{display:flex;gap:8px;flex-wrap:wrap}
-  .topbar-pill{background:var(--sage-light);color:var(--sage);border-radius:20px;font-size:.75rem;padding:4px 12px;font-weight:600}
+  .topbar-pill{background:var(--sage-light);color:var(--sage);border-radius:20px;font-size:.82rem;padding:5px 14px;font-weight:600}
 
-  /* Content area */
-  .desktop-content-wrap{margin-left:220px;display:flex;flex-direction:column;min-height:100vh}
-  .main{padding:28px 36px;max-width:none;width:100%}
+  /* Content area — constrained width so it doesn't stretch too wide */
+  .desktop-content-wrap{margin-left:260px;display:flex;flex-direction:column;min-height:100vh}
+  .main{padding:32px 40px;max-width:960px;width:100%}
 
   /* Bigger text */
-  .task-title{font-size:1.15rem!important}
-  .task-tag{font-size:.82rem!important;padding:4px 12px!important}
-  .task-card{padding:16px 20px!important}
-  .task-arrow{font-size:1.2rem!important}
-  .section-header h2{font-size:1.35rem!important}
-  .sec-emoji{font-size:1.5rem!important}
-  .sec-count{font-size:.82rem!important;padding:3px 10px!important}
-  .sec-tab{font-size:.95rem!important;padding:9px 20px!important}
-  .sec-nav{flex-wrap:wrap;overflow-x:visible;gap:8px;padding:0 0 16px}
-  .empty-msg{font-size:1rem!important;padding:30px 20px!important}
-  .section-add-btn{font-size:.95rem!important;padding:12px 18px!important}
-  .opp-title{font-size:1.15rem!important}
-  .opp-provider{font-size:.92rem!important}
-  .opp-type-badge{font-size:.78rem!important}
-  .opp-icon-wrap{width:52px!important;height:52px!important;font-size:1.5rem!important}
-  .opp-type-tab{font-size:.9rem!important;padding:8px 18px!important}
-  .done-hero h2{font-size:1.9rem!important}
-  .done-hero p{font-size:1rem!important}
-  .done-card-title{font-size:1.1rem!important}
-  .done-card-vol{font-size:.92rem!important}
+  .task-title{font-size:1.2rem!important;font-weight:700!important}
+  .task-tag{font-size:.85rem!important;padding:4px 12px!important}
+  .task-card{padding:18px 22px!important;border-radius:14px!important}
+  .task-arrow{font-size:1.3rem!important}
+  .section-header{padding:16px 20px!important}
+  .section-header h2{font-size:1.4rem!important}
+  .sec-emoji{font-size:1.6rem!important}
+  .sec-count{font-size:.88rem!important;padding:4px 12px!important}
+  .sec-tab{font-size:1rem!important;padding:10px 22px!important}
+  .sec-nav{flex-wrap:wrap;overflow-x:visible;gap:8px;padding:0 0 20px}
+  .empty-msg{font-size:1.05rem!important;padding:36px 24px!important}
+  .section-add-btn{font-size:1rem!important;padding:14px 20px!important}
+  .opp-title{font-size:1.2rem!important;font-weight:700!important}
+  .opp-provider{font-size:.95rem!important}
+  .opp-type-badge{font-size:.82rem!important}
+  .opp-icon-wrap{width:54px!important;height:54px!important;font-size:1.6rem!important}
+  .opp-type-tab{font-size:.95rem!important;padding:9px 20px!important}
+  .opp-card{padding:18px 20px!important;border-radius:16px!important}
+  .done-hero h2{font-size:2rem!important}
+  .done-hero p{font-size:1.05rem!important}
+  .done-card-title{font-size:1.15rem!important}
+  .done-card-vol{font-size:.95rem!important}
   .done-cards-grid{grid-template-columns:repeat(3,1fr)!important}
-  .inprogress-hero h2{font-size:1.6rem!important}
-  .inprogress-hero p{font-size:1rem!important}
-  .opps-hero h2{font-size:1.6rem!important}
-  .opps-hero p{font-size:1rem!important}
-  .past-opps-header{font-size:1.2rem!important}
-  .task-note-preview{font-size:.88rem!important}
+  .inprogress-hero h2{font-size:1.7rem!important}
+  .inprogress-hero p{font-size:1.05rem!important}
+  .opps-hero h2{font-size:1.7rem!important}
+  .opps-hero p{font-size:1.05rem!important}
+  .past-opps-header{font-size:1.3rem!important}
+  .task-note-preview{font-size:.92rem!important}
   .public-warning{display:none!important}
-  #loadingBar{margin-left:0;font-size:.95rem!important}
+  #loadingBar{margin-left:0;font-size:1rem!important}
   .toast{bottom:24px;font-size:1rem!important}
-  .main{font-size:1rem}
+  .section-body{border-radius:0 0 16px 16px!important}
 }
 </style>
 </head>
