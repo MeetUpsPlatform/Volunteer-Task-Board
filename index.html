@@ -356,21 +356,37 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
   .main{padding:28px 36px;max-width:none;width:100%}
 
   /* Bigger text */
-  .task-title{font-size:1.05rem!important}
-  .task-tag{font-size:.76rem!important;padding:3px 10px!important}
-  .section-header h2{font-size:1.2rem!important}
-  .sec-tab{font-size:.88rem!important;padding:7px 16px!important}
-  .empty-msg{font-size:.95rem!important}
-  .section-add-btn{font-size:.9rem!important}
-  .opp-title{font-size:1.05rem!important}
-  .done-hero h2{font-size:1.8rem!important}
-  .done-hero p{font-size:.95rem!important}
+  .task-title{font-size:1.15rem!important}
+  .task-tag{font-size:.82rem!important;padding:4px 12px!important}
+  .task-card{padding:16px 20px!important}
+  .task-arrow{font-size:1.2rem!important}
+  .section-header h2{font-size:1.35rem!important}
+  .sec-emoji{font-size:1.5rem!important}
+  .sec-count{font-size:.82rem!important;padding:3px 10px!important}
+  .sec-tab{font-size:.95rem!important;padding:9px 20px!important}
+  .sec-nav{flex-wrap:wrap;overflow-x:visible;gap:8px;padding:0 0 16px}
+  .empty-msg{font-size:1rem!important;padding:30px 20px!important}
+  .section-add-btn{font-size:.95rem!important;padding:12px 18px!important}
+  .opp-title{font-size:1.15rem!important}
+  .opp-provider{font-size:.92rem!important}
+  .opp-type-badge{font-size:.78rem!important}
+  .opp-icon-wrap{width:52px!important;height:52px!important;font-size:1.5rem!important}
+  .opp-type-tab{font-size:.9rem!important;padding:8px 18px!important}
+  .done-hero h2{font-size:1.9rem!important}
+  .done-hero p{font-size:1rem!important}
+  .done-card-title{font-size:1.1rem!important}
+  .done-card-vol{font-size:.92rem!important}
   .done-cards-grid{grid-template-columns:repeat(3,1fr)!important}
-  .sec-nav{flex-wrap:wrap;overflow-x:visible;gap:8px}
+  .inprogress-hero h2{font-size:1.6rem!important}
+  .inprogress-hero p{font-size:1rem!important}
+  .opps-hero h2{font-size:1.6rem!important}
+  .opps-hero p{font-size:1rem!important}
+  .past-opps-header{font-size:1.2rem!important}
+  .task-note-preview{font-size:.88rem!important}
   .public-warning{display:none!important}
-  #loadingBar{margin-left:0}
-  .toast{bottom:24px}
-  .task-card{padding:14px 18px}
+  #loadingBar{margin-left:0;font-size:.95rem!important}
+  .toast{bottom:24px;font-size:1rem!important}
+  .main{font-size:1rem}
 }
 </style>
 </head>
@@ -442,12 +458,13 @@ button:focus-visible,a:focus-visible{box-shadow:var(--focus-ring);outline:none}
     <span class="info-pill"><span aria-hidden="true">📋</span> Pick up a task</span>
     <span class="info-pill"><span aria-hidden="true">💛</span> Every bit helps</span>
   </div>
-  <div class="public-warning" role="note" style="margin:10px 20px 4px;justify-content:center;text-align:center">
+  <div class="public-warning" id="publicWarning" role="note" style="margin:10px 20px 4px;justify-content:center;text-align:center;position:relative">
     <div class="public-warning-icon" aria-hidden="true">🌟</div>
     <div class="public-warning-text">
       <strong>Please do not share personal information about yourself or other Soulmates — this board can be seen by others.</strong>
       Email <a href="mailto:info@safesoulmates.org" style="color:var(--sage)">info@safesoulmates.org</a> for anything sensitive.
     </div>
+    <button onclick="dismissWarning()" aria-label="Dismiss this notice" style="position:absolute;top:8px;right:8px;background:rgba(240,165,0,.15);border:none;border-radius:50%;width:28px;height:28px;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#856404;flex-shrink:0">✕</button>
   </div>
 </header>
 
@@ -1590,6 +1607,17 @@ function showToast(msg){
 // Set initial aria-current
 document.getElementById('navAll').setAttribute('aria-current','page');
 const sbAllEl=document.getElementById('sbAll');if(sbAllEl)sbAllEl.setAttribute('aria-current','page');
+
+// Dismiss warning — remembered for this session
+function dismissWarning(){
+  const w=document.getElementById('publicWarning');
+  if(w){w.style.display='none';sessionStorage.setItem('warningDismissed','1');}
+}
+// Auto-hide if already dismissed this session
+if(sessionStorage.getItem('warningDismissed')==='1'){
+  const w=document.getElementById('publicWarning');
+  if(w)w.style.display='none';
+}
 
 loadAll();
 </script>
